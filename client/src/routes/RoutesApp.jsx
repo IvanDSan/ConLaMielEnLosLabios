@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Navbar } from '../components/Navbar/Navbar';
-import { Footer } from '../components/Footer/Footer';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navbar } from "../components/Navbar/Navbar";
+import { Footer } from "../components/Footer/Footer";
+import { Sales } from "../components/Sales/Sales";
 
 export const RoutesApp = () => {
   return (
@@ -10,7 +11,7 @@ export const RoutesApp = () => {
       <main>
         <Routes>
           <Route path="/" element={<h1>Home</h1>} />
-          <Route path="/admin" element={<h1>Admin</h1>} />
+          <Route path="/admin" element={<Sales />} />
           <Route path="/tienda" element={<h1>Tienda</h1>} />
           <Route path="/carrito" element={<h1>Carrito</h1>} />
           <Route path="/visitas" element={<h1>Visitas</h1>} />
