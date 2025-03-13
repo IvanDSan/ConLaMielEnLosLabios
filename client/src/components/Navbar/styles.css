@@ -1,0 +1,35 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 1rem;
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    ul {
+      gap: 2rem;
+    }
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    li {
+      list-style: none;
+
+      img {
+        width: 2rem;
+      }
+    }
+  }
+
+  .active {
+    color: var(--yellow);
+    border-bottom: 2px solid var(--yellow);
+  }
+}
