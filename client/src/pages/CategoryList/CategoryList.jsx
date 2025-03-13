@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 // import axios from "axios";
 import './styles.css';
-import { fetchData } from '../../assets/helper/helper';
+import { fetchData } from '../../helpers/axiosHelper';
 import { UserContext } from '../../context/UserContext';
 
 const CategoryList = () => {
@@ -52,9 +52,14 @@ const CategoryList = () => {
 
     try {
       if (modalType === 'create') {
-        fetchData('/categories/create', 'POST', { name: categoryName }, {
-          Authorization: `Bearer ${token}`,
-        });
+        fetchData(
+          '/categories/create',
+          'POST',
+          { name: categoryName },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
       } else {
         await fetchData(
           `/categories/update/${editingCategoryId}`,
