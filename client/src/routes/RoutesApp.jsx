@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from '../components/Navbar/Navbar';
 import { Footer } from '../components/Footer/Footer';
+import  CategoryList  from '../components/CategoryList/CategoryList'
 import { UserContext } from '../context/UserContext';
 
 export const RoutesApp = () => {
@@ -15,7 +16,7 @@ export const RoutesApp = () => {
             <Routes>
               <Route path="/" element={<h1>Admin Home</h1>} />
               <Route path="/productos" element={<h1>Admin Home</h1>} />
-              <Route path="/categorias" element={<h1>Admin Home</h1>} />
+              <Route path="/categorias" element={<CategoryList />} />
               <Route path="/usuarios" element={<h1>Admin Home</h1>} />
               <Route path="/suscripciones" element={<h1>Admin Home</h1>} />
               <Route path="/colmenas" element={<h1>Admin Home</h1>} />
@@ -27,7 +28,7 @@ export const RoutesApp = () => {
       ) : (
         <BrowserRouter>
           <Navbar />
-      <main>
+    
             <Routes>
               <Route path="/" element={<h1>Home</h1>} />
               <Route path="/tienda" element={<h1>Tienda</h1>} />
