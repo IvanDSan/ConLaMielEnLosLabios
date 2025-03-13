@@ -6,6 +6,7 @@ import { ShoppingCartProvider } from '../components/ShoppingCart/ShoppingCart';
 import CategoryList from '../pages/CategoryList/CategoryList';
 import { UserContext } from '../context/UserContext';
 import { Sales } from '../pages/Sales/Sales';
+import { Store } from "../pages/Store/Store;
 
 export const RoutesApp = () => {
   const { user } = useContext(UserContext);
@@ -34,7 +35,7 @@ export const RoutesApp = () => {
           <main>
             <Routes>
               <Route path="/" element={<h1>Home</h1>} />
-              <Route path="/tienda" element={<h1>Tienda</h1>} />
+              <Route path="/tienda" element={<Store />} />
               <Route path="/talleres" element={<h1>Talleres</h1>} />
               <Route path="/apadrina" element={<h1>Apadrina</h1>} />
               <Route path="/carrito" element={<ShoppingCartProvider />} />
