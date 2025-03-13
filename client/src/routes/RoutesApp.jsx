@@ -8,7 +8,7 @@ import { UserContext } from '../context/UserContext';
 import { Sales } from '../pages/Sales/Sales';
 import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
 import { SpinnerLoading } from '../components/SpinnerLoading/SpinnerLoading';
-import { Store } from "../pages/Store/Store;
+import { Store } from '../pages/Store/Store';
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -50,7 +50,7 @@ export const RoutesApp = () => {
       ) : (
         <BrowserRouter>
           <Navbar />
-        
+
           <main>
             <Routes>
               <Route path="/" element={<h1>Home</h1>} />
@@ -71,4 +71,3 @@ export const RoutesApp = () => {
     </>
   );
 };
-
