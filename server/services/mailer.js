@@ -40,7 +40,7 @@ export const sendRecoveryPassword = async (email, newPassword) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: 'Verificación de email',
-    text: `Tu nueva contraseña es: ${newPassword}. Puedes volver a modificarla desde tu perfil de usuario.`,
+    text: `Tu nueva contraseña es: ${newPassword}\n Puedes volver a modificarla desde tu perfil de usuario.`,
   };
 
   try {

@@ -54,20 +54,6 @@ class UsersController {
       zipcode,
     } = JSON.parse(req.body.registerData);
 
-    console.log(
-      email,
-      password,
-      confirmPassword,
-      name,
-      lastname,
-      dni,
-      phoneNumber,
-      city,
-      province,
-      address,
-      zipcode
-    );
-
     // VALIDACIONES
     // Falta algún campo
     if (

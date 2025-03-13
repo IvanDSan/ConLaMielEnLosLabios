@@ -59,7 +59,7 @@ export const RecoverPasswordForm = ({ onLoginClick, onClose }) => {
       ) : (
         <div className="message">
           <p>
-            Si tu correo está registrado a nuestros sitemas, recibirás un correo
+            Si tu correo está registrado en nuestros sitemas, recibirás un correo
             con tu nueva contraseña. La podrás cambiar cuando quieras desde tu
             perfil de usuario.
           </p>
