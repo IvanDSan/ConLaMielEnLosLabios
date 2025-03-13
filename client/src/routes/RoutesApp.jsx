@@ -7,8 +7,6 @@ import { UserContext } from '../context/UserContext';
 export const RoutesApp = () => {
   const { user } = useContext(UserContext);
 
-  console.log(user);
-
   return (
     <>
       {user && user.user_type === 1 ? (
@@ -22,6 +20,7 @@ export const RoutesApp = () => {
               <Route path="/suscripciones" element={<h1>Admin Home</h1>} />
               <Route path="/colmenas" element={<h1>Admin Home</h1>} />
               <Route path="/ventas" element={<h1>Admin Home</h1>} />
+              <Route path="*" element={<h1>404</h1>} />
             </Routes>
           </main>
         </BrowserRouter>
@@ -37,7 +36,7 @@ export const RoutesApp = () => {
               <Route path="/apadrina" element={<h1>Apadrina</h1>} />
               <Route path="/carrito" element={<h1>Carrito</h1>} />
               <Route path="/perfil" element={<h1>Perfil</h1>} />
-              <Route path="/admin" element={<h1>Admin</h1>} />
+              <Route path="/colmenas" element={<h1>Colmenas</h1>} />
               <Route path="/*" element={<h1>404</h1>} />
             </Routes>
           </main>
