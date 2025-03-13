@@ -27,8 +27,7 @@ export const RoutesApp = () => {
       ) : (
         <BrowserRouter>
           <Navbar />
-
-          <main>
+      <main>
             <Routes>
               <Route path="/" element={<h1>Home</h1>} />
               <Route path="/tienda" element={<h1>Tienda</h1>} />

@@ -1,3 +1,4 @@
+
 import { validateUser } from '../../schemas/userSchema.js';
 import executeQuery from '../../config/db.js';
 import jwt from 'jsonwebtoken';
@@ -320,6 +321,17 @@ class UsersController {
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: 'Internal error' });
+    }
+  };
+  //obtener historial de pedidos
+  getsalesHistory = async (req, res) => {
+    try {
+      let sql =
+        "SELECT sale_id, product.title, quantity, sale_status, date FROM sale JOIN user ON sale.user_id = user.user_id JOIN product ON sale.product_id = product.product_id WHERE sale.is_deleted = 0 ORDER BY date DESC";
+      let result = await executeQuery(sql);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Internal error" });
     }
   };
 }
