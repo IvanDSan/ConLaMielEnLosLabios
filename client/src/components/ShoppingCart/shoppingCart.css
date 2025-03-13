@@ -1,0 +1,131 @@
+.carrito {
+  font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 60rem;
+  margin: 20px auto;
+  padding: 20px;
+  background: var(--bg-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #333;
+  margin: 1rem;
+}
+
+.carrito div > div {
+  background: var(--bg-color);
+  /* border: 1px solid var( --gray); */
+  /* border-radius: 8px; */
+  padding: 15px;
+  width: 50rem;
+  text-align: center;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  transition: transform 0.2s ease;
+}
+
+.carrito div > div:hover {
+  transform: scale(1.02);
+}
+.botonesCart {
+  height: 2.5rem;
+  button {
+    height: 2.5rem;
+    background: var(--purple);
+    color: #ffffff;
+    border: none;
+    padding: 5px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 14px;
+  }
+  button:hover {
+    background: var(--purple-dark);
+  }
+  .contador {
+    max-width: 10rem;
+    height: 2.5rem;
+    align-items: center;
+ 
+   
+    .conT {
+      height: 2.5rem;
+      max-width: 5rem;
+      align-items: center;
+    }
+  }
+}
+
+.carrito-controles {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.cartItem {
+  background: var(--bg-color);
+  padding: 10px;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li span {
+  flex-grow: 1;
+  font-size: 18px;
+}
+
+li div {
+  display: flex;
+  gap: 5px;
+}
+
+.cartTotal {
+  margin-block: 2rem;
+  margin-left: 2rem;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  p {
+    text-align: start;
+  }
+  .rayaCart {
+    width: 44rem;
+    height: 0.1rem;
+    background-color: black;
+  }
+  .botonesCart2 {
+    width: 14rem;
+    align-items: center;
+    background: var(--purple);
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 14px;
+    &:hover {
+      background: var(--purple-dark);
+    }
+  }
+}
