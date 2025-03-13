@@ -1,7 +1,7 @@
 import executeQuery from "../../config/db.js";
 
 class SalesControllers {
-  //obtener historial de pedidos
+  //obtener historial de pedidos Admin
   getsalesHistory = async (req, res) => {
     try {
       let sql =

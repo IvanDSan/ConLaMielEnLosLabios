@@ -14,7 +14,6 @@ const __dirname = path.dirname(__filename);
 import usersRouter from "./modules/users/users.routes.js";
 import productsRoutes from "./modules/sales/sales.routes.js";
 import salesRoutes from "./modules/sales/sales.routes.js";
-
 const app = express();
 
 //middlewares
