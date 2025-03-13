@@ -19,7 +19,6 @@ export const verifyAdminToken = (req, res, next) => {
         return res.status(401).json({ message: 'Token no válido' });
       }
 
-      console.log(decoded);
       req.user_id = decoded.id;
       next();
     });

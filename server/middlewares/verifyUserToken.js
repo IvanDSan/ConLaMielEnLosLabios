@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const verifyAdminToken = (req, res, next) => {
+export const verifyUserToken = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
 
   if (!token) {
@@ -19,7 +19,6 @@ export const verifyAdminToken = (req, res, next) => {
         return res.status(401).json({ message: 'Token no válido' });
       }
 
-      console.log(decoded);
       req.user_id = decoded.id;
       next();
     });

@@ -134,8 +134,9 @@ class UsersController {
      *      - En caso de exito: 200 - {token: string}
      *      - En caso de error:
      *        - Faltan inputs: 400 - {error: "Faltan campos obligatorios"}
-     *        - Email no existe: 404 - {error: "Email no existe"}
-     *        - Password incorrecta: 401 - {error: "Contraseña incorrecta"}
+     *        - Email no existe: 401 - {error: "Error al iniciar sesión"}
+     *        - Password incorrecta: 401 - {error: "Error al iniciar sesión"}
+     *        - Email no verificado: 401 - {error: "El usuario no está verificado"}
      *        - Error interno: 500 - {error: "Internal error"}
      */
 
@@ -155,7 +156,7 @@ class UsersController {
       const result = await executeQuery(sql, values);
 
       if (result.length === 0) {
-        return res.status(404).json({ error: 'Email no existe' });
+        return res.status(401).json({ error: 'Error al iniciar sesión' });
       }
 
       // VERIFICAR PASSWORD
@@ -163,7 +164,7 @@ class UsersController {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(401).json({ error: 'Contraseña incorrecta' });
+        return res.status(401).json({ error: 'Error al iniciar sesión' });
       }
 
       // COMPROBAR QUE EL USUARIO ESTÁ VERIFICADO
@@ -283,6 +284,38 @@ class UsersController {
         res
           .status(200)
           .json({ message: 'Contraseña restablecida, comprobar email' });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Internal error' });
+    }
+  };
+
+  getUserById = async (req, res) => {
+    const { user_id } = req;
+
+    let sql = 'SELECT * FROM user WHERE user_id = ?';
+    let values = [user_id];
+
+    try {
+      let result = await executeQuery(sql, values);
+
+      if (result.length > 0) {
+        res.status(200).json({
+          user_id: result[0].user_id,
+          name: result[0].name,
+          lastname: result[0].lastname,
+          email: result[0].email,
+          phone_number: result[0].phone_number,
+          address: result[0].address,
+          city: result[0].city,
+          province: result[0].province,
+          zipcode: result[0].zipcode,
+          is_verified: result[0].is_verified,
+          user_type: result[0].user_type,
+        });
+      } else {
+        res.status(404).json({ error: 'Usuario no encontrado' });
       }
     } catch (err) {
       console.log(err);
