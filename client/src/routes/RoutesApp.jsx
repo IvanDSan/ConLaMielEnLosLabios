@@ -1,9 +1,10 @@
-import { useContext } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Navbar } from '../components/Navbar/Navbar';
-import { Footer } from '../components/Footer/Footer';
-import CategoryList from '../pages/CategoryList/CategoryList';
-import { UserContext } from '../context/UserContext';
+import { useContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navbar } from "../components/Navbar/Navbar";
+import { Footer } from "../components/Footer/Footer";
+import CategoryList from "../pages/CategoryList/CategoryList";
+import { UserContext } from "../context/UserContext";
+import { Sales } from "../pages/Sales/Sales";
 
 export const RoutesApp = () => {
   const { user } = useContext(UserContext);
@@ -20,7 +21,7 @@ export const RoutesApp = () => {
               <Route path="/usuarios" element={<h1>Admin Home</h1>} />
               <Route path="/suscripciones" element={<h1>Admin Home</h1>} />
               <Route path="/colmenas" element={<h1>Admin Home</h1>} />
-              <Route path="/ventas" element={<h1>Admin Home</h1>} />
+              <Route path="/ventas" element={<Sales />} />
               <Route path="*" element={<h1>404</h1>} />
             </Routes>
           </main>
