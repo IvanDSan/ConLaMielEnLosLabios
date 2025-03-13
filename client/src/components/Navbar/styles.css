@@ -25,6 +25,10 @@ nav {
       img {
         width: 2rem;
       }
+
+      .profile-img {
+        border-radius: 10rem;
+      }
     }
   }
 

@@ -1,1 +1,9 @@
+.register {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 
+  input {
+    margin-bottom: .2rem;
+  }
+}

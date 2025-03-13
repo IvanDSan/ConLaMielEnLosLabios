@@ -1,4 +1,3 @@
-
 import { validateUser } from '../../schemas/userSchema.js';
 import executeQuery from '../../config/db.js';
 import jwt from 'jsonwebtoken';
@@ -53,28 +52,42 @@ class UsersController {
       province,
       address,
       zipcode,
-    } = req.body;
+    } = JSON.parse(req.body.registerData);
+
+    console.log(
+      email,
+      password,
+      confirmPassword,
+      name,
+      lastname,
+      dni,
+      phoneNumber,
+      city,
+      province,
+      address,
+      zipcode
+    );
 
     // VALIDACIONES
     // Falta algún campo
     if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !name ||
-      !lastname ||
-      !dni ||
-      !phoneNumber ||
-      !city ||
-      !province ||
-      !address ||
-      !zipcode
+      !email?.trim() ||
+      !password?.trim() ||
+      !confirmPassword?.trim() ||
+      !name?.trim() ||
+      !lastname?.trim() ||
+      !dni?.trim() ||
+      !phoneNumber?.trim() ||
+      !city?.trim() ||
+      !province?.trim() ||
+      !address?.trim() ||
+      !zipcode?.trim()
     ) {
       return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
 
     // Zod
-    const result = validateUser(req.body);
+    const result = validateUser(JSON.parse(req.body.registerData));
     if ('error' in result) {
       return res.status(400).json(result);
     }
@@ -108,6 +121,13 @@ class UsersController {
         zipcode,
         verificationToken,
       ];
+
+      if (req.file) {
+        sql =
+          'INSERT INTO user (email, password, name, lastname, phone_number, dni, city, province, address, zipcode, verify_token, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+        values = [...values, req.file.filename];
+      }
 
       await executeQuery(sql, values);
 
@@ -169,11 +189,9 @@ class UsersController {
       }
 
       // COMPROBAR QUE EL USUARIO ESTÁ VERIFICADO
-      if (user.isVerified === 0) {
+      if (user.is_verified === 0) {
         return res.status(401).json({ error: 'El usuario no está verificado' });
       }
-
-      console.log('user', user);
 
       // GENERAR TOKEN
       const token = jwt.sign(
@@ -251,6 +269,7 @@ class UsersController {
      *      - En caso de éxito: 200 - {message: "Contraseña restablecida, comprobar email"}
      *      - En caso de error:
      *        - Falta el email: 400 - {error: "Falta el email"}
+     *        - No se encuentra el email: 200 - {message: "Email enviado"}
      *        - Error interno: 500 - {error: "Internal error"}
      */
 
@@ -285,6 +304,8 @@ class UsersController {
         res
           .status(200)
           .json({ message: 'Contraseña restablecida, comprobar email' });
+      } else {
+        res.status(200).json({ message: 'Email enviado' });
       }
     } catch (err) {
       console.log(err);
@@ -306,13 +327,14 @@ class UsersController {
           user_id: result[0].user_id,
           name: result[0].name,
           lastname: result[0].lastname,
+          image: result[0].image_url,
+          dni: result[0].dni,
           email: result[0].email,
           phone_number: result[0].phone_number,
           address: result[0].address,
           city: result[0].city,
           province: result[0].province,
           zipcode: result[0].zipcode,
-          is_verified: result[0].is_verified,
           user_type: result[0].user_type,
         });
       } else {
