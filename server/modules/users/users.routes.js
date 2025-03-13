@@ -5,11 +5,14 @@ import uploadImage from '../../middlewares/multerSingle.js';
 
 const router = express.Router();
 
-router.post('/addProductToCart', UsersControllers.addProductToCart);
-router.post('/modifyCartQuantityToCart', UsersControllers.modifyCartQuantityToCart);
-router.post('/deleteProductToCart', UsersControllers.deleteProductToCart);
-router.post('/deleteCartFromUser', UsersControllers.deleteCartFromUser);
-router.get('/showAllFromCartToUser', UsersControllers.showAllFromCartToUser);
+router.post('/addProductToCart', UsersController.addProductToCart);
+router.post(
+  '/modifyCartQuantityToCart',
+  UsersController.modifyCartQuantityToCart
+);
+router.post('/deleteProductToCart', UsersController.deleteProductToCart);
+router.post('/deleteCartFromUser', UsersController.deleteCartFromUser);
+router.get('/showAllFromCartToUser', UsersController.showAllFromCartToUser);
 // router.post('/buyCart', usersControllers.buyCart);// COMPRA DEL CARRITO PENDIENTE
 
 router.post('/register', uploadImage('users'), UsersController.register);
