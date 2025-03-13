@@ -14,11 +14,13 @@ export const Modal = ({ isOpen, onClose, children }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
-          <img src="/images/close.svg" alt="close" />
-        </button>
-        {children}
+      <div className='modal-extra-layer' onClick={(e) => e.stopPropagation()}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <button className="modal-close" onClick={onClose}>
+            <img src="/images/close.svg" alt="close" />
+          </button>
+          {children}
+        </div>
       </div>
     </div>
   );

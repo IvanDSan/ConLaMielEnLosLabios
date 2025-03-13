@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Navbar } from "../components/Navbar/Navbar";
-import { Footer } from "../components/Footer/Footer";
-import CategoryList from "../pages/CategoryList/CategoryList";
-import { UserContext } from "../context/UserContext";
-import { Sales } from "../pages/Sales/Sales";
+import { useContext } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Navbar } from '../components/Navbar/Navbar';
+import { Footer } from '../components/Footer/Footer';
+import CategoryList from '../pages/CategoryList/CategoryList';
+import { UserContext } from '../context/UserContext';
+import { Sales } from '../pages/Sales/Sales';
 
 export const RoutesApp = () => {
   const { user } = useContext(UserContext);

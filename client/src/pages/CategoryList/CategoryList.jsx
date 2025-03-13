@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from 'react';
 // import axios from "axios";
-import './styles.css'
-import { fetchData } from "../../assets/helper/helper";
+import './styles.css';
+import { fetchData } from '../../assets/helper/helper';
+import { UserContext } from '../../context/UserContext';
 
 const CategoryList = () => {
+  const { token } = useContext(UserContext);
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState("create");
-  const [categoryName, setCategoryName] = useState("");
+  const [modalType, setModalType] = useState('create');
+  const [categoryName, setCategoryName] = useState('');
   const [editingCategoryId, setEditingCategoryId] = useState(null);
 
   useEffect(() => {
@@ -19,21 +22,27 @@ const CategoryList = () => {
   const dataCategories = async () => {
     try {
       setLoading(true);
-      const res = await fetchData("/categories/get", "GET");
-      console.log(res);
-      
-      setCategories(Array.isArray(res.data) ? res.data : res.data.categories || []);
+      const res = await fetchData('/categories/get', 'GET', null, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      setCategories(
+        Array.isArray(res.data) ? res.data : res.data.categories || []
+      );
       setError(null);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setError("Error al cargar las categorías: " + (error.message || "Problema de conexión"));
+      setError(
+        'Error al cargar las categorías: ' +
+          (error.message || 'Problema de conexión')
+      );
     }
   };
 
   const openModal = (type, category = null) => {
     setModalType(type);
-    setCategoryName(category ? category.name : "");
+    setCategoryName(category ? category.name : '');
     setEditingCategoryId(category ? category.category_id || category.id : null);
     setShowModal(true);
   };
@@ -42,26 +51,46 @@ const CategoryList = () => {
     if (!categoryName.trim()) return;
 
     try {
-      if (modalType === "create") {
-        fetchData("/categories/create", "POST", { name: categoryName });
+      if (modalType === 'create') {
+        fetchData('/categories/create', 'POST', { name: categoryName }, {
+          Authorization: `Bearer ${token}`,
+        });
       } else {
-        await fetchData(`/categories/update/${editingCategoryId}`, "PUT" ,{ name: categoryName });
+        await fetchData(
+          `/categories/update/${editingCategoryId}`,
+          'PUT',
+          {
+            name: categoryName,
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
       }
       setShowModal(false);
-      setCategoryName("");
+      setCategoryName('');
       setEditingCategoryId(null);
       dataCategories();
     } catch (error) {
-      setError(`Error al ${modalType === "create" ? "crear" : "actualizar"} la categoría: ${error.message}`);
+      setError(
+        `Error al ${
+          modalType === 'create' ? 'crear' : 'actualizar'
+        } la categoría: ${error.message}`
+      );
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      await fetchData(`/categories/delete/${id}`, "DELETE");
+      await fetchData(`/categories/delete/${id}`, 'DELETE', null, {
+        Authorization: `Bearer ${token}`,
+      });
       dataCategories();
     } catch (error) {
-      setError("Error al borrar la categoría: " + (error.message || "No se ha podido borrar la categoría"));
+      setError(
+        'Error al borrar la categoría: ' +
+          (error.message || 'No se ha podido borrar la categoría')
+      );
     }
   };
 
@@ -70,7 +99,11 @@ const CategoryList = () => {
       <h2>Categorías</h2>
       {showModal && (
         <div className="modal">
-          <h3>{modalType === "create" ? "Agregar Nueva Categoría" : "Editar Categoría"}</h3>
+          <h3>
+            {modalType === 'create'
+              ? 'Agregar Nueva Categoría'
+              : 'Editar Categoría'}
+          </h3>
           <input
             type="text"
             className="category-input"
@@ -79,12 +112,18 @@ const CategoryList = () => {
             onChange={(e) => setCategoryName(e.target.value)}
           />
           <div className="buttonsModal">
-            <button className="save-btn" onClick={handleSave}>{modalType === "create" ? "Guardar" : "Actualizar"}</button>
-            <button className="cancel-btn" onClick={() => setShowModal(false)}>Cancelar</button>
+            <button className="save-btn" onClick={handleSave}>
+              {modalType === 'create' ? 'Guardar' : 'Actualizar'}
+            </button>
+            <button className="cancel-btn" onClick={() => setShowModal(false)}>
+              Cancelar
+            </button>
           </div>
         </div>
       )}
-      <button className="add-category-btn" onClick={() => openModal("create")}>Agregar Categoría</button>
+      <button className="add-category-btn" onClick={() => openModal('create')}>
+        Agregar Categoría
+      </button>
 
       {loading && <p className="loading">Cargando categorías...</p>}
       {error && <p className="error">{error}</p>}
@@ -104,8 +143,22 @@ const CategoryList = () => {
                 <td>{category.category_id || category.id}</td>
                 <td>{category.name}</td>
                 <td className="buttonsTable">
-                  <button className="edit-btn" onClick={() => openModal("edit", category)}> <img src="/icons/edit.svg" alt="imagen edit" /> </button>
-                  <button className="delete-btn" onClick={() => handleDelete(category.category_id || category.id)}> <img src="/icons/bin.svg" alt="bin image" /></button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => openModal('edit', category)}
+                  >
+                    {' '}
+                    <img src="/icons/edit.svg" alt="imagen edit" />{' '}
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() =>
+                      handleDelete(category.category_id || category.id)
+                    }
+                  >
+                    {' '}
+                    <img src="/icons/bin.svg" alt="bin image" />
+                  </button>
                 </td>
               </tr>
             ))
@@ -116,8 +169,6 @@ const CategoryList = () => {
           )}
         </tbody>
       </table>
-
-
     </div>
   );
 };

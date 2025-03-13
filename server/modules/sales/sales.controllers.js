@@ -9,7 +9,8 @@ class SalesControllers {
       let result = await executeQuery(sql);
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ error: "Internal error" });
+      console.log(error);
+      res.status(500).json({ error: 'Internal error' });
     }
   };
 

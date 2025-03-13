@@ -17,14 +17,14 @@ export const UserProvider = ({ children }) => {
     if (token) localStorage.setItem('token', token);
 
     // Pedir la información del usuario
-    if (token) {
+    if (token && !user) {
       fetchData('/users/getUserById', 'GET', null, {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         setUser(res.data);
       });
     }
-  }, [token]);
+  }, [token, user]);
 
   return (
     <UserContext.Provider value={{ user, setUser, token, setToken }}>
