@@ -21,6 +21,7 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
   const [registerForm, setRegisterForm] = useState(initialState);
   const [image, setImage] = useState(null);
   const [showValidateMessage, setShowValidateMessage] = useState(false);
+  const [showPasswordConditions, setShowPasswordConditions] = useState(false);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -123,7 +124,7 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
                 />
               </label>
 
-              <label htmlFor="password">
+              <label htmlFor="password" className="password">
                 Password *
                 <input
                   type="password"
@@ -139,7 +140,21 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
                       ? { border: '1px solid red' }
                       : {}
                   }
+                  onFocus={() => setShowPasswordConditions(true)}
+                  onBlur={() => setShowPasswordConditions(false)}
                 />
+                {showPasswordConditions && (
+                  <div className="password-conditions">
+                    <p>La password debe tener:</p>
+                    <ul>
+                      <li>8 o m&aacute;s caracteres</li>
+                      <li>Una letra may&uacute;scula</li>
+                      <li>Una letra min&uacute;scula</li>
+                      <li>Un n&uacute;mero</li>
+                      <li>Un car&aacute;cter especial</li>
+                    </ul>
+                  </div>
+                )}
               </label>
 
               <label htmlFor="confirmPassword">
@@ -305,8 +320,8 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
             </div>
           </div>
 
-          {errors.includes('fetchError') && (
-            <span className="error">{errors[0]}</span>
+          {errors.length > 0 && (
+            <span className="error">Corrige los errores del formulario</span>
           )}
 
           <button type="submit">
