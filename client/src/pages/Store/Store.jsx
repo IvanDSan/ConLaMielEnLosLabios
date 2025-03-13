@@ -48,7 +48,7 @@ export const Store = () => {
                 <p className="productPrice">{product.price}€</p>
 
                 <div className="productActions">
-                  <button className="moreInfo">Más información</button>
+                  <button className="moreInfo">Ver Más</button>
                   <button className="addToCart">Añadir</button>
                 </div>
               </div>
