@@ -2,7 +2,7 @@
   --bg-color: #fff4e3;
   --bg-color-dark: #ffe0b2;
   --yellow: #eace4a;
-  --yellow-light: #f1e9c9;
+  --yellow-light: #f5dd7d;
   --brown: #795548;
   --red: #892634;
   --purple: #6f2689;
@@ -19,4 +19,50 @@
 
 section {
   padding-block: 2rem;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--black);
+  line-height: 1.5;
+  font-size: 1rem;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--yellow);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--yellow-light);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--black);
+
+  &:hover {
+    color: var(--brown);
+  }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: var(--yellow);
+  color: var(--black);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: var(--yellow-light);
+  }
 }
