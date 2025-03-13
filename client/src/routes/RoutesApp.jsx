@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from '../components/Navbar/Navbar';
 import { Footer } from '../components/Footer/Footer';
-import  CategoryList  from '../components/CategoryList/CategoryList'
+import CategoryList from '../pages/CategoryList/CategoryList';
 import { UserContext } from '../context/UserContext';
 
 export const RoutesApp = () => {
@@ -28,7 +28,8 @@ export const RoutesApp = () => {
       ) : (
         <BrowserRouter>
           <Navbar />
-    
+
+          <main>
             <Routes>
               <Route path="/" element={<h1>Home</h1>} />
               <Route path="/tienda" element={<h1>Tienda</h1>} />
