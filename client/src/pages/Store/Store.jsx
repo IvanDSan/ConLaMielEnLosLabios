@@ -11,7 +11,7 @@ export const Store = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `${apiURL}/products/getNonDeletedProducts`
+          `${apiURL}/products/all`
         );
         setProducts(response.data);
       } catch (err) {
