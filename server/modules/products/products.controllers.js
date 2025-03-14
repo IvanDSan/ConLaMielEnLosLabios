@@ -1,21 +1,7 @@
 import executeQuery from "../../config/db.js";
-//con esto verifico si el user tiene el estate de Admin
-class Productscontrollers{
-verifyAdmin = (req,res, next) => {
-  try {
-    const token = req.header("Authorization");
-    if (!token) return res.status(403).render('error', {message: "acceso denegado"});
 
-    const verified = jwt.verify(token, process.env.JWT_SECRET );
-    if (verified.user_type !== 1) {
-      return res.status(403).render('error', {message: "Acceso solo para Administradores"});
-    }
-    req.user = verified;
-    next();
-  } catch(error) {
-    res.status(400).render('error', {message: "Token inválido"});
-  }
-};
+//con esto verifico si el user tiene el estate de Admin
+class ProductsController{
 createProduct = async (req, res) => {
   try {
     const{ title, description, price, category_id } = req.body;
@@ -68,11 +54,11 @@ deleteProduct = async (req,res) => {
 getProducts = async (req, res) => {
   try {
     const products = await executeQuery("SELECT * FROM product WHERE is_deleted = 0");
-    res.json(products);
+    res.status(200).json(products)
   } catch (error) {
     console.error("Error en getProducts:", error);
     res.status(500).json({ error: "error al obtener los productos" });
   }
 };
 };
-export default new Productscontrollers();
+export default new ProductsController();
