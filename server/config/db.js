@@ -21,7 +21,7 @@ const executeQuery = async (sql, values = []) => {
   } catch (error) {
     throw error;
   } finally {
-    connection.release();
+   if(connection) connection.release();
   }
 };
 

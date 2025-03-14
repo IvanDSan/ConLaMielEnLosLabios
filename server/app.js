@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 
 //rutas de los endpoints
 import usersRouter from './modules/users/users.routes.js';
-
+import productsRouter from './modules/products/products.routes.js'
 const app = express();
 
 //middlewares
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/products',productsRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
