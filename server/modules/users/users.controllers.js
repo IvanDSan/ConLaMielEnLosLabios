@@ -333,15 +333,15 @@ class UsersController {
   };
 
   addProductToCart = async (req, res) => {
-    const { product_id, quantity } = req.body;//METER EN EL DESTRUCTURING EL user_id
+    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL user_id
     const user_id = 1;
-    const checkCart = "SELECT * FROM cart WHERE user_id = ? AND product_id = ?"; // ? solo en db = a los valores que nos lleguen
+    const checkCart = 'SELECT * FROM cart WHERE user_id = ? AND product_id = ?'; // ? solo en db = a los valores que nos lleguen
 
     try {
       let result = await executeQuery(checkCart, [user_id, product_id]);
       if (result.length !== 0) {
         const updateCart =
-          "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
+          'UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
         let result3 = await executeQuery(updateCart, [
           quantity,
           user_id,
@@ -349,7 +349,7 @@ class UsersController {
         ]);
       } else {
         const insertCart =
-          "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
+          'INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)';
         let result2 = await executeQuery(insertCart, [
           user_id,
           product_id,
@@ -357,17 +357,17 @@ class UsersController {
         ]);
       }
 
-      res.status(200).json({ message: "" });
+      res.status(200).json({ message: '' });
     } catch (error) {
       res.status(500).json(error);
     }
   };
 
   modifyCartQuantityToCart = async (req, res) => {
-    const { product_id, quantity } = req.body;//METER EN EL DESTRUCTURING EL user_id
+    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL user_id
     const user_id = 1;
     const modifyCart =
-      "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
+      'UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
     try {
       //si la cantidad es menor q -1 no puede cambiar
       if (quantity > 0) {
@@ -376,9 +376,9 @@ class UsersController {
           user_id,
           product_id,
         ]);
-        res.status(200).json({ message: "Se ha modificado correctamente" });
+        res.status(200).json({ message: 'Se ha modificado correctamente' });
       } else {
-        throw new Error("No se admiten cantidades negativas");
+        throw new Error('No se admiten cantidades negativas');
       }
     } catch (error) {
       res.status(500).json(error.message);
@@ -386,20 +386,18 @@ class UsersController {
   };
 
   deleteProductToCart = async (req, res) => {
-     const { product_id } = req.body;//METER EN EL DESTRUCTURING EL user_id
+    const { product_id } = req.body; //METER EN EL DESTRUCTURING EL user_id
     const user_id = 1;
     const deletedCartProduct =
-      "DELETE FROM cart WHERE user_id = ? AND  product_id = ?";
+      'DELETE FROM cart WHERE user_id = ? AND  product_id = ?';
     try {
       let result = await executeQuery(deletedCartProduct, [
         user_id,
         product_id,
       ]);
-      res
-        .status(200)
-        .json({
-          message: "El producto se ha eliminado correctamente del carrito",
-        });
+      res.status(200).json({
+        message: 'El producto se ha eliminado correctamente del carrito',
+      });
     } catch (error) {
       res.status(500).json(error.message);
     }
@@ -408,13 +406,13 @@ class UsersController {
   deleteCartFromUser = async (req, res) => {
     // const { user_id } = req.body;
     const user_id = 1;
-    const deleteAllCart = "DELETE FROM cart WHERE user_id = ?";
+    const deleteAllCart = 'DELETE FROM cart WHERE user_id = ?';
 
     try {
       let result = await executeQuery(deleteAllCart, [user_id]);
       res
         .status(200)
-        .json({ message: "El carrito se ha eliminado correctamente" });
+        .json({ message: 'El carrito se ha eliminado correctamente' });
     } catch (error) {
       res.status(500).json(error.message);
     }
@@ -433,18 +431,18 @@ class UsersController {
       if (cart.length === 0) {
         return res
           .status(200)
-          .json({ message: "El carrito está vacío", cart: [] });
+          .json({ message: 'El carrito está vacío', cart: [] });
       }
       res.status(200).json(cart);
     } catch (error) {
       res
         .status(500)
-        .json({ message: "Error al obtener el carrito", error: error.message });
+        .json({ message: 'Error al obtener el carrito', error: error.message });
     }
   };
-  
+
   // buyCart = async (req, res) => {
-    // const { user_id } = req;
+  // const { user_id } = req;
   //   const user_id = 1;
   //1ºconexion a la dbpool
   //2 crear una TRANSACCION
@@ -452,9 +450,8 @@ class UsersController {
   //4 resultado + BUCLE CADA PRODUC, INSERT SELEC ID,USERID, PRODUCT ID,sale_id(MAX(id + 1)), QUANTITY Y PONER EL ESTADO(CANCELADO,COMPLETADO)
   //borrar todo el carrito de ese user
   //cerrar TRANSACCION con comit (creo una venta con muchos product)(esta en new travel try,catch( si algo sale mal en el cath un roll back) y finally(cerrar conexion))
-// 
+  //
   // }
-
 }
 
 export default new UsersController();
