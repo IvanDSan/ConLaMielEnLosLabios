@@ -1,4 +1,4 @@
-import "./UserManagement.css";
+import "./styles.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -50,43 +50,45 @@ export const UserManagement = () => {
   }
 
   return (
-    <div className="container">
-      <h2>Manejo de Usuarios</h2>
-      <div className="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Estado</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.user_id}>
-                <td>{user.user_id}</td>
-                <td>
-                  {user.name} {user.lastname}
-                </td>
-                <td>{user.email}</td>
-                <td>{user.is_disabled ? "Baneado" : "Activo"}</td>
-                <td>
-                  {user.user_type !== 1 && (
-                    <button
-                      onClick={() =>
-                        toggleUserStatus(user.user_id, user.is_disabled)
-                      }
-                    >
-                      {user.is_disabled ? "Activar" : "Desactivar"}
-                    </button>
-                  )}
-                </td>
+    <div className="userAdmin">
+      <div className="container">
+        <h2>Manejo de Usuarios</h2>
+        <div className="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Acción</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.user_id}>
+                  <td>{user.user_id}</td>
+                  <td>
+                    {user.name} {user.lastname}
+                  </td>
+                  <td>{user.email}</td>
+                  <td>{user.is_disabled ? "Baneado" : "Activo"}</td>
+                  <td>
+                    {user.user_type !== 1 && (
+                      <button
+                        onClick={() =>
+                          toggleUserStatus(user.user_id, user.is_disabled)
+                        }
+                      >
+                        {user.is_disabled ? "Activar" : "Desactivar"}
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

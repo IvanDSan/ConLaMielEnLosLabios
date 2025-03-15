@@ -1,0 +1,62 @@
+.userAdmin {
+  .table-wrapper table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th:nth-child(1) {
+    width: 10%;
+  }
+  th:nth-child(2) {
+    width: 25%;
+  }
+  th:nth-child(3) {
+    width: 30%;
+  }
+  th:nth-child(4) {
+    width: 15%;
+  }
+  th:nth-child(5) {
+    width: 20%;
+  }
+  
+  th,
+  td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid var(--gray);
+  }
+  
+  td:nth-child(2),
+  td:nth-child(3),
+  td:nth-child(4) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  button {
+    width: auto;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+    color: var(--black);
+    border: 1px solid var(--brown);
+  }
+  
+  th {
+    background-color: var(--brown);
+    color: var(--white);
+    font-weight: bold;
+  }
+  
+  tbody tr {
+    background-color: var(--bg-color);
+  }
+  td {
+    color: var(--black);
+  }
+  
+}
+
