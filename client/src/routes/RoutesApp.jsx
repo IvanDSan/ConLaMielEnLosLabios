@@ -10,6 +10,7 @@ import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
 import { SpinnerLoading } from '../components/SpinnerLoading/SpinnerLoading';
 import { Store } from '../pages/Store/Store';
 import { Products } from '../components/Products/Products';
+import { UserManagement } from "../components/UserManagement/UserManagement";
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -40,7 +41,7 @@ export const RoutesApp = () => {
               <Route path="/" element={<h1>Admin Home</h1>} />
               <Route path="/productos" element={<Products />} />
               <Route path="/categorias" element={<CategoryList />} />
-              <Route path="/usuarios" element={<h1>Admin Home</h1>} />
+              <Route path="/usuarios" element={<UserManagement />} />
               <Route path="/suscripciones" element={<h1>Admin Home</h1>} />
               <Route path="/colmenas" element={<h1>Admin Home</h1>} />
               <Route path="/ventas" element={<Sales />} />
