@@ -11,8 +11,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //rutas de los endpoints
-import usersRouter from "./modules/users/users.routes.js";
 import adminRouter from "./modules/admin/admin.routes.js";
+import categoriesRouter from "./modules/categories/categories.routes.js";
+import usersRouter from "./modules/users/users.routes.js";
+import productsRoutes from "./modules/products/products.routes.js";
+import salesRoutes from "./modules/sales/sales.routes.js";
 
 const app = express();
 
@@ -24,9 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use('/', indexRouter);
 app.use("/users", usersRouter);
 app.use("/admin", adminRouter);
+app.use("/users", usersRouter);
+app.use("/categories", categoriesRouter);
+app.use("/products", productsRoutes);
+app.use("/sales", salesRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -2,11 +2,12 @@
   --bg-color: #fff4e3;
   --bg-color-dark: #ffe0b2;
   --yellow: #eace4a;
-  --yellow-light: #f1e9c9;
+  --yellow-light: #f5dd7d;
   --brown: #795548;
   --red: #892634;
-  --purple: #6f2689;
+  --purple: #A856FF;
   --purple-light: #d6b0ff;
+  --purple-dark: #911bff; /*color de realce de los botones */
   --white: #f3f3f3;
   --black: #0e0e0e;
   --gray: #ddccbc;
@@ -19,4 +20,112 @@
 
 section {
   padding-block: 2rem;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--black);
+  line-height: 1.5;
+  font-size: 1rem;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--yellow);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--yellow-light);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--black);
+
+  &:hover {
+    color: var(--brown);
+  }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: var(--yellow);
+  color: var(--black);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  height: fit-content;
+
+  &:hover {
+    background: var(--yellow-light);
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h2 {
+    text-align: center;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    padding: 0.2rem 1rem;
+    border: 1px solid var(--gray);
+    border-radius: 4px;
+    width: 20rem;
+    font-family: inherit;
+
+    &:focus {
+      outline: none;
+      border-color: var(--yellow);
+    }
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      width: 4rem;
+      transform: translateY(1rem);
+    }
+  }
+
+  .link {
+    text-align: center;
+    text-decoration: none;
+    color: var(--purple);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    span {
+      text-decoration: underline;
+    }
+  }
+
+  .error {
+    color: var(--red);
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: -0.8rem;
+  }
 }
