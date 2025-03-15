@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Style.css";
+import { useNavigate } from "react-router-dom";
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
@@ -11,6 +12,7 @@ export const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortOption, setSortOption] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductsAndCategories = async () => {
@@ -175,7 +177,12 @@ export const Store = () => {
                 <p className="productPrice">{product.price}€</p>
 
                 <div className="productActions">
-                  <button className="moreInfo">Ver Más</button>
+                  <button
+                    className="moreInfo"
+                    onClick={() => navigate(`/producto/${product.product_id}`)}
+                  >
+                    Ver Más
+                  </button>
                   <button className="addToCart">Añadir</button>
                 </div>
               </div>
