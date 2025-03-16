@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from '../components/Navbar/Navbar';
 import { Footer } from '../components/Footer/Footer';
-import { ShoppingCartProvider } from '../components/ShoppingCart/ShoppingCart';
+import { ShoppingCart } from '../components/ShoppingCart/ShoppingCart';
 import CategoryList from '../pages/CategoryList/CategoryList';
 import { UserContext } from '../context/UserContext';
 import { Sales } from '../pages/Sales/Sales';
@@ -58,7 +58,7 @@ export const RoutesApp = () => {
               <Route path="/tienda" element={<Store />} />
               <Route path="/talleres" element={<h1>Talleres</h1>} />
               <Route path="/apadrina" element={<h1>Apadrina</h1>} />
-              <Route path="/carrito" element={<ShoppingCartProvider />} />
+              <Route path="/carrito" element={<ShoppingCart />} />
               <Route path="/perfil" element={<h1>Perfil</h1>} />
               <Route path="/colmenas" element={<h1>Colmenas</h1>} />
               <Route path="/verify" element={<VerifyEmail />} />
