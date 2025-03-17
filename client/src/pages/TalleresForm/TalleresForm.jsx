@@ -9,7 +9,7 @@ export const Talleres = () => {
     nombre: "",
     apellido: "",
     email: "",
-    entidad: "",
+    telephone: "",
     mensaje: "",
   });
 
@@ -48,7 +48,7 @@ export const Talleres = () => {
           nombre: "",
           apellido: "",
           email: "",
-          entidad: "",
+          telephone: "",
           mensaje: "",
         });
       }
@@ -141,12 +141,12 @@ export const Talleres = () => {
             onChange={handleChange}
           />
 
-          <label htmlFor="entidad">Número de teléfono:</label>
+          <label htmlFor="telephone">Número de teléfono:</label>
           <input
             type="text"
-            id="entidad"
-            placeholder="Nombre de la entidad"
-            value={formData.entidad}
+            id="telephone"
+            placeholder="Introduce tu número telefónico"
+            value={formData.telephone}
             onChange={handleChange}
           />
 
