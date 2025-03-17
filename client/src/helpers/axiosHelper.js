@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-catch */
-
 import axios from 'axios';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
