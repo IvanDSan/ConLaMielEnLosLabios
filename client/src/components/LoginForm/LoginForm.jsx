@@ -80,7 +80,7 @@ export const LoginForm = ({
         <p className="link" onClick={onRegisterClick}>
           ¿No tienes una cuenta? <span>Regístrate</span>
         </p>
-        <img src="/images/panal.svg" alt="panal" />
+        <img src="/icons/panal.svg" alt="panal" />
       </div>
     </form>
   );

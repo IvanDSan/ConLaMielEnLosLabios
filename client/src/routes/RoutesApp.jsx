@@ -10,6 +10,7 @@ import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
 import { SpinnerLoading } from '../components/SpinnerLoading/SpinnerLoading';
 import { Store } from '../pages/Store/Store';
 import { Products } from '../components/Products/Products';
+import { Home } from '../pages/Home/Home';
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -54,7 +55,7 @@ export const RoutesApp = () => {
 
           <main>
             <Routes>
-              <Route path="/" element={<h1>Home</h1>} />
+              <Route path="/" element={<Home />} />
               <Route path="/tienda" element={<Store />} />
               <Route path="/talleres" element={<h1>Talleres</h1>} />
               <Route path="/apadrina" element={<h1>Apadrina</h1>} />
