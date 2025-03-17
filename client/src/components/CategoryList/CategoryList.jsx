@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import './styles.css'
-import { fetchData } from "../../assets/helper/helper";
+import { fetchData } from "../../helpers/axiosHelper";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);

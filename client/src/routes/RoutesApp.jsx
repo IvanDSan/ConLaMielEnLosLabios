@@ -4,6 +4,7 @@ import { Navbar } from '../components/Navbar/Navbar';
 import { Footer } from '../components/Footer/Footer';
 import  CategoryList  from '../components/CategoryList/CategoryList'
 import { UserContext } from '../context/UserContext';
+import BeehiveList from '../components/BeehiveList/BeehiveList';
 
 export const RoutesApp = () => {
   const { user } = useContext(UserContext);
@@ -19,7 +20,7 @@ export const RoutesApp = () => {
               <Route path="/categorias" element={<CategoryList />} />
               <Route path="/usuarios" element={<h1>Admin Home</h1>} />
               <Route path="/suscripciones" element={<h1>Admin Home</h1>} />
-              <Route path="/colmenas" element={<h1>Admin Home</h1>} />
+              <Route path="/colmenas" element={<BeehiveList />} />
               <Route path="/ventas" element={<h1>Admin Home</h1>} />
               <Route path="*" element={<h1>404</h1>} />
             </Routes>
@@ -28,7 +29,7 @@ export const RoutesApp = () => {
       ) : (
         <BrowserRouter>
           <Navbar />
-    
+          <main>
             <Routes>
               <Route path="/" element={<h1>Home</h1>} />
               <Route path="/tienda" element={<h1>Tienda</h1>} />

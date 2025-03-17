@@ -11,18 +11,20 @@ class CategoryController {
     }
   };
 
-  createCategory = async (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-      return res.status(400).json({ error: "El nombre de la categoría es obligatorio" });
-    }
-
+ createCategory = async () => {
     try {
-      await executeQuery("INSERT INTO category (name) VALUES (?)", [name]);
-      res.status(201).json({ message: "Categoría creada correctamente" });
+      await fetch('url/a/tu/api', {
+        method: 'POST',
+        body: JSON.stringify({ name: newCategoryName }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+  
+
+      const response = await fetch('/api/categories');
+      const categories = await response.json();
+      setCategories(categories);  
     } catch (error) {
-      console.error("Error en createCategory:", error);
-      res.status(500).json({ error: "Error al crear la categoría" });
+      console.error('Error al crear la categoría:', error);
     }
   };
 
