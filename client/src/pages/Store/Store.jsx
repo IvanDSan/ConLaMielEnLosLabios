@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "./Style.css";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { CartContext } from '../../context/CartContextProvider';
+import './styles.css';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
@@ -10,9 +11,11 @@ export const Store = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [sortOption, setSortOption] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProductsAndCategories = async () => {
@@ -26,7 +29,7 @@ export const Store = () => {
         );
         setCategories(categoriesResponse.data);
       } catch (err) {
-        console.error("Error al obtener los productos o categorías:", err);
+        console.error('Error al obtener los productos o categorías:', err);
       }
     };
 
@@ -42,7 +45,7 @@ export const Store = () => {
       );
     }
 
-    if (searchQuery.trim() !== "") {
+    if (searchQuery.trim() !== '') {
       filtered = filtered.filter(
         (product) =>
           product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -58,16 +61,16 @@ export const Store = () => {
     let sortedProducts = [...filteredProducts];
 
     switch (option) {
-      case "priceAsc":
+      case 'priceAsc':
         sortedProducts.sort((a, b) => a.price - b.price);
         break;
-      case "priceDesc":
+      case 'priceDesc':
         sortedProducts.sort((a, b) => b.price - a.price);
         break;
-      case "nameAsc":
+      case 'nameAsc':
         sortedProducts.sort((a, b) => a.title.localeCompare(b.title));
         break;
-      case "nameDesc":
+      case 'nameDesc':
         sortedProducts.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
@@ -90,7 +93,7 @@ export const Store = () => {
       );
     }
 
-    if (query.trim() !== "") {
+    if (query.trim() !== '') {
       filtered = filtered.filter(
         (product) =>
           product.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -125,7 +128,7 @@ export const Store = () => {
       <div className="categoryFilters">
         <button
           className={`filterButton ${
-            selectedCategory === null ? "active" : ""
+            selectedCategory === null ? 'active' : ''
           }`}
           onClick={() => filterByCategory(null)}
         >
@@ -135,7 +138,7 @@ export const Store = () => {
           <button
             key={category.category_id}
             className={`filterButton ${
-              selectedCategory === category.category_id ? "active" : ""
+              selectedCategory === category.category_id ? 'active' : ''
             }`}
             onClick={() => filterByCategory(category.category_id)}
           >
@@ -167,7 +170,7 @@ export const Store = () => {
           filteredProducts.map((product) => (
             <div key={product.product_id} className="productCard">
               <img
-                src={product.image_url || "/default-image.jpg"}
+                src={product.image_url || '/default-image.jpg'}
                 alt={product.title}
                 className="productImage"
               />
@@ -183,7 +186,12 @@ export const Store = () => {
                   >
                     Ver Más
                   </button>
-                  <button className="addToCart">Añadir</button>
+                  <button
+                    className="addToCart"
+                    onClick={() => addToCart(product)}
+                  >
+                    Añadir
+                  </button>
                 </div>
               </div>
             </div>

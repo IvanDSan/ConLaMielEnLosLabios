@@ -344,7 +344,7 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
       )}
 
       <div>
-        <img src="/images/panal.svg" alt="panal" />
+        <img src="/icons/panal.svg" alt="panal" />
       </div>
     </form>
   );

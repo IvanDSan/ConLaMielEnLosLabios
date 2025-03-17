@@ -1,4 +1,3 @@
-
 import { validateUser } from '../../schemas/userSchema.js';
 import executeQuery from '../../config/db.js';
 import jwt from 'jsonwebtoken';
@@ -334,7 +333,7 @@ class UsersController {
   };
 
   addProductToCart = async (req, res) => {
-    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL user_id
+    const { product_id, quantity } = req.body; 
     const user_id = 1;
     const checkCart = 'SELECT * FROM cart WHERE user_id = ? AND product_id = ?'; // ? solo en db = a los valores que nos lleguen
 
@@ -360,13 +359,14 @@ class UsersController {
 
       res.status(200).json({ message: '' });
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   };
 
   modifyCartQuantityToCart = async (req, res) => {
-    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL 
-   const {user_id} = req;
+    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL
+    const { user_id } = req;
     const modifyCart =
       'UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
     try {
@@ -387,8 +387,8 @@ class UsersController {
   };
 
   deleteProductToCart = async (req, res) => {
-    const { product_id } = req.body; 
-    const {user_id} = req;
+    const { product_id } = req.body;
+    const { user_id } = req;
     const deletedCartProduct =
       'DELETE FROM cart WHERE user_id = ? AND  product_id = ?';
     try {
@@ -405,7 +405,7 @@ class UsersController {
   };
 
   deleteCartFromUser = async (req, res) => {
-    const {user_id} = req;
+    const { user_id } = req;
     const deleteAllCart = 'DELETE FROM cart WHERE user_id = ?';
 
     try {
@@ -419,7 +419,7 @@ class UsersController {
   };
 
   showAllFromCartToUser = async (req, res) => {
-     const { user_id } = req;
+    const { user_id } = req;
     const showAllCartToUser = `SELECT p.product_id, p.title, p.price, c.quantity 
     FROM cart c 
     JOIN product p 
@@ -429,13 +429,13 @@ class UsersController {
 
       if (cart.length === 0) {
         return res
-          .status(200)//todo ok
+          .status(200) //todo ok
           .json({ message: 'El carrito está vacío', cart: [] });
       }
       res.status(200).json(cart);
     } catch (error) {
       res
-        .status(500)//ha ido mal, error
+        .status(500) //ha ido mal, error
         .json({ message: 'Error al obtener el carrito', error: error.message });
     }
   };
