@@ -1,0 +1,20 @@
+.apadrina-section {
+  h2,
+  h3,
+  span,
+  p {
+    text-align: center;
+  }
+
+  .subtitle {
+    margin-bottom: 3rem;
+  }
+
+  .flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+}
