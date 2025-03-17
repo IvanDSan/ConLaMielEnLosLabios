@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import './styles.css';
 import { fetchData } from '../../helpers/axiosHelper';
 import { UserContext } from '../../context/UserContext';
+import { SpinnerLoading } from '../SpinnerLoading/SpinnerLoading';
 
 export const LoginForm = ({
   onRegisterClick,
@@ -11,6 +12,7 @@ export const LoginForm = ({
   const { setToken } = useContext(UserContext);
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -18,6 +20,7 @@ export const LoginForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetchData('/users/login', 'POST', loginForm);
@@ -27,8 +30,9 @@ export const LoginForm = ({
         onClose();
       }
     } catch (error) {
-      console.log(error.response.data.error);
       setError(error.response.data.error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,7 +41,7 @@ export const LoginForm = ({
       <h2>Iniciar sesión</h2>
 
       <label htmlFor="email">
-        Email
+        Email *
         <input
           type="email"
           name="email"
@@ -50,7 +54,7 @@ export const LoginForm = ({
       </label>
 
       <label htmlFor="password">
-        Password
+        Password *
         <input
           type="password"
           name="password"
@@ -64,17 +68,19 @@ export const LoginForm = ({
       </label>
 
       <button type="submit" className="btn-primary">
-        Iniciar sesión
+        {!loading ? 'Iniciar sesión' : <SpinnerLoading />}
       </button>
 
       {error && <span className="error">{error}</span>}
 
       <div>
-        <p onClick={onRecoverPasswordClick}>¿Olvidaste tu contraseña?</p>
-        <p onClick={onRegisterClick}>
+        <p className="link" onClick={onRecoverPasswordClick}>
+          ¿Olvidaste tu contraseña?
+        </p>
+        <p className="link" onClick={onRegisterClick}>
           ¿No tienes una cuenta? <span>Regístrate</span>
         </p>
-        <img src="/images/panal.svg" alt="panal" />
+        <img src="/icons/panal.svg" alt="panal" />
       </div>
     </form>
   );

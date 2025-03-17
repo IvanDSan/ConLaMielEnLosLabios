@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import "./styles.css";
-import axios from "axios";
-
-const apiURL = import.meta.env.VITE_SERVER_URL;
+import React, { useContext, useEffect, useState } from 'react';
+import './styles.css';
+import { fetchData } from '../../helpers/axiosHelper';
+import { UserContext } from '../../context/UserContext';
 
 export const Sales = () => {
+  const { token } = useContext(UserContext);
   const [sales, setSales] = useState([]);
 
   const fetchSales = async () => {
     try {
-      const response = await axios.get(`${apiURL}/sales/all`);
+      const response = await fetchData('/sales/all', 'GET', null, {
+        Authorization: `Bearer ${token}}`,
+      });
       console.log(response);
       setSales(response.data);
     } catch (err) {
@@ -23,8 +25,13 @@ export const Sales = () => {
 
   const deleteSale = async (sale_id) => {
     try {
-      await axios.put(`${apiURL}/sales/deleteLogic/${sale_id}`);
-      fetchSales();
+      await fetchData(`/sales/deleteLogic/${sale_id}`, 'PUT', null, {
+        Authorization: `Bearer ${token}`,
+      }).then((res) => {
+        if (res.status === 200) {
+          setSales(sales.filter((sale) => sale.sale_id !== sale_id));
+        }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -57,10 +64,10 @@ export const Sales = () => {
                 <td>{sale.quantity}</td>
                 <td>
                   {sale.sale_status === 1
-                    ? "Pendiente"
+                    ? 'Pendiente'
                     : sale.sale_status === 2
-                    ? "Cancelado"
-                    : "Completado"}
+                    ? 'Cancelado'
+                    : 'Completado'}
                 </td>
                 <td>{sale.date}</td>
                 <td className="actions">
