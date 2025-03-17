@@ -365,8 +365,8 @@ class UsersController {
   };
 
   modifyCartQuantityToCart = async (req, res) => {
-    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL user_id
-    const user_id = 1;
+    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL 
+   const {user_id} = req;
     const modifyCart =
       'UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
     try {
@@ -387,8 +387,8 @@ class UsersController {
   };
 
   deleteProductToCart = async (req, res) => {
-    const { product_id } = req.body; //METER EN EL DESTRUCTURING EL user_id
-    const user_id = 1;
+    const { product_id } = req.body; 
+    const {user_id} = req;
     const deletedCartProduct =
       'DELETE FROM cart WHERE user_id = ? AND  product_id = ?';
     try {
@@ -405,8 +405,7 @@ class UsersController {
   };
 
   deleteCartFromUser = async (req, res) => {
-    // const { user_id } = req.body;
-    const user_id = 1;
+    const {user_id} = req;
     const deleteAllCart = 'DELETE FROM cart WHERE user_id = ?';
 
     try {
@@ -420,8 +419,7 @@ class UsersController {
   };
 
   showAllFromCartToUser = async (req, res) => {
-    // const { user_id } = req;/////////////////////// ESPERANDO EL TOKEN//////////////////
-    const user_id = 1;
+     const { user_id } = req;
     const showAllCartToUser = `SELECT p.product_id, p.title, p.price, c.quantity 
     FROM cart c 
     JOIN product p 
@@ -431,13 +429,13 @@ class UsersController {
 
       if (cart.length === 0) {
         return res
-          .status(200)
+          .status(200)//todo ok
           .json({ message: 'El carrito está vacío', cart: [] });
       }
       res.status(200).json(cart);
     } catch (error) {
       res
-        .status(500)
+        .status(500)//ha ido mal, error
         .json({ message: 'Error al obtener el carrito', error: error.message });
     }
   };
