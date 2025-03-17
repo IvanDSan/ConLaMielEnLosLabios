@@ -1,15 +1,17 @@
-import { useContext } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Navbar } from '../components/Navbar/Navbar';
-import { Footer } from '../components/Footer/Footer';
-import { ShoppingCart } from '../components/ShoppingCart/ShoppingCart';
-import CategoryList from '../pages/CategoryList/CategoryList';
-import { UserContext } from '../context/UserContext';
-import { Sales } from '../pages/Sales/Sales';
-import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
-import { SpinnerLoading } from '../components/SpinnerLoading/SpinnerLoading';
-import { Store } from '../pages/Store/Store';
-import { Products } from '../components/Products/Products';
+import { useContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navbar } from "../components/Navbar/Navbar";
+import { Footer } from "../components/Footer/Footer";
+import { ShoppingCart } from "../components/ShoppingCart/ShoppingCart";
+import CategoryList from "../pages/CategoryList/CategoryList";
+import { UserContext } from "../context/UserContext";
+import { Sales } from "../pages/Sales/Sales";
+import { VerifyEmail } from "../pages/VerifyEmail/VerifyEmail";
+import { SpinnerLoading } from "../components/SpinnerLoading/SpinnerLoading";
+import { Store } from "../pages/Store/Store";
+import { Products } from "../components/Products/Products";
+import { UserManagement } from "../components/UserManagement/UserManagement";
+import { ProductDetail } from "../pages/ProductVerMas/ProductVerMas";
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -18,12 +20,12 @@ export const RoutesApp = () => {
     return (
       <main
         style={{
-          position: 'fixed',
-          width: '100dvw',
-          height: '100dvh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          position: "fixed",
+          width: "100dvw",
+          height: "100dvh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <SpinnerLoading />
@@ -40,7 +42,7 @@ export const RoutesApp = () => {
               <Route path="/" element={<h1>Admin Home</h1>} />
               <Route path="/productos" element={<Products />} />
               <Route path="/categorias" element={<CategoryList />} />
-              <Route path="/usuarios" element={<h1>Admin Home</h1>} />
+              <Route path="/usuarios" element={<UserManagement />} />
               <Route path="/suscripciones" element={<h1>Admin Home</h1>} />
               <Route path="/colmenas" element={<h1>Admin Home</h1>} />
               <Route path="/ventas" element={<Sales />} />
@@ -63,6 +65,7 @@ export const RoutesApp = () => {
               <Route path="/colmenas" element={<h1>Colmenas</h1>} />
               <Route path="/verify" element={<VerifyEmail />} />
               <Route path="/pedidos" element={<h1>Pedidos</h1>} />
+              <Route path="/producto/:id" element={<ProductDetail />} />
               <Route path="/*" element={<h1>404</h1>} />
             </Routes>
           </main>

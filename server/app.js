@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //rutas de los endpoints
+import adminRouter from "./modules/admin/admin.routes.js";
 import categoriesRouter from "./modules/categories/categories.routes.js";
 import usersRouter from "./modules/users/users.routes.js";
 import productsRoutes from "./modules/products/products.routes.js";
@@ -26,6 +27,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use("/users", usersRouter);
+app.use("/admin", adminRouter);
 app.use("/users", usersRouter);
 app.use("/categories", categoriesRouter);
 app.use("/products", productsRoutes);
