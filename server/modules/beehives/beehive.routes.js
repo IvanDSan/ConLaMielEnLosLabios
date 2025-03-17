@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/get", BeehiveController.getAllBeehives);
 router.get("/get/:beehive_id", BeehiveController.getBeehiveById);
 router.post("/create", uploadImage("beehives"), BeehiveController.createBeehive);
-router.put("/update/:beehive_id", BeehiveController.updateBeehive);
+router.put("/update/:beehive_id", uploadImage("beehives"),BeehiveController.updateBeehive);
 router.delete("/delete/:beehive_id", BeehiveController.logicDeleteBeehive);
 
 router.post("/images/:beehive_id", BeehiveController.uploadBeehiveImage);

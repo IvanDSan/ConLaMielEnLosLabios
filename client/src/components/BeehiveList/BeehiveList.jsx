@@ -68,7 +68,7 @@ const BeehiveList = () => {
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const filesArray = Array.from(e.target.files);
-      setBeehiveImages(filesArray);
+      setBeehiveImages(filesArray); 
     }
   };
 
@@ -104,14 +104,14 @@ const BeehiveList = () => {
       const payload = { name: beehiveName, description: beehiveDescription };
       const newFormData = new FormData();
       newFormData.append("updatedBeehive", JSON.stringify(payload));
+      
       if (beehiveImages) {
         for (const elem of beehiveImages) {
           newFormData.append("imgs", elem);
         }
       }
-      const resp = await fetchData(`/beehives/update/${editingBeehiveId}`, "PUT", payload, {
+      const resp = await fetchData(`/beehives/update/${editingBeehiveId}`, "PUT", newFormData, {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       });
 
       fetchBeehives();
@@ -195,7 +195,8 @@ const BeehiveList = () => {
                 <td>{beehive.description}</td>
                 <td>
                   {beehive.images.length > 0 ? (
-                    <img width={"60rem"}
+                    <img
+                      width={"60rem"}
                       src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${beehive.images[0].image_url}`}
                       alt="Beehive"
                       className="beehive-image"
