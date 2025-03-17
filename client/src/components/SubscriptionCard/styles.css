@@ -1,0 +1,67 @@
+.subscription-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.2s ease;
+  border-radius: 5px;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  }
+
+  .most-selected {
+    position: absolute;
+    top: -2.1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--brown);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    img {
+      width: 2rem;
+    }
+  }
+
+  .subscription-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    border-radius: 5px;
+    padding: 1.4rem;
+    color: var(--bg-color-dark);
+    max-width: 20rem;
+
+    &:nth-child(even) {
+      background-color: var(--red);
+    }
+
+    &:nth-child(odd) {
+      background-color: var(--brown);
+    }
+
+    .price {
+      font-size: 2.6rem;
+      font-weight: bold;
+
+      span {
+        font-size: 1.2rem;
+        font-weight: normal;
+      }
+    }
+
+    button {
+      background-color: var(--bg-color-dark);
+      padding: 1rem;
+      width: 100%;
+    }
+  }
+}

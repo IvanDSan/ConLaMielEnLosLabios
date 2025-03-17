@@ -53,7 +53,7 @@ export const RecoverPasswordForm = ({ onLoginClick, onClose }) => {
           </button>
 
           <div>
-            <img src="/images/panal.svg" alt="panal" />
+            <img src="/icons/panal.svg" alt="panal" />
           </div>
         </form>
       ) : (
