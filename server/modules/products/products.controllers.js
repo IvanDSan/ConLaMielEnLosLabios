@@ -1,6 +1,5 @@
 import executeQuery from "../../config/db.js";
 
-//con esto verifico si el user tiene el estate de Admin
 class ProductsController {
   createProduct = async (req, res) => {
     try {
@@ -12,14 +11,14 @@ class ProductsController {
           .json({ error: "todos los campos son obligatorios" });
       }
       const query =
-        "INSERT INTO product (title, description, price, category_id) VALUES (?, ?, ?, ?)";
-      await db.execute(query, [title, description, price, category_id]);
-
-      res.status(200).json("/admin/productos");
+        'INSERT INTO product (title, description, price, category_id) VALUES (?, ?, ?, ?)';
+    let result = await executeQuery(query, [title, description, price, category_id]);
+      res.status(200).json({product_id: result.insertId});
     } catch (error) {
+      console.log(error);
       res
         .status(500)
-        .render("error", { message: "error al crear el producto", error });
+        .json({ error: 'error al crear el producto'});
     }
   };
 
@@ -28,8 +27,8 @@ class ProductsController {
       const { id } = req.params;
       const { title, description, price, category_id } = req.body;
       const query =
-        "UPDATE product SET title = ?, description = ?, price = ?, category_id = ? WHERE product_id = ?";
-      const [result] = await db.execute(query, [
+        'UPDATE product SET title = ?, description = ?, price = ?, category_id = ? WHERE product_id = ?';
+      const result = await executeQuery(query, [
         title,
         description,
         price,
@@ -41,7 +40,8 @@ class ProductsController {
       }
       res.status(200).json("/admin/productos");
     } catch (error) {
-      res.status(500).json({ error: "Error al actualizar el producto" });
+      console.log(error);
+      res.status(500).json({ error: 'Error al actualizar el producto' });
     }
   };
 
@@ -49,16 +49,16 @@ class ProductsController {
     try {
       const { id } = req.params;
 
-      const query = "UPDATE product SET is_deleted = 1 WHERE product_id = ?";
-      const [result] = await db.execute(query, [id]);
+      const query = 'UPDATE product SET is_deleted = 1 WHERE product_id = ?';
+      const [result] = await executeQuery(query, [id]);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "Producto no encontrado" });
       }
-
-      res.status(200).json("/admin/productos");
+      res.status(200).json({ message: 'Producto desactivado correctamente' });
     } catch (error) {
-      res.status(500).json({ error: "Error al eliminar el producto" });
+      console.log(error);
+      res.status(500).json({ error: 'Error al eliminar el producto' });
     }
   };
 
