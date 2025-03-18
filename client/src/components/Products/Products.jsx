@@ -1,66 +1,80 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './styles.css';
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import "./styles.css";
+import { fetchData } from "../../helpers/axiosHelper";
+import { UserContext } from "../../context/UserContext";
 
 export const Products = () => {
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
-    title: '',
-    description: '',
-    price: '',
-    category_id: '',
+    title: "",
+    description: "",
+    price: "",
+    category_id: "",
   });
   const [productToEdit, setProductToEdit] = useState(null);
-
+  const { token } = useContext(UserContext);
+  console.log(token);
   useEffect(() => {
     axios
-      .get('http://localhost:4000/products/all')
+      .get("http://localhost:4000/products/all")
       .then((res) => setProducts(res.data))
-      .catch((error) => console.error('Error al obtener los productos', error));
+      .catch((error) => console.error("Error al obtener los productos", error));
   }, []);
 
-  const handleCreateProduct = () => {
-    axios
-      .post('http://localhost:4000/products/verify', newProduct)
-      .then(() => {
-        setNewProduct({
-          title: '',
-          description: '',
-          price: '',
-          category_id: '',
-        });
-        axios
-          .get('http://localhost:4000/products/all')
-          .then((res) => setProducts(res.data));
-      })
-      .catch((error) => console.error('Error al crear el producto', error));
+  const handleCreateProduct = async (e) => {
+    e.preventDefault();
+    console.log("Ejecutando handleCreateProduct");
+    try {
+      const res = await fetchData("/products/create", "POST", newProduct, {
+        Authorization: `Bearer ${token}`,
+      });
+      if (res.status === 200) {
+        let newProd = { ...newProduct, product_id: res.data.product_id };
+        setProducts([...products, newProd]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditProduct = (id) => {
     if (productToEdit) {
       axios
-        .put(`http://localhost:4000/products/${id}`, productToEdit)
+        .put(`http://localhost:4000/products/${id}`, productToEdit, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then(() => {
           setProductToEdit(null);
           axios
-            .get('http://localhost:4000/products/all')
+            .get("http://localhost:4000/products/all", {
+              headers: { Authorization: `Bearer ${token}` },
+            })
             .then((res) => setProducts(res.data));
         })
-        .catch((error) => console.error('Error al editar el producto', error));
+        .catch((error) => console.error("Error al editar el producto", error));
     }
   };
 
-  const handleDeleteProduct = (id) => {
-    axios
-      .delete(`http://localhost:4000/products/${id}`)
-      .then(() => {
-        axios
-          .get('http://localhost:4000/products/all')
-          .then((res) => setProducts(res.data));
-      })
-      .catch((error) => console.error('Error al eliminar el producto', error));
+  const handleDeleteProduct = async (id) => {
+    console.log(`/products/${id}`);
+    try {
+      const res = await fetchData(
+        `/products/${id}`,
+        "delete",
+        null,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.status === 200) {
+        setProducts(products.filter((product) => product.id !== id));
+      }
+    } catch (error) {
+      console.error("Error al eliminar el producto", error);
+    }
   };
 
+  console.log("****", products);
   return (
     <div className="products-container">
       <aside className="sidebar">
@@ -70,6 +84,60 @@ export const Products = () => {
       </aside>
       <main className="content">
         <h1>Productos</h1>
+        <form className="create-form" onSubmit={handleCreateProduct}>
+          <h2>Crear Producto</h2>
+          <label>
+            Título:
+            <input
+              type="text"
+              value={newProduct.title}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, title: e.target.value })
+              }
+              placeholder="Título"
+              required
+            />
+          </label>
+          <label>
+            Descripción:
+            <textarea
+              value={newProduct.description}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, description: e.target.value })
+              }
+              placeholder="Descripción"
+              required
+            />
+          </label>
+          <label>
+            Precio:
+            <input
+              type="number"
+              value={newProduct.price}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, price: e.target.value })
+              }
+              placeholder="Precio"
+              required
+            />
+          </label>
+          <label>
+            ID de categoría:
+            <input
+              type="text"
+              value={newProduct.category_id}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, category_id: e.target.value })
+              }
+              placeholder="ID de categoría"
+              required
+            />
+          </label>
+          <button onClick={handleCreateProduct} type="submit">
+            Crear Producto
+          </button>
+        </form>
+
         <div className="filters">
           <select>
             <option>Seleccionar</option>
@@ -81,15 +149,16 @@ export const Products = () => {
               setNewProduct({ ...newProduct, title: e.target.value })
             }
           />
-          <button onClick={handleCreateProduct}>Productos</button>
+          <button>Productos</button>
           <div className="right-controls">
             <select>
               <option>Hoy</option>
             </select>
-            <button>Descargar</button>
+
             <button className="delete">🗑 Borrar</button>
           </div>
         </div>
+
         <table>
           <thead>
             <tr>
@@ -120,8 +189,8 @@ export const Products = () => {
                 <td>{product.title}</td>
                 <td>{product.description}</td>
                 <td>{product.stock}</td>
-                <td>{product.size || 'N/A'}</td>
-                <td>{product.color || 'N/A'}</td>
+                <td>{product.size || "N/A"}</td>
+                <td>{product.color || "N/A"}</td>
                 <td>{product.price}€</td>
                 <td>
                   <button onClick={() => setProductToEdit(product)}>✏️</button>
@@ -135,6 +204,7 @@ export const Products = () => {
             ))}
           </tbody>
         </table>
+
         <div className="pagination">
           <button>◀ Previous</button>
           <span>1 2 3</span>
