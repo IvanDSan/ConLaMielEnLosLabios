@@ -22,6 +22,7 @@ const CategoryList = () => {
       const res = await fetchData("/categories/get", "GET");
       console.log(res);
       
+      dataCategories();
       setCategories(Array.isArray(res.data) ? res.data : res.data.categories || []);
       setError(null);
       setLoading(false);
