@@ -1,17 +1,21 @@
 import express from 'express';
-import usersController from './users.controllers.js';
+import UsersController from './users.controllers.js';
 import { verifyToken } from '../../middlewares/verifyToken.js';
+import uploadImage from '../../middlewares/multerSingle.js';
 
-// Endpoint: http://localhost:4000/users
 const router = express.Router();
 
-//Historial de pedidos
-router.get("/all", usersController.getsalesHistory);
+router.post('/addProductToCart', verifyToken("user"), UsersController.addProductToCart);
+router.post('/modifyCartQuantityToCart', verifyToken("user"), UsersController.modifyCartQuantityToCart);
+router.post('/deleteProductToCart', verifyToken("user"), UsersController.deleteProductToCart);
+router.post('/deleteCartFromUser', verifyToken("user"), UsersController.deleteCartFromUser);
+router.get('/showAllFromCartToUser', verifyToken("user"), UsersController.showAllFromCartToUser);
+// router.post('/buyCart', verifyToken("user"), usersControllers.buyCart);// COMPRA DEL CARRITO PENDIENTE
 
-router.post('/register', usersController.register);
-router.post('/login', usersController.login);
-router.get('/verify/:token', usersController.verify);
-router.get('/recoveryPassword', usersController.recoveryPassword);
-router.get('/getUserById', verifyToken(), usersController.getUserById);
+router.post('/register', uploadImage('users'), UsersController.register);
+router.post('/login', UsersController.login);
+router.get('/verify/:token', UsersController.verify);
+router.post('/recoveryPassword', UsersController.recoveryPassword);
+router.get('/getUserById', verifyToken(), UsersController.getUserById);
 
 export default router;

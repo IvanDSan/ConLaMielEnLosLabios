@@ -53,28 +53,28 @@ class UsersController {
       province,
       address,
       zipcode,
-    } = req.body;
+    } = JSON.parse(req.body.registerData);
 
     // VALIDACIONES
     // Falta algún campo
     if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !name ||
-      !lastname ||
-      !dni ||
-      !phoneNumber ||
-      !city ||
-      !province ||
-      !address ||
-      !zipcode
+      !email?.trim() ||
+      !password?.trim() ||
+      !confirmPassword?.trim() ||
+      !name?.trim() ||
+      !lastname?.trim() ||
+      !dni?.trim() ||
+      !phoneNumber?.trim() ||
+      !city?.trim() ||
+      !province?.trim() ||
+      !address?.trim() ||
+      !zipcode?.trim()
     ) {
       return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
 
     // Zod
-    const result = validateUser(req.body);
+    const result = validateUser(JSON.parse(req.body.registerData));
     if ('error' in result) {
       return res.status(400).json(result);
     }
@@ -108,6 +108,13 @@ class UsersController {
         zipcode,
         verificationToken,
       ];
+
+      if (req.file) {
+        sql =
+          'INSERT INTO user (email, password, name, lastname, phone_number, dni, city, province, address, zipcode, verify_token, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+        values = [...values, req.file.filename];
+      }
 
       await executeQuery(sql, values);
 
@@ -169,11 +176,9 @@ class UsersController {
       }
 
       // COMPROBAR QUE EL USUARIO ESTÁ VERIFICADO
-      if (user.isVerified === 0) {
+      if (user.is_verified === 0) {
         return res.status(401).json({ error: 'El usuario no está verificado' });
       }
-
-      console.log('user', user);
 
       // GENERAR TOKEN
       const token = jwt.sign(
@@ -251,6 +256,7 @@ class UsersController {
      *      - En caso de éxito: 200 - {message: "Contraseña restablecida, comprobar email"}
      *      - En caso de error:
      *        - Falta el email: 400 - {error: "Falta el email"}
+     *        - No se encuentra el email: 200 - {message: "Email enviado"}
      *        - Error interno: 500 - {error: "Internal error"}
      */
 
@@ -285,6 +291,8 @@ class UsersController {
         res
           .status(200)
           .json({ message: 'Contraseña restablecida, comprobar email' });
+      } else {
+        res.status(200).json({ message: 'Email enviado' });
       }
     } catch (err) {
       console.log(err);
@@ -306,13 +314,14 @@ class UsersController {
           user_id: result[0].user_id,
           name: result[0].name,
           lastname: result[0].lastname,
+          image: result[0].image_url,
+          dni: result[0].dni,
           email: result[0].email,
           phone_number: result[0].phone_number,
           address: result[0].address,
           city: result[0].city,
           province: result[0].province,
           zipcode: result[0].zipcode,
-          is_verified: result[0].is_verified,
           user_type: result[0].user_type,
         });
       } else {
@@ -323,17 +332,125 @@ class UsersController {
       res.status(500).json({ error: 'Internal error' });
     }
   };
-  //obtener historial de pedidos
-  getsalesHistory = async (req, res) => {
+
+  addProductToCart = async (req, res) => {
+    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL user_id
+    const user_id = 1;
+    const checkCart = 'SELECT * FROM cart WHERE user_id = ? AND product_id = ?'; // ? solo en db = a los valores que nos lleguen
+
     try {
-      let sql =
-        "SELECT sale_id, product.title, quantity, sale_status, date FROM sale JOIN user ON sale.user_id = user.user_id JOIN product ON sale.product_id = product.product_id WHERE sale.is_deleted = 0 ORDER BY date DESC";
-      let result = await executeQuery(sql);
-      res.status(200).json(result);
+      let result = await executeQuery(checkCart, [user_id, product_id]);
+      if (result.length !== 0) {
+        const updateCart =
+          'UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
+        let result3 = await executeQuery(updateCart, [
+          quantity,
+          user_id,
+          product_id,
+        ]);
+      } else {
+        const insertCart =
+          'INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)';
+        let result2 = await executeQuery(insertCart, [
+          user_id,
+          product_id,
+          quantity,
+        ]);
+      }
+
+      res.status(200).json({ message: '' });
     } catch (error) {
-      res.status(500).json({ error: "Internal error" });
+      res.status(500).json(error);
     }
   };
+
+  modifyCartQuantityToCart = async (req, res) => {
+    const { product_id, quantity } = req.body; //METER EN EL DESTRUCTURING EL 
+   const {user_id} = req;
+    const modifyCart =
+      'UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
+    try {
+      //si la cantidad es menor q -1 no puede cambiar
+      if (quantity > 0) {
+        let result = await executeQuery(modifyCart, [
+          quantity,
+          user_id,
+          product_id,
+        ]);
+        res.status(200).json({ message: 'Se ha modificado correctamente' });
+      } else {
+        throw new Error('No se admiten cantidades negativas');
+      }
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  };
+
+  deleteProductToCart = async (req, res) => {
+    const { product_id } = req.body; 
+    const {user_id} = req;
+    const deletedCartProduct =
+      'DELETE FROM cart WHERE user_id = ? AND  product_id = ?';
+    try {
+      let result = await executeQuery(deletedCartProduct, [
+        user_id,
+        product_id,
+      ]);
+      res.status(200).json({
+        message: 'El producto se ha eliminado correctamente del carrito',
+      });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  };
+
+  deleteCartFromUser = async (req, res) => {
+    const {user_id} = req;
+    const deleteAllCart = 'DELETE FROM cart WHERE user_id = ?';
+
+    try {
+      let result = await executeQuery(deleteAllCart, [user_id]);
+      res
+        .status(200)
+        .json({ message: 'El carrito se ha eliminado correctamente' });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  };
+
+  showAllFromCartToUser = async (req, res) => {
+     const { user_id } = req;
+    const showAllCartToUser = `SELECT p.product_id, p.title, p.price, c.quantity 
+    FROM cart c 
+    JOIN product p 
+    ON c.product_id = p.product_id WHERE c.user_id = ?`;
+    try {
+      const cart = await executeQuery(showAllCartToUser, [user_id]);
+
+      if (cart.length === 0) {
+        return res
+          .status(200)//todo ok
+          .json({ message: 'El carrito está vacío', cart: [] });
+      }
+      res.status(200).json(cart);
+    } catch (error) {
+      res
+        .status(500)//ha ido mal, error
+        .json({ message: 'Error al obtener el carrito', error: error.message });
+    }
+  };
+
+  // buyCart = async (req, res) => {
+  // const { user_id } = req;
+  //   const user_id = 1;
+  //1ºconexion a la dbpool
+  //2 crear una TRANSACCION
+  //3 SELECT  CART FROM USER
+  //4 resultado + BUCLE CADA PRODUC, INSERT SELEC ID,USERID, PRODUCT ID,sale_id(MAX(id + 1)), QUANTITY Y PONER EL ESTADO(CANCELADO,COMPLETADO)
+  //borrar todo el carrito de ese user
+  //cerrar TRANSACCION con comit (creo una venta con muchos product)(esta en new travel try,catch( si algo sale mal en el cath un roll back) y finally(cerrar conexion))
+  //
+  // }
 }
 
 export default new UsersController();
