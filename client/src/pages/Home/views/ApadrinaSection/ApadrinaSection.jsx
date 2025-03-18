@@ -12,16 +12,9 @@ export const ApadrinaSection = () => {
           conservación de las abejas
         </p>
         <div className="flex">
-          {subscriptions.map((sub, index) => {
-            console.log(index);
-            return (
-              <SubscriptionCard
-                key={index}
-                {...sub}
-                mostSelected={index === 1}
-              />
-            );
-          })}
+          {subscriptions.map((sub, index) => (
+            <SubscriptionCard key={index} {...sub} mostSelected={index === 1} />
+          ))}
         </div>
       </div>
     </section>

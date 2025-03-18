@@ -52,6 +52,10 @@ body {
 
 main {
   flex: 1;
+  background-image: url('images/panel-bg.png');
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 p {
@@ -99,7 +103,7 @@ button {
   color: var(--black);
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1rem;
   transition: background 0.3s ease;
   height: fit-content;

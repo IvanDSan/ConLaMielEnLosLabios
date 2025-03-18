@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { CartContext } from '../../context/CartContextProvider';
+import { ProductCard } from '../../components/ProductCard/ProductCard';
 import './styles.css';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
@@ -13,9 +12,6 @@ export const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortOption, setSortOption] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
-
-  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProductsAndCategories = async () => {
@@ -165,40 +161,16 @@ export const Store = () => {
         </select>
       </div>
 
-      <div className="productsGrid">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <div key={product.product_id} className="productCard">
-              <img
-                src={product.image_url || '/default-image.jpg'}
-                alt={product.title}
-                className="productImage"
-              />
-              <div className="productContent">
-                <h3 className="productTitle">{product.title}</h3>
-                <p className="productDescription">{product.description}</p>
-                <p className="productPrice">{product.price}€</p>
-
-                <div className="productActions">
-                  <button
-                    className="moreInfo"
-                    onClick={() => navigate(`/producto/${product.product_id}`)}
-                  >
-                    Ver Más
-                  </button>
-                  <button
-                    className="addToCart"
-                    onClick={() => addToCart(product)}
-                  >
-                    Añadir
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="noProducts">No hay productos disponibles.</p>
-        )}
+      <div className="container">
+        <div className="productsGrid">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <ProductCard key={product.product_id} product={product} />
+            ))
+          ) : (
+            <p className="noProducts">No hay productos disponibles.</p>
+          )}
+        </div>
       </div>
     </div>
   );
