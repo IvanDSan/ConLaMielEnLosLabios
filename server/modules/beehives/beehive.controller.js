@@ -72,44 +72,42 @@ class BeehivesController {
   updateBeehive = async (req, res) => {
     const { beehive_id } = req.params;
     const { name, description } = JSON.parse(req.body.updatedBeehive);
-    const connection = await dbPool.getConnection(); 
-    
+    const connection = await dbPool.getConnection();
+
     try {
-        await connection.beginTransaction();
+      await connection.beginTransaction();
 
-        let sql = "UPDATE beehive SET name = ?, description = ? WHERE beehive_id = ?";
-        let values = [name, description, beehive_id];
-        const result = await connection.query(sql, values);
+      let sql = "UPDATE beehive SET name = ?, description = ? WHERE beehive_id = ?";
+      let values = [name, description, beehive_id];
+      const result = await connection.query(sql, values);
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: "Colmena no encontrada" });
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Colmena no encontrada" });
+      }
+
+      if (req.files && req.files.length > 0) {
+        for (const img of req.files) {
+          const filename = img.filename;
+          sql = "INSERT INTO beehive_image (beehive_id, image_url) VALUES (?, ?)";
+          values = [beehive_id, filename];
+          await connection.query(sql, values);
         }
+      }
 
-        if (req.files && req.files.length > 0) {
-            for (const img of req.files) {
-                const filename = img.filename;
-                sql = "INSERT INTO beehive_image (beehive_id, image_url) VALUES (?, ?)";
-                values = [beehive_id, filename];
-                await connection.query(sql, values);
-            }
-        }
+      // Si es necesario eliminar las imágenes antiguas, descomenta esta parte
+      // sql = "DELETE FROM beehive_image WHERE beehive_id = ?";
+      // await connection.query(sql, [beehive_id]);
 
-        // Si es necesario eliminar las imágenes antiguas, descomenta esta parte
-        // sql = "DELETE FROM beehive_image WHERE beehive_id = ?";
-        // await connection.query(sql, [beehive_id]);
-
-     
-        await connection.commit();
-        res.status(200).json({ message: "Colmena actualizada con éxito" });
-
+      await connection.commit();
+      res.status(200).json({ message: "Colmena actualizada con éxito" });
     } catch (error) {
-        console.error("Error en updateBeehive:", error);
-        await connection.rollback();
-        res.status(500).json({ error: "Error al actualizar la colmena" });
+      console.error("Error en updateBeehive:", error);
+      await connection.rollback();
+      res.status(500).json({ error: "Error al actualizar la colmena" });
     } finally {
-        if (connection) connection.release();
+      if (connection) connection.release();
     }
-};
+  };
 
   logicDeleteBeehive = async (req, res) => {
     const { beehive_id } = req.params;
@@ -149,12 +147,17 @@ class BeehivesController {
 
   deleteBeehiveImage = async (req, res) => {
     const { beehive_image_id } = req.params;
+    console.log("Recibiendo solicitud para eliminar imagen con ID:", beehive_image_id);
+    console.log("body", req.body);
+
     try {
       const result = await executeQuery("DELETE FROM beehive_image WHERE beehive_image_id = ?", [beehive_image_id]);
+
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "Imagen no encontrada" });
       }
-      res.status(200).json({ message: "Imagen eliminada de la colmena" });
+
+      res.status(200).json({ message: "Imagen eliminada correctamente" });
     } catch (error) {
       console.error("Error en deleteBeehiveImage:", error);
       res.status(500).json({ error: "Error al eliminar la imagen de la colmena" });
