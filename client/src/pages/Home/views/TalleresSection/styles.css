@@ -1,0 +1,40 @@
+.talleres-section {
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  h4 {
+    color: var(--brown);
+  }
+
+  ul {
+    list-style-type: disc;
+    margin-left: 2rem;
+  }
+
+  .flex {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+
+      & > div {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
