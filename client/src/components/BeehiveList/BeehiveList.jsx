@@ -60,7 +60,7 @@ const BeehiveList = () => {
     setModalType(type);
     setBeehiveName(beehive ? beehive.name : "");
     setBeehiveDescription(beehive ? beehive.description : "");
-    setBeehiveImages([]);
+    setBeehiveImages(beehive ? beehive.images || [] : []);  
     setEditingBeehiveId(beehive ? beehive.beehive_id : null);
     setShowModal(true);
   };
@@ -68,7 +68,7 @@ const BeehiveList = () => {
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const filesArray = Array.from(e.target.files);
-      setBeehiveImages(filesArray);
+      setBeehiveImages((prevImages) => [...prevImages, ...filesArray]);  // Añadimos nuevas imágenes sin eliminar las anteriores
     }
   };
 
@@ -104,14 +104,14 @@ const BeehiveList = () => {
       const payload = { name: beehiveName, description: beehiveDescription };
       const newFormData = new FormData();
       newFormData.append("updatedBeehive", JSON.stringify(payload));
+
       if (beehiveImages) {
         for (const elem of beehiveImages) {
           newFormData.append("imgs", elem);
         }
       }
-      const resp = await fetchData(`/beehives/update/${editingBeehiveId}`, "PUT", payload, {
+      const resp = await fetchData(`/beehives/update/${editingBeehiveId}`, "PUT", newFormData, {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       });
 
       fetchBeehives();
@@ -122,6 +122,35 @@ const BeehiveList = () => {
       setShowModal(false);
     } catch (error) {
       setError(`Error al actualizar la colmena: ${error.message || "Problema de conexión"}`);
+    }
+  };
+
+  const handleDeleteImage = async (imageId, beehiveId) => {
+    console.log("Eliminando imagen con ID:", imageId, "de la colmena con ID:", beehiveId);
+  
+    try {
+      if (!imageId) {
+        console.error("Error: imageId es undefined");
+        return;
+      }
+  
+      await fetchData(`/beehives/images/${imageId}`, "DELETE", null, {
+        Authorization: `Bearer ${token}`,
+      });
+  
+      setBeehives((prevBeehives) =>
+        prevBeehives.map((beehive) =>
+          beehive.beehive_id === beehiveId
+            ? { ...beehive, images: beehive.images.filter((img) => img.beehive_image_id !== imageId) }
+            : beehive
+        )
+      );
+  
+      setBeehiveImages((prevImages) => prevImages.filter((img) => img.beehive_image_id !== imageId));
+  
+    } catch (error) {
+      setError("Error al eliminar la imagen: " + (error.message || "No se pudo eliminar la imagen"));
+      console.error(error);
     }
   };
 
@@ -137,15 +166,43 @@ const BeehiveList = () => {
   };
 
   return (
-    <div className="category-list">
+    <div className="beehives-list">
       <h2>Colmenas</h2>
+
       {showModal && (
         <div className="modal">
           <h3>{modalType === "create" ? "Agregar Nueva Colmena" : "Editar Colmena"}</h3>
           <div>
             <label>Seleccionar Imagen:</label>
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <input type="file" accept="image/*" onChange={handleImageChange} multiple />
           </div>
+
+          {modalType === "edit" && (
+            <div>
+              <h4>Imágenes actuales:</h4>
+              <div className="image-container">
+                {beehiveImages.length > 0 ? (
+                  beehiveImages.map((image, index) => (
+                    <div key={index} className="image-wrapper">
+                      <img
+                        src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
+                        alt="Beehive"
+                        className="beehive-image"
+                      />
+                      <button
+                        className="delete-img-btn"
+                        onClick={() => handleDeleteImage(image.beehive_image_id, editingBeehiveId)}>
+                        ❌
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p>No hay imágenes para esta colmena.</p>
+                )}
+              </div>
+            </div>
+          )}
+
           <input
             type="text"
             className="category-input"
@@ -159,6 +216,7 @@ const BeehiveList = () => {
             value={beehiveDescription}
             onChange={(e) => setBeehiveDescription(e.target.value)}
           />
+
           <div className="buttonsModal">
             <button className="save-btn" onClick={modalType === "create" ? handleSave : handleUpdate}>
               {modalType === "create" ? "Guardar" : "Actualizar"}
@@ -169,6 +227,7 @@ const BeehiveList = () => {
           </div>
         </div>
       )}
+
       <button className="add-category-btn" onClick={() => openModal("create")}>
         Agregar Colmena
       </button>
@@ -195,11 +254,18 @@ const BeehiveList = () => {
                 <td>{beehive.description}</td>
                 <td>
                   {beehive.images.length > 0 ? (
-                    <img width={"60rem"}
-                      src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${beehive.images[0].image_url}`}
-                      alt="Beehive"
-                      className="beehive-image"
-                    />
+                    <div className="image-container">
+                      {beehive.images.map((image, index) => (
+                        <div key={index} className="image-wrapper">
+                          <img
+                            width="60"
+                            src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
+                            alt="Beehive"
+                            className="beehive-image"
+                          />
+                        </div>
+                      ))}
+                    </div>
                   ) : (
                     <span>No Image</span>
                   )}
