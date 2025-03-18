@@ -6,7 +6,8 @@ import { CartContext } from "../../context/CartContextProvider";
 
 export const ShoppingCart = () => {
   const { token } = useContext(UserContext);
-  const {calculateTotal, removeFromCart, updateQuantity, clearCart, addToCart, cart} = useContext(CartContext);
+  const {calculateTotal, removeFromCart, updateQuantity, clearCart, addToCart, cart, purchaseCart } = useContext(CartContext);
+  console.log(cart, "CART")
   return (
 
       <div className="carrito">
@@ -15,7 +16,7 @@ export const ShoppingCart = () => {
           <p>El carrito está vacío.</p>
         ) : (
           <ul>
-            {cart.map((item) =>
+            {cart?.map((item) =>
               item && item.title && item.price ? (
                 <li className="cartItem" key={item.product_id}>
                   <span>
@@ -59,7 +60,7 @@ export const ShoppingCart = () => {
               <p>Total: {calculateTotal().total.toFixed(2)} €</p>
 
               <div>
-                <button className="botonesCart2">Finaliza tu compra</button>
+                <button className="botonesCart2" onClick={()=> purchaseCart()} >Finaliza tu compra</button>
                 <button className="botonesCart2" onClick={() => clearCart()}>
                   Vaciar Carrito
                 </button>
