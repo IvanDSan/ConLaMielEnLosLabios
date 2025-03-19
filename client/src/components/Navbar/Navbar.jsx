@@ -6,9 +6,11 @@ import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
 import { UserContext } from '../../context/UserContext';
 import './styles.css';
+import { CartContext } from '../../context/CartContextProvider';
 
 export const Navbar = () => {
   const { user, logout } = useContext(UserContext);
+  const { cart } = useContext(CartContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [login, setLogin] = useState(false);
@@ -96,7 +98,10 @@ export const Navbar = () => {
                 to="/carrito"
                 className={({ isActive }) => (isActive ? 'active' : '')}
               >
-                <img src="/icons/cart.svg" alt="cart" />
+                <div className="cart-container">
+                  {user && <span className="cart-quantity">{cart.length}</span>}
+                  <img src="/icons/cart.svg" alt="cart" />
+                </div>
               </NavLink>
             </li>
             {user && (
@@ -106,8 +111,12 @@ export const Navbar = () => {
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
                   <img
-                    src={`${import.meta.env.VITE_SERVER_URL}/icons/users/${
+                    src={`${
                       user.image
+                        ? import.meta.env.VITE_SERVER_URL +
+                          '/images/users/' +
+                          user.image
+                        : '/images/user-placeholder.png'
                     }`}
                     alt="profile"
                     className="profile-img"
