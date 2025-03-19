@@ -12,6 +12,7 @@ import { Store } from "../pages/Store/Store";
 import { Products } from "../components/Products/Products";
 import { UserManagement } from "../components/UserManagement/UserManagement";
 import { ProductDetail } from "../pages/ProductVerMas/ProductVerMas";
+import { SponsorColmena } from "../pages/SponsorColmena/sponsorColmena";
 import { Talleres } from "../pages/TalleresForm/TalleresForm";
 import { Home } from '../pages/Home/Home';
 import BeehiveList from '../components/BeehiveList/BeehiveList';
@@ -61,8 +62,8 @@ export const RoutesApp = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/tienda" element={<Store />} />
+              <Route path="/apadrina" element={<SponsorColmena />} />
               <Route path="/talleres" element={<Talleres />} />
-              <Route path="/apadrina" element={<h1>Apadrina</h1>} />
               <Route path="/carrito" element={<ShoppingCart />} />
               <Route path="/perfil" element={<h1>Perfil</h1>} />
               <Route path="/colmenas" element={<h1>Colmenas</h1>} />
