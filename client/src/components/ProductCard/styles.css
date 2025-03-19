@@ -1,0 +1,205 @@
+.productCard {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--gray);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  text-align: left;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.12);
+  }
+
+  .productImage {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+
+  .productContent {
+    padding: 1.2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+
+    .productTitle {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--brown);
+    }
+
+    .productDescription {
+      font-size: 1rem;
+      color: var(--black);
+      opacity: 0.85;
+      line-height: 1.4;
+    }
+
+    .productPrice {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--red);
+    }
+
+    .productActions {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 1rem;
+
+      button {
+        flex: 1;
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+      }
+
+      .moreInfo {
+        background: var(--purple-dark);
+        color: var(--white);
+
+        &:hover {
+          background: var(--purple-light);
+        }
+      }
+
+      .addToCart {
+        background: var(--yellow);
+        color: var(--black);
+
+        &:hover {
+          background: var(--yellow-light);
+        }
+      }
+    }
+  }
+}
+
+/* 📱 MODO RESPONSIVE */
+@media (max-width: 1024px) {
+  .productCard {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .productContent {
+    .productTitle {
+      font-size: 1.3rem;
+    }
+
+    .productDescription {
+      font-size: 0.95rem;
+    }
+
+    .productPrice {
+      font-size: 1.2rem;
+    }
+
+    .productActions {
+      flex-direction: column;
+      gap: 0.7rem;
+
+      button {
+        width: 100%;
+        padding: 0.8rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .productCard {
+    padding: 0.8rem;
+    border-radius: 8px;
+  }
+
+  .productImage {
+    height: 200px;
+  }
+
+  .productContent {
+    .productTitle {
+      font-size: 1.2rem;
+    }
+
+    .productDescription {
+      font-size: 0.9rem;
+    }
+
+    .productPrice {
+      font-size: 1.1rem;
+    }
+
+    .productActions {
+      gap: 0.5rem;
+
+      button {
+        font-size: 0.95rem;
+        padding: 0.7rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .productCard {
+    padding: 0.6rem;
+    border-radius: 6px;
+  }
+
+  .productImage {
+    height: 180px;
+  }
+
+  .productContent {
+    .productTitle {
+      font-size: 1.1rem;
+    }
+
+    .productDescription {
+      font-size: 0.85rem;
+    }
+
+    .productPrice {
+      font-size: 1rem;
+    }
+
+    .productActions {
+      flex-direction: column;
+
+      button {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+      }
+    }
+  }
+}

@@ -17,7 +17,7 @@ export const Modal = ({ isOpen, onClose, children }) => {
       <div className='modal-extra-layer' onClick={(e) => e.stopPropagation()}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <button className="modal-close" onClick={onClose}>
-            <img src="/images/close.svg" alt="close" />
+            <img src="/icons/close.svg" alt="close" />
           </button>
           {children}
         </div>

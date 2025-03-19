@@ -1,0 +1,44 @@
+.galleryContainer {
+  width: 100%;
+  padding-inline: 5rem;
+  
+  .slick-slide {
+    padding: 0 10px;
+    display: flex;
+  }
+  
+  .slick-list {
+    display: flex;
+  }
+  
+  .slick-track {
+    display: flex;
+    align-items: stretch; 
+  }
+
+  .customArrow {
+    width: 40px;
+    height: 40px;
+    background-color: var(--brown);
+    color: white;
+    font-size: 24px;
+    display: grid;
+    place-items: center;
+    padding-top: 1px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .customArrow:hover {
+    background-color: #8b5e3c;
+  }
+
+  .customPrev {
+    left: -50px;
+  }
+
+  .customNext {
+    right: -50px;
+  }
+}

@@ -16,6 +16,7 @@ import categoriesRouter from "./modules/categories/categories.routes.js";
 import usersRouter from "./modules/users/users.routes.js";
 import productsRoutes from "./modules/products/products.routes.js";
 import salesRoutes from "./modules/sales/sales.routes.js";
+import beehivesRoutes from "./modules/beehives/beehive.routes.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 app.use("/users", usersRouter);
 app.use("/admin", adminRouter);
@@ -33,6 +35,7 @@ app.use("/users", usersRouter);
 app.use("/categories", categoriesRouter);
 app.use("/products", productsRoutes);
 app.use("/sales", salesRoutes);
+app.use('/beehives', beehivesRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
