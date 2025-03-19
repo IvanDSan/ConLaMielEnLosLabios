@@ -2,238 +2,237 @@
   background-color: var(--bg-color);
   padding: 60px 20px 80px;
   min-height: calc(100vh - 140px);
-}
 
-.header {
-  margin: 0; 
-  text-align: center;
-  background-color: var(--bg-color-dark); 
-  border-top: 2px solid var(--brown); 
-  border-bottom: 2px solid var(--brown);
-  padding: 10px; 
-}
-
-.header h1 {
-  font-size: 48px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.header p {
-  font-size: 24px;
-}
-
-.subscription-tiers {
-  margin: 40px auto;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.subscription-periods {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.period-button {
-  background-color: var(--bg-color-dark);
-  color: var(--brown);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 18px;
-}
-
-.period-button:hover {
-  background-color: var(--bg-color);
-}
-
-.tier-card {
-  border: 1px solid var(--gray);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
-  text-align: center;
-}
-
-.tier-card:nth-child(1) {
-  background-color: var(--brown);
-  color: var(--white);
-}
-
-.tier-card:nth-child(2) {
-  background-color: var(--red);
-  color: var(--white);
-}
-
-.tier-card .title {
-  color: var(--white);
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.tier-card .description {
-  color: var(--white);
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
-.tier-card .price {
-  color: var(--white);
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.tier-card .button {
-  background-color: var(--bg-color-dark);
-  color: var(--brown);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 18px;
-
-}
-
-.tier-card .button:hover {
-  background-color: var(--bg-color);
-}
-
-.gallery {
-  max-width: 1200px;
-  margin: 40px auto;
-}
-
-.gallery h2 {
-  color: var(--brown);
-  font-size: 32px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.gallery-item {
-  background-color: var(--white);
-  border: 1px solid var(--gray);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.gallery-item img {
-  width: 100%;
-  height: auto;
-}
-
-.testimonials {
-  padding: 40px 0;
-}
-
-.testimonials h2 {
-  color: var(--brown);
-  font-size: 32px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.testimonial-cards {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.testimonial-card {
-  background-color: var(--bg-color-dark);
-  border: 1px solid var(--gray); 
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
-  text-align: center;
-}
-
-.testimonial-card .comment {
-  color: var(--black);
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.testimonial-card .name {
-  color: var(--brown);
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.testimonial-card .bee-icon {
-  width: 20px;
-  height: auto;
-  margin-left: 5px;
-  vertical-align: middle;
-}
-
-.testimonial-card .rating {
-  color: var(--yellow);
-  font-size: 24px;
-}
-
-@media (max-width: 768px) {
-  .subscriptions-container {
-    padding: 60px 10px 80px;
+  .header {
+    margin: 0;
+    text-align: center;
+    background-color: var(--bg-color-dark);
+    border-top: 2px solid var(--brown);
+    border-bottom: 2px solid var(--brown);
+    padding: 10px;
   }
 
   .header h1 {
-    font-size: 32px;
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
   }
 
   .header p {
-    font-size: 18px;
-  }
-
-  .subscription-periods {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .subscription-tiers {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .tier-card {
-    width: 90%;
-    margin-bottom: 20px;
-  }
-
-  .gallery h2,
-  .testimonials h2 {
     font-size: 24px;
   }
 
+  .subscription-tiers {
+    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .subscription-periods {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .period-button {
+    background-color: var(--bg-color-dark);
+    color: var(--brown);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+  }
+
+  .period-button:hover {
+    background-color: var(--bg-color);
+  }
+
+  .tier-card {
+    border: 1px solid var(--gray);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+  }
+
+  .tier-card:nth-child(1) {
+    background-color: var(--brown);
+    color: var(--white);
+  }
+
+  .tier-card:nth-child(2) {
+    background-color: var(--red);
+    color: var(--white);
+  }
+
+  .tier-card .title {
+    color: var(--white);
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .tier-card .description {
+    color: var(--white);
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .tier-card .price {
+    color: var(--white);
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .tier-card .button {
+    background-color: var(--bg-color-dark);
+    color: var(--brown);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+  }
+
+  .tier-card .button:hover {
+    background-color: var(--bg-color);
+  }
+
+  .gallery {
+    max-width: 1200px;
+    margin: 40px auto;
+  }
+
+  .gallery h2 {
+    color: var(--brown);
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
   .gallery-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .gallery-item {
+    background-color: var(--white);
+    border: 1px solid var(--gray);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  .testimonials {
+    padding: 40px 0;
+  }
+
+  .testimonials h2 {
+    color: var(--brown);
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .testimonial-cards {
-    flex-direction: column;
-    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
   }
 
   .testimonial-card {
-    width: 90%;
-    margin-bottom: 20px;
+    background-color: var(--bg-color-dark);
+    border: 1px solid var(--gray);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+  }
+
+  .testimonial-card .comment {
+    color: var(--black);
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .testimonial-card .name {
+    color: var(--brown);
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .testimonial-card .bee-icon {
+    width: 20px;
+    height: auto;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+
+  .testimonial-card .rating {
+    color: var(--yellow);
+    font-size: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .subscriptions-container {
+      padding: 60px 10px 80px;
+    }
+
+    .header h1 {
+      font-size: 32px;
+    }
+
+    .header p {
+      font-size: 18px;
+    }
+
+    .subscription-periods {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subscription-tiers {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tier-card {
+      width: 90%;
+      margin-bottom: 20px;
+    }
+
+    .gallery h2,
+    .testimonials h2 {
+      font-size: 24px;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .testimonial-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .testimonial-card {
+      width: 90%;
+      margin-bottom: 20px;
+    }
   }
 }
