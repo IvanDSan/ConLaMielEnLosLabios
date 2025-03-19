@@ -52,10 +52,6 @@ body {
 
 main {
   flex: 1;
-  background-image: url('images/panel-bg.png');
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 p {
