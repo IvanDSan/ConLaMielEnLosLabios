@@ -1,11 +1,11 @@
-import { useContext, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Modal } from '../Modal/Modal';
-import { LoginForm } from '../LoginForm/LoginForm';
-import { RegisterForm } from '../RegisterForm/RegisterForm';
-import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
-import './styles.css';
-import { UserContext } from '../../context/UserContext';
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Modal } from "../Modal/Modal";
+import { LoginForm } from "../LoginForm/LoginForm";
+import { RegisterForm } from "../RegisterForm/RegisterForm";
+import { RecoverPasswordForm } from "../RecoverPasswordForm/RecoverPasswordForm";
+import "./styles.css";
+import { UserContext } from "../../context/UserContext";
 
 export const Navbar = () => {
   const { user, logout } = useContext(UserContext);
@@ -19,15 +19,15 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   const changeModal = (modal) => {
-    if (modal === 'login') {
+    if (modal === "login") {
       setLogin(true);
       setRegister(false);
       setRecoverPassword(false);
-    } else if (modal === 'register') {
+    } else if (modal === "register") {
       setLogin(false);
       setRegister(true);
       setRecoverPassword(false);
-    } else if (modal === 'recoverPassword') {
+    } else if (modal === "recoverPassword") {
       setLogin(false);
       setRegister(false);
       setRecoverPassword(true);
@@ -36,7 +36,7 @@ export const Navbar = () => {
 
   const handleLoginClick = () => {
     if (!user) {
-      changeModal('login');
+      changeModal("login");
       setIsOpen(true);
     } else {
       logout();
@@ -51,14 +51,14 @@ export const Navbar = () => {
             src="/images/logo.svg"
             alt="logo"
             className="logo"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           />
           <div className="links">
             <ul>
               <li>
                 <NavLink
                   to="/tienda"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Nuestra tienda
                 </NavLink>
@@ -66,7 +66,7 @@ export const Navbar = () => {
               <li>
                 <NavLink
                   to="/talleres"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Cursos y talleres
                 </NavLink>
@@ -74,7 +74,7 @@ export const Navbar = () => {
               <li>
                 <NavLink
                   to="/apadrina"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Apoya una colmena
                 </NavLink>
@@ -85,7 +85,7 @@ export const Navbar = () => {
             <li>
               <NavLink
                 to="/carrito"
-                className={({ isActive }) => (isActive ? 'active' : '')}
+                className={({ isActive }) => (isActive ? "active" : "")}
               >
                 <img src="/icons/cart.svg" alt="cart" />
               </NavLink>
@@ -94,10 +94,10 @@ export const Navbar = () => {
               <li>
                 <NavLink
                   to="/perfil"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   <img
-                    src={`${import.meta.env.VITE_SERVER_URL}/icons/users/${
+                    src={`${import.meta.env.VITE_SERVER_URL}/images/users/${
                       user.image
                     }`}
                     alt="profile"
@@ -108,9 +108,9 @@ export const Navbar = () => {
             )}
             <li>
               <img
-                src={`/icons/${user ? 'logout' : 'login'}.svg`}
+                src={`/icons/${user ? "logout" : "login"}.svg`}
                 alt="login"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
                 onClick={handleLoginClick}
               />
             </li>
@@ -118,16 +118,16 @@ export const Navbar = () => {
               <img
                 src="/icons/hamburger.svg"
                 alt="search"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
               />
             </li>
           </ul>
-          <div className={`mobile-menu ${showMobileMenu ? 'open' : ''}`}>
+          <div className={`mobile-menu ${showMobileMenu ? "open" : ""}`}>
             <img
               src="/icons/close.svg"
               alt="close"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() => setShowMobileMenu(false)}
               className="close-icon"
             />
@@ -135,7 +135,7 @@ export const Navbar = () => {
               <li>
                 <NavLink
                   to="/tienda"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Nuestra tienda
                 </NavLink>
@@ -143,7 +143,7 @@ export const Navbar = () => {
               <li>
                 <NavLink
                   to="/talleres"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Cursos y talleres
                 </NavLink>
@@ -151,7 +151,7 @@ export const Navbar = () => {
               <li>
                 <NavLink
                   to="/apadrina"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Apoya una colmena
                 </NavLink>
@@ -165,20 +165,20 @@ export const Navbar = () => {
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {login && (
           <LoginForm
-            onRegisterClick={() => changeModal('register')}
-            onRecoverPasswordClick={() => changeModal('recoverPassword')}
+            onRegisterClick={() => changeModal("register")}
+            onRecoverPasswordClick={() => changeModal("recoverPassword")}
             onClose={() => setIsOpen(false)}
           />
         )}
         {register && (
           <RegisterForm
-            onCancelClick={() => changeModal('login')}
+            onCancelClick={() => changeModal("login")}
             onClose={() => setIsOpen(false)}
           />
         )}
         {recoverPassword && (
           <RecoverPasswordForm
-            onLoginClick={() => changeModal('login')}
+            onLoginClick={() => changeModal("login")}
             onClose={() => setIsOpen(false)}
           />
         )}

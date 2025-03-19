@@ -13,8 +13,9 @@ import { Products } from "../components/Products/Products";
 import { UserManagement } from "../components/UserManagement/UserManagement";
 import { ProductDetail } from "../pages/ProductVerMas/ProductVerMas";
 import { Talleres } from "../pages/TalleresForm/TalleresForm";
-import { Home } from '../pages/Home/Home';
-import BeehiveList from '../components/BeehiveList/BeehiveList';
+import { Home } from "../pages/Home/Home";
+import BeehiveList from "../components/BeehiveList/BeehiveList";
+import UserOrders from "../pages/UserPedidos/UserPedidos";
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -56,7 +57,7 @@ export const RoutesApp = () => {
       ) : (
         <BrowserRouter>
           <Navbar />
-        
+
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -67,7 +68,7 @@ export const RoutesApp = () => {
               <Route path="/perfil" element={<h1>Perfil</h1>} />
               <Route path="/colmenas" element={<h1>Colmenas</h1>} />
               <Route path="/verify" element={<VerifyEmail />} />
-              <Route path="/pedidos" element={<h1>Pedidos</h1>} />
+              <Route path="/pedidos" element={<UserOrders />} />
               <Route path="/producto/:id" element={<ProductDetail />} />
               <Route path="/*" element={<h1>404</h1>} />
             </Routes>
