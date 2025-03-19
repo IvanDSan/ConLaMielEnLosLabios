@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { ToastContainer } from 'react-toastify';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from '../components/Navbar/Navbar';
 import { Footer } from '../components/Footer/Footer';
@@ -19,6 +18,7 @@ import { Talleres } from '../pages/TalleresForm/TalleresForm';
 import { Home } from '../pages/Home/Home';
 import BeehiveList from '../components/BeehiveList/BeehiveList';
 import { NavbarAdmin } from "../components/NavbarAdmin/NavbarAdmin";
+import UserOrders from "../pages/UserPedidos/UserPedidos";
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -73,7 +73,7 @@ export const RoutesApp = () => {
               <Route path="/perfil" element={<h1>Perfil</h1>} />
               <Route path="/colmenas" element={<h1>Colmenas</h1>} />
               <Route path="/verify" element={<VerifyEmail />} />
-              <Route path="/pedidos" element={<h1>Pedidos</h1>} />
+              <Route path="/pedidos" element={<UserOrders />} />
               <Route path="/producto/:id" element={<ProductDetail />} />
               <Route path="/*" element={<h1>404</h1>} />
             </Routes>

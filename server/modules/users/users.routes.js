@@ -22,7 +22,7 @@ router.get("/getUserById", verifyToken(), UsersController.getUserById);
 
 router.post("/contact", async (req, res) => {
   try {
-    const { nombre, apellido, email, entidad, mensaje } = req.body;
+    const { nombre, apellido, email, telephone, mensaje } = req.body;
 
     if (!nombre || !apellido || !email || !mensaje) {
       return res
@@ -30,7 +30,7 @@ router.post("/contact", async (req, res) => {
         .json({ error: "Todos los campos son obligatorios" });
     }
 
-    await sendContactEmail(nombre, apellido, email, entidad, mensaje);
+    await sendContactEmail(nombre, apellido, email, telephone, mensaje);
     res.status(200).json({ message: "Formulario enviado correctamente" });
   } catch (error) {
     res
