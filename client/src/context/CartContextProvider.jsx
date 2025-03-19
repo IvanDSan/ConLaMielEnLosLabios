@@ -20,7 +20,6 @@ export const CartContextProvider = ({ children }) => {
           }
         );
         if (res.status === 200) {
-          console.log(res.data, 'resDATAAA');
           setCart(res.data.cart);
         }
       } catch (error) {
@@ -72,7 +71,6 @@ export const CartContextProvider = ({ children }) => {
           },
           { Authorization: `Bearer ${token}` }
         );
-        console.log(result, 'RESULTTTTTTTTTTTTTTTTTTTT');
         setCart((prevCart) =>
           prevCart.map((item) =>
             item.product_id === product_id
@@ -114,7 +112,6 @@ export const CartContextProvider = ({ children }) => {
         const existingProduct = prevCart.find(
           (item) => item.product_id === product.product_id
         );
-
         if (existingProduct) {
           return prevCart.map((item) =>
             item.product_id === product.product_id
@@ -122,7 +119,6 @@ export const CartContextProvider = ({ children }) => {
               : item
           );
         }
-
         return [...prevCart, { ...product, quantity: 1 }];
       });
     } catch (error) {
