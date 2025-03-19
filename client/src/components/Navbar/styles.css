@@ -55,6 +55,22 @@ header {
       }
     }
 
+    .cart-container {
+      position: relative;
+
+      .cart-quantity {
+        position: absolute;
+        top: 1rem;
+        left: -.8rem;
+        background-color: var(--purple);
+        color: var(--bg-color);
+        border-radius: 50%;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+    }
+
     .mobile-menu {
       position: fixed;
       top: 0;
