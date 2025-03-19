@@ -2,6 +2,7 @@ import express from 'express';
 import SalesControllers from './sales.controllers.js';
 import { verifyToken } from '../../middlewares/verifyToken.js';
 
+
 const router = express.Router();
 
 //Historial de pedidos
@@ -14,5 +15,6 @@ router.get(
   verifyToken('user'),
   SalesControllers.getSalesByUser
 );
+router.post('/modifyStatusOfOrder', verifyToken("admin"), SalesControllers.modifyStatusOfOrder);
 
 export default router;

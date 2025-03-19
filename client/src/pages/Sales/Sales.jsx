@@ -37,6 +37,32 @@ export const Sales = () => {
     }
   };
 
+  const modifyStatusOrder = async (sale_id, user_id, product_id, newStatus) => {
+    try {
+      const response = await fetchData(`/sales/modifyStatusOfOrder`, 'POST',  {
+        sale_status: newStatus,
+        user_id,
+        product_id,
+        sale_id,
+      }, {
+      Authorization: `Bearer ${token}`,
+      });
+        if (response.status === 200) {
+          setSales((prevSales)=>
+          prevSales.map((sale)=>
+            sale.sale_id === sale_id ? {...sale, sale_status: newStatus} : sale)
+          );
+          console.log('Estado actualizado correctamente del pedido');
+      } else {
+        console.log('Error al actualizar el estado del pedido')
+      }
+    } catch (err) {
+      console.log('Error en la petición', err);
+    }
+  }
+  
+ 
+
   return (
     <div className="sales-container">
       <h1 className="sales-title">Historial de Ventas</h1>
@@ -74,6 +100,13 @@ export const Sales = () => {
                   <button onClick={() => deleteSale(sale.sale_id)}>
                     Borrar
                   </button>
+                  {sale.sale_status === 1 && (
+                    <>
+                  <button onClick={()=> modifyStatusOrder(sale.sale_id, sale.user_id, sale.product_id, 3)}>Completar</button>
+                  <button onClick={()=> modifyStatusOrder(sale.sale_id, sale.user_id, sale.product_id, 2)}
+                    >Cancelar</button>
+                    </>
+                    )}
                 </td>
               </tr>
             ))

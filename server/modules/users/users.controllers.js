@@ -443,7 +443,7 @@ class UsersController {
 
   completePurchaseCart = async (req, res) => {
     const connection = await dbPool.getConnection();
-  console.log(req.body, "REQQQQQQQQQQQQQQQQQQQQQ")
+
   let user_id = req.user_id;
    try {
       await connection.beginTransaction();
