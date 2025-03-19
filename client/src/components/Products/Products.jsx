@@ -1,32 +1,31 @@
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import "./styles.css";
-import { fetchData } from "../../helpers/axiosHelper";
-import { UserContext } from "../../context/UserContext";
+import { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import './styles.css';
+import { fetchData } from '../../helpers/axiosHelper';
+import { UserContext } from '../../context/UserContext';
 
 export const Products = () => {
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
-    title: "",
-    description: "",
-    price: "",
-    category_id: "",
+    title: '',
+    description: '',
+    price: '',
+    category_id: '',
   });
   const [productToEdit, setProductToEdit] = useState(null);
   const { token } = useContext(UserContext);
-  console.log(token);
+
   useEffect(() => {
     axios
-      .get("http://localhost:4000/products/all")
+      .get('http://localhost:4000/products/all')
       .then((res) => setProducts(res.data))
-      .catch((error) => console.error("Error al obtener los productos", error));
+      .catch((error) => console.error('Error al obtener los productos', error));
   }, []);
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
-    console.log("Ejecutando handleCreateProduct");
     try {
-      const res = await fetchData("/products/create", "POST", newProduct, {
+      const res = await fetchData('/products/create', 'POST', newProduct, {
         Authorization: `Bearer ${token}`,
       });
       if (res.status === 200) {
@@ -47,34 +46,29 @@ export const Products = () => {
         .then(() => {
           setProductToEdit(null);
           axios
-            .get("http://localhost:4000/products/all", {
+            .get('http://localhost:4000/products/all', {
               headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => setProducts(res.data));
         })
-        .catch((error) => console.error("Error al editar el producto", error));
+        .catch((error) => console.error('Error al editar el producto', error));
     }
   };
 
   const handleDeleteProduct = async (id) => {
-    console.log(`/products/${id}`);
     try {
-      const res = await fetchData(
-        `/products/${id}`,
-        "delete",
-        null,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await fetchData(`/products/${id}`, 'delete', null, {
+        Authorization: `Bearer ${token}`,
+      });
 
       if (res.status === 200) {
         setProducts(products.filter((product) => product.id !== id));
       }
     } catch (error) {
-      console.error("Error al eliminar el producto", error);
+      console.error('Error al eliminar el producto', error);
     }
   };
 
-  console.log("****", products);
   return (
     <div className="products-container">
       <aside className="sidebar">
@@ -189,8 +183,8 @@ export const Products = () => {
                 <td>{product.title}</td>
                 <td>{product.description}</td>
                 <td>{product.stock}</td>
-                <td>{product.size || "N/A"}</td>
-                <td>{product.color || "N/A"}</td>
+                <td>{product.size || 'N/A'}</td>
+                <td>{product.color || 'N/A'}</td>
                 <td>{product.price}€</td>
                 <td>
                   <button onClick={() => setProductToEdit(product)}>✏️</button>

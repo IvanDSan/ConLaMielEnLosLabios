@@ -4,8 +4,8 @@ import { Modal } from '../Modal/Modal';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
-import './styles.css';
 import { UserContext } from '../../context/UserContext';
+import './styles.css';
 
 export const Navbar = () => {
   const { user, logout } = useContext(UserContext);
@@ -40,12 +40,13 @@ export const Navbar = () => {
       setIsOpen(true);
     } else {
       logout();
+      navigate('/');
     }
   };
 
   return (
     <>
-      <header className="container">
+      <header>
         <nav>
           <img
             src="/images/logo.svg"
@@ -61,6 +62,14 @@ export const Navbar = () => {
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
                   Nuestra tienda
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/colmenas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Nuestras colmenas
                 </NavLink>
               </li>
               <li>
@@ -138,6 +147,14 @@ export const Navbar = () => {
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
                   Nuestra tienda
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/colmenas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Nuestras colmenas
                 </NavLink>
               </li>
               <li>
