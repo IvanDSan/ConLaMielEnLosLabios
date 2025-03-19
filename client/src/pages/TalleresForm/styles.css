@@ -1,5 +1,4 @@
 .talleresContainer {
-  font-family: "Poppins", sans-serif;
   background-color: var(--bg-color);
   color: var(--black);
   text-align: center;
@@ -12,7 +11,7 @@
 
   .talleresHeroImage {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
   }
 }
@@ -78,79 +77,4 @@
   font-size: 1.1rem;
   margin-bottom: 2rem;
   font-weight: bold;
-}
-
-.contactFormContainer {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
-
-  .contactForm {
-    background-color: var(--white);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    width: 100%;
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      text-align: left;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border: 2px solid var(--brown);
-      border-radius: 5px;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      transition: border-color 0.3s ease;
-
-      &:focus {
-        border-color: var(--yellow);
-        outline: none;
-      }
-    }
-
-    textarea {
-      min-height: 100px;
-      resize: none;
-    }
-
-    .contactSubmit {
-      width: 100%;
-      background-color: var(--yellow);
-      color: var(--black);
-      font-size: 1rem;
-      font-weight: bold;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      border: none;
-
-      &:hover {
-        background-color: var(--yellow-light);
-      }
-    }
-  }
-}
-
-.statusMessage {
-  font-size: 0.9rem;
-  text-align: center;
-  margin-top: 8px;
-  color: var(--black);
-}
-
-.statusMessage.success {
-  color: #155724;
-}
-
-.statusMessage.error {
-  color: #721c24;
 }

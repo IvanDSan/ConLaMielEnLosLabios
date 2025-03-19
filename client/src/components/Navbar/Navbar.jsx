@@ -4,11 +4,13 @@ import { Modal } from '../Modal/Modal';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
-import './styles.css';
 import { UserContext } from '../../context/UserContext';
+import './styles.css';
+import { CartContext } from '../../context/CartContextProvider';
 
 export const Navbar = () => {
   const { user, logout } = useContext(UserContext);
+  const { cart } = useContext(CartContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [login, setLogin] = useState(false);
@@ -40,12 +42,13 @@ export const Navbar = () => {
       setIsOpen(true);
     } else {
       logout();
+      navigate('/');
     }
   };
 
   return (
     <>
-      <header className="container">
+      <header>
         <nav>
           <img
             src="/images/logo.svg"
@@ -61,6 +64,14 @@ export const Navbar = () => {
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
                   Nuestra tienda
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/colmenas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Nuestras colmenas
                 </NavLink>
               </li>
               <li>
@@ -87,7 +98,10 @@ export const Navbar = () => {
                 to="/carrito"
                 className={({ isActive }) => (isActive ? 'active' : '')}
               >
-                <img src="/icons/cart.svg" alt="cart" />
+                <div className="cart-container">
+                  {user && <span className="cart-quantity">{cart.length}</span>}
+                  <img src="/icons/cart.svg" alt="cart" />
+                </div>
               </NavLink>
             </li>
             {user && (
@@ -97,8 +111,12 @@ export const Navbar = () => {
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
                   <img
-                    src={`${import.meta.env.VITE_SERVER_URL}/icons/users/${
+                    src={`${
                       user.image
+                        ? import.meta.env.VITE_SERVER_URL +
+                          '/images/users/' +
+                          user.image
+                        : '/images/user-placeholder.png'
                     }`}
                     alt="profile"
                     className="profile-img"
@@ -138,6 +156,14 @@ export const Navbar = () => {
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
                   Nuestra tienda
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/colmenas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Nuestras colmenas
                 </NavLink>
               </li>
               <li>
