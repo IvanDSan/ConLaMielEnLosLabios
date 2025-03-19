@@ -15,6 +15,7 @@ import { ProductDetail } from "../pages/ProductVerMas/ProductVerMas";
 import { Talleres } from "../pages/TalleresForm/TalleresForm";
 import { Home } from '../pages/Home/Home';
 import BeehiveList from '../components/BeehiveList/BeehiveList';
+import { NavbarAdmin } from "../components/NavbarAdmin/NavbarAdmin";
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -40,6 +41,7 @@ export const RoutesApp = () => {
     <>
       {user && user.user_type === 1 ? (
         <BrowserRouter>
+        <NavbarAdmin />
           <main>
             <Routes>
               <Route path="/" element={<h1>Admin Home</h1>} />

@@ -6,7 +6,7 @@ export const CartContext = createContext();
 export const CartContextProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { token } = useContext(UserContext);
-  console.log(cart, "cart");
+
   useEffect(() => {
     const getCart = async () => {
       try {
@@ -19,7 +19,6 @@ export const CartContextProvider = ({ children }) => {
           }
         );
         if (res.status === 200) {
-          console.log(res.data, "resDATAAA");
           setCart(res.data.cart);
         }
       } catch (error) {
@@ -68,7 +67,7 @@ export const CartContextProvider = ({ children }) => {
           },
           { Authorization: `Bearer ${token}` }
         );
-        console.log(result, "RESULTTTTTTTTTTTTTTTTTTTT");
+        console.log(result, "RESULT");
         setCart((prevCart) =>
           prevCart.map((item) =>
             item.product_id === product_id
@@ -108,7 +107,7 @@ export const CartContextProvider = ({ children }) => {
         const existingProduct = prevCart.find(
           (item) => item.product_id === product.product_id
         );
-        console.log(existingProduct, "existingprodfucttttttttt");
+        
         if (existingProduct) {
           return prevCart.map((item) =>
             item.product_id === product.product_id
@@ -116,8 +115,6 @@ export const CartContextProvider = ({ children }) => {
               : item
           );
         }
-        console.log(prevCart, "PREVCARTTTTT");
-        console.log(product, "PRODUCTTTTTTTTTT");
         return [...prevCart, { ...product, quantity: 1 }];
       });
     } catch (error) {
