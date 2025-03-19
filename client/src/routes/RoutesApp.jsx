@@ -1,19 +1,21 @@
-import { useContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Navbar } from "../components/Navbar/Navbar";
-import { Footer } from "../components/Footer/Footer";
-import { ShoppingCart } from "../components/ShoppingCart/ShoppingCart";
-import CategoryList from "../pages/CategoryList/CategoryList";
-import { UserContext } from "../context/UserContext";
-import { Sales } from "../pages/Sales/Sales";
-import { VerifyEmail } from "../pages/VerifyEmail/VerifyEmail";
-import { SpinnerLoading } from "../components/SpinnerLoading/SpinnerLoading";
-import { Store } from "../pages/Store/Store";
-import { Products } from "../components/Products/Products";
-import { UserManagement } from "../components/UserManagement/UserManagement";
-import { ProductDetail } from "../pages/ProductVerMas/ProductVerMas";
-import { SponsorColmena } from "../pages/SponsorColmena/sponsorColmena";
-import { Talleres } from "../pages/TalleresForm/TalleresForm";
+import { useContext } from 'react';
+import { ToastContainer } from 'react-toastify';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Navbar } from '../components/Navbar/Navbar';
+import { Footer } from '../components/Footer/Footer';
+import { ShoppingCart } from '../components/ShoppingCart/ShoppingCart';
+import CategoryList from '../pages/CategoryList/CategoryList';
+import { UserContext } from '../context/UserContext';
+import { Sales } from '../pages/Sales/Sales';
+import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
+import { SpinnerLoading } from '../components/SpinnerLoading/SpinnerLoading';
+import { Store } from '../pages/Store/Store';
+import { Products } from '../components/Products/Products';
+import { UserManagement } from '../components/UserManagement/UserManagement';
+import { ProductDetail } from '../pages/ProductVerMas/ProductVerMas';
+import { SponsorColmena } from '../pages/SponsorColmena/sponsorColmena';
+import { Talleres } from '../pages/TalleresForm/TalleresForm';
 import { Home } from '../pages/Home/Home';
 import BeehiveList from '../components/BeehiveList/BeehiveList';
 
@@ -24,12 +26,12 @@ export const RoutesApp = () => {
     return (
       <main
         style={{
-          position: "fixed",
-          width: "100dvw",
-          height: "100dvh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          position: 'fixed',
+          width: '100dvw',
+          height: '100dvh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <SpinnerLoading />
@@ -52,12 +54,13 @@ export const RoutesApp = () => {
               <Route path="/ventas" element={<Sales />} />
               <Route path="*" element={<h1>404</h1>} />
             </Routes>
+            <ToastContainer position="top-right" autoClose={3000} />
           </main>
         </BrowserRouter>
       ) : (
         <BrowserRouter>
           <Navbar />
-        
+
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -72,6 +75,7 @@ export const RoutesApp = () => {
               <Route path="/producto/:id" element={<ProductDetail />} />
               <Route path="/*" element={<h1>404</h1>} />
             </Routes>
+            <ToastContainer position="top-right" autoClose={3000} />
           </main>
 
           <Footer />
