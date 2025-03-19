@@ -12,6 +12,8 @@ import { Store } from "../pages/Store/Store";
 import { Products } from "../components/Products/Products";
 import { UserManagement } from "../components/UserManagement/UserManagement";
 import { ProductDetail } from "../pages/ProductVerMas/ProductVerMas";
+import { SponsorColmena } from "../pages/SponsorColmena/sponsorColmena";
+
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -59,7 +61,7 @@ export const RoutesApp = () => {
               <Route path="/" element={<h1>Home</h1>} />
               <Route path="/tienda" element={<Store />} />
               <Route path="/talleres" element={<h1>Talleres</h1>} />
-              <Route path="/apadrina" element={<h1>Apadrina</h1>} />
+              <Route path="/apadrina" element={<SponsorColmena />} />
               <Route path="/carrito" element={<ShoppingCart />} />
               <Route path="/perfil" element={<h1>Perfil</h1>} />
               <Route path="/colmenas" element={<h1>Colmenas</h1>} />
