@@ -26,7 +26,12 @@ export const ProductCard = ({ product }) => {
           >
             Ver Más
           </button>
-          <button className="addToCart" onClick={() => addToCart(product)}>
+          <button
+            className="addToCart"
+            onClick={() => {
+              addToCart(product);
+            }}
+          >
             Añadir
           </button>
         </div>

@@ -13,7 +13,7 @@ export const ReservaTuVisitaSection = () => {
             Descubre el mundo de las abejas y participa en nuestras actividades
             educativas
           </p>
-          <button onClick={navigate('/visitas')}>Reserva tu visita</button>
+          <button onClick={() => navigate('/talleres')}>Reserva tu visita</button>
         </div>
       </div>
     </section>
