@@ -7,7 +7,7 @@ export const CartContext = createContext();
 export const CartContextProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { user, token } = useContext(UserContext);
-  
+
   useEffect(() => {
     const getCart = async () => {
       try {
@@ -62,7 +62,7 @@ export const CartContextProvider = ({ children }) => {
   const updateQuantity = async (product_id, quantity, factor) => {
     if (quantity + factor > 0) {
       try {
-        let result = await fetchData(
+        await fetchData(
           '/users/modifyCartQuantityToCart',
           'POST',
           {

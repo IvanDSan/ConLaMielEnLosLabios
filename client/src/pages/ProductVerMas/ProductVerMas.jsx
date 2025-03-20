@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import axios from "axios";
-import "./styles.css";
+import { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import './styles.css';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
@@ -26,6 +27,7 @@ export const ProductDetail = () => {
         setRelatedProducts(filteredProducts);
       } catch (err) {
         console.log(err);
+        toast.error('Error al obtener el producto');
       }
     };
 
@@ -46,7 +48,7 @@ export const ProductDetail = () => {
       <div className="productDetailWrapper">
         <div className="productImageContainer">
           <img
-            src={product.image_url || "/default-image.jpg"}
+            src={product.image_url || '/default-image.jpg'}
             alt={product.title}
             className="productImage"
           />
@@ -55,7 +57,7 @@ export const ProductDetail = () => {
             {Array.from(Array(4).keys()).map((index) => (
               <img
                 key={index}
-                src={product.image_url || "/default-image.jpg"}
+                src={product.image_url || '/default-image.jpg'}
                 alt="Miniatura"
                 className="productThumbnail"
               />
@@ -96,7 +98,7 @@ export const ProductDetail = () => {
                 className="relatedProductCard"
               >
                 <img
-                  src={relatedProduct.image_url || "/default-image.jpg"}
+                  src={relatedProduct.image_url || '/default-image.jpg'}
                   alt={relatedProduct.title}
                   className="relatedProductImage"
                 />

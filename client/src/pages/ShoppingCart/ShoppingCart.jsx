@@ -1,7 +1,6 @@
 import { useContext } from 'react';
-import './styles.css';
-import { UserContext } from '../../context/UserContext';
 import { CartContext } from '../../context/CartContextProvider';
+import './styles.css';
 
 export const ShoppingCart = () => {
   const {

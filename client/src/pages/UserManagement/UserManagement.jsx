@@ -1,26 +1,27 @@
-import "./styles.css";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import './styles.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`${apiURL}/admin/users`);
         if (!Array.isArray(response.data)) {
-          throw new Error("La respuesta no es un array");
+          throw new Error('La respuesta no es un array');
         }
         setUsers(response.data);
         setLoading(false);
       } catch (err) {
-        console.error("Error al obtener usuarios:", err);
-        setError("No se pudieron cargar los usuarios");
+        console.error('Error al obtener usuarios:', err);
+        toast.error('Error al obtener usuarios');
+      } finally {
         setLoading(false);
       }
     };
@@ -28,7 +29,7 @@ export const UserManagement = () => {
   }, []);
 
   const toggleUserStatus = async (userId, isDisabled) => {
-    const endpoint = isDisabled ? "admin/enableUser" : "admin/disableUser";
+    const endpoint = isDisabled ? 'admin/enableUser' : 'admin/disableUser';
     try {
       await axios.put(`${apiURL}/${endpoint}`, { user_id: userId });
       setUsers(
@@ -37,15 +38,14 @@ export const UserManagement = () => {
         )
       );
     } catch (err) {
-      console.error("Error updating user status:", err);
-      alert("Failed to update user status");
+      console.error('Error updating user status:', err);
+      toast.error('Error al actualizar el estado del usuario');
     }
   };
 
   if (loading) return <div>Cargando...</div>;
-  if (error) return <div>{error}</div>;
   if (!Array.isArray(users)) {
-    console.error("Users no es un array:", users);
+    console.error('Users no es un array:', users);
     return <div>Error: Datos inválidos</div>;
   }
 
@@ -72,7 +72,7 @@ export const UserManagement = () => {
                     {user.name} {user.lastname}
                   </td>
                   <td>{user.email}</td>
-                  <td>{user.is_disabled ? "Baneado" : "Activo"}</td>
+                  <td>{user.is_disabled ? 'Baneado' : 'Activo'}</td>
                   <td>
                     {user.user_type !== 1 && (
                       <button
@@ -80,7 +80,7 @@ export const UserManagement = () => {
                           toggleUserStatus(user.user_id, user.is_disabled)
                         }
                       >
-                        {user.is_disabled ? "Activar" : "Desactivar"}
+                        {user.is_disabled ? 'Activar' : 'Desactivar'}
                       </button>
                     )}
                   </td>

@@ -1,52 +1,16 @@
 import { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Modal } from '../Modal/Modal';
-import { LoginForm } from '../LoginForm/LoginForm';
-import { RegisterForm } from '../RegisterForm/RegisterForm';
-import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
-import './styles.css';
 import { UserContext } from '../../context/UserContext';
 
 export const NavbarAdmin = () => {
-  const { admin, logout } = useContext(UserContext);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [login, setLogin] = useState(false);
-  const [register, setRegister] = useState(false);
-  const [recoverPassword, setRecoverPassword] = useState(false);
+  const { logout } = useContext(UserContext);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-
   const navigate = useNavigate();
-  
-  const changeModal = (modal) => {
-    if (modal === 'login') {
-      setLogin(true);
-      setRegister(false);
-      setRecoverPassword(false);
-    } else if (modal === 'register') {
-      setLogin(false);
-      setRegister(true);
-      setRecoverPassword(false);
-    } else if (modal === 'recoverPassword') {
-      setLogin(false);
-      setRegister(false);
-      setRecoverPassword(true);
-    }
-  };
-
-  const handleLoginClick = () => {
-    if (!admin) {
-      changeModal('login');
-      setIsOpen(true);
-    } else {
-      logout();
-    }
-  };
 
   return (
     <>
       <header className="container">
-        <nav className='navBarAdmin'>
+        <nav className="navBarAdmin">
           <img
             src="/images/logo.svg"
             alt="logo"
@@ -79,15 +43,15 @@ export const NavbarAdmin = () => {
                   Usuarios
                 </NavLink>
               </li>
-            <li>
-              <NavLink
-                to="/suscripciones"
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                Suscripciones
-              </NavLink>
-            </li>
-            <li>
+              <li>
+                <NavLink
+                  to="/suscripciones"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Suscripciones
+                </NavLink>
+              </li>
+              <li>
                 <NavLink
                   to="/colmenas"
                   className={({ isActive }) => (isActive ? 'active' : '')}
@@ -107,8 +71,7 @@ export const NavbarAdmin = () => {
                 <NavLink
                   to="/*"
                   className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                </NavLink>
+                ></NavLink>
               </li>
             </ul>
           </div>
@@ -116,11 +79,14 @@ export const NavbarAdmin = () => {
           <ul>
             <li>
               <img
-            src="/icons/logout.svg"
-            alt="logout"
-            className=""
-            onClick={() => logout('/')}
-          />
+                src="/icons/logout.svg"
+                alt="logout"
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  logout();
+                  navigate('/');
+                }}
+              />
             </li>
             <li className="hamburger">
               <img
@@ -194,28 +160,6 @@ export const NavbarAdmin = () => {
           </div>
         </nav>
       </header>
-
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        {login && (
-          <LoginForm
-            onRegisterClick={() => changeModal('register')}
-            onRecoverPasswordClick={() => changeModal('recoverPassword')}
-            onClose={() => setIsOpen(false)}
-          />
-        )}
-        {register && (
-          <RegisterForm
-            onCancelClick={() => changeModal('login')}
-            onClose={() => setIsOpen(false)}
-          />
-        )}
-        {recoverPassword && (
-          <RecoverPasswordForm
-            onLoginClick={() => changeModal('login')}
-            onClose={() => setIsOpen(false)}
-          />
-        )}
-      </Modal>
     </>
   );
 };
