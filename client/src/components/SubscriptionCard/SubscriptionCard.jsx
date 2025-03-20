@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
 export const SubscriptionCard = ({
@@ -6,9 +7,16 @@ export const SubscriptionCard = ({
   price,
   mostSelected,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <article className="subscription-card-container">
-      {mostSelected && <span className="most-selected"><img src='/icons/star-shine.svg'/>Más elegido</span>}
+      {mostSelected && (
+        <span className="most-selected">
+          <img src="/icons/star-shine.svg" />
+          Más elegido
+        </span>
+      )}
       <div className="subscription-card">
         <h3>{title}</h3>
         <p className="price">
@@ -17,7 +25,7 @@ export const SubscriptionCard = ({
           <span>/mes</span>
         </p>
         <p>{description}</p>
-        <button>Quiero apadrinar</button>
+        <button onClick={() => navigate('/apadrina')}>Quiero apadrinar</button>
       </div>
     </article>
   );

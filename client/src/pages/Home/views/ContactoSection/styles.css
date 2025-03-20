@@ -1,0 +1,11 @@
+.contacto-section {
+  h2,
+  h4,
+  p {
+    text-align: center;
+  }
+
+  h4, p {
+    margin-bottom: 2rem;
+  }
+}

@@ -11,8 +11,8 @@ export const Home = () => {
     <>
       <Hero />
       <ApadrinaSection />
-      <ColmenasSection />
       <ReservaTuVisitaSection />
+      <ColmenasSection />
       <TiendaSection />
       <TalleresSection />
       <ContactoSection />

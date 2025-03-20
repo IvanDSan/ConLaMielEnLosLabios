@@ -16,7 +16,7 @@ export const sendVerificationEmail = async (email, verificationToken) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Verificación de email",
-    html: `<p>Por favor, verifica tu correo electrónico haciendo clic en el siguiente <a href="${process.env.FRONTEND_URL}/verify?token=${verificationToken}">enlace</a></p>`,
+    html: `<p>Por favor, verifica tu correo electrónico haciendo clic en el siguiente <a href="${process.env.FRONTEND_URL}verify?token=${verificationToken}">enlace</a></p>`,
   };
 
   try {
@@ -47,7 +47,7 @@ export const sendContactEmail = async (
   nombre,
   apellido,
   email,
-  entidad,
+  telephone,
   mensaje
 ) => {
   const mailOptions = {
@@ -58,7 +58,7 @@ export const sendContactEmail = async (
       <h3>Nuevo mensaje de contacto</h3>
       <p><strong>Nombre:</strong> ${nombre} ${apellido}</p>
       <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Entidad:</strong> ${entidad || "No especificado"}</p>
+      <p><strong>teléfono:</strong> ${telephone || "No especificado"}</p>
       <p><strong>Mensaje:</strong> ${mensaje}</p>
     `,
   };

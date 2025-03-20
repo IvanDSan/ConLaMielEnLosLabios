@@ -4,13 +4,11 @@ import { Modal } from '../Modal/Modal';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
-import { UserContext } from '../../context/UserContext';
 import './styles.css';
-import { CartContext } from '../../context/CartContextProvider';
+import { UserContext } from '../../context/UserContext';
 
-export const Navbar = () => {
-  const { user, logout } = useContext(UserContext);
-  const { cart } = useContext(CartContext);
+export const NavbarAdmin = () => {
+  const { admin, logout } = useContext(UserContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [login, setLogin] = useState(false);
@@ -19,17 +17,17 @@ export const Navbar = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const navigate = useNavigate();
-
+  
   const changeModal = (modal) => {
-    if (modal === "login") {
+    if (modal === 'login') {
       setLogin(true);
       setRegister(false);
       setRecoverPassword(false);
-    } else if (modal === "register") {
+    } else if (modal === 'register') {
       setLogin(false);
       setRegister(true);
       setRecoverPassword(false);
-    } else if (modal === "recoverPassword") {
+    } else if (modal === 'recoverPassword') {
       setLogin(false);
       setRegister(false);
       setRecoverPassword(true);
@@ -37,125 +35,142 @@ export const Navbar = () => {
   };
 
   const handleLoginClick = () => {
-    if (!user) {
-      changeModal("login");
+    if (!admin) {
+      changeModal('login');
       setIsOpen(true);
     } else {
       logout();
-      navigate('/');
     }
   };
 
   return (
     <>
-      <header>
-        <nav>
+      <header className="container">
+        <nav className='navBarAdmin'>
           <img
             src="/images/logo.svg"
             alt="logo"
             className="logo"
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
           />
           <div className="links">
             <ul>
               <li>
                 <NavLink
-                  to="/tienda"
-                  className={({ isActive }) => (isActive ? "active" : "")}
+                  to="/productos"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Nuestra tienda
+                  Productos
                 </NavLink>
               </li>
               <li>
+                <NavLink
+                  to="/categorias"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Categorias
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/usuarios"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Usuarios
+                </NavLink>
+              </li>
+            <li>
+              <NavLink
+                to="/suscripciones"
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                Suscripciones
+              </NavLink>
+            </li>
+            <li>
                 <NavLink
                   to="/colmenas"
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Nuestras colmenas
+                  Colmenas
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/talleres"
-                  className={({ isActive }) => (isActive ? "active" : "")}
+                  to="/ventas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Cursos y talleres
+                  Ventas
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/apadrina"
-                  className={({ isActive }) => (isActive ? "active" : "")}
+                  to="/*"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Apoya una colmena
                 </NavLink>
               </li>
             </ul>
           </div>
+
           <ul>
             <li>
-              <NavLink
-                to="/carrito"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                <div className="cart-container">
-                  {user && <span className="cart-quantity">{cart.length}</span>}
-                  <img src="/icons/cart.svg" alt="cart" />
-                </div>
-              </NavLink>
-            </li>
-            {user && (
-              <li>
-                <NavLink
-                  to="/perfil"
-                  className={({ isActive }) => (isActive ? "active" : "")}
-                >
-                  <img
-                    src={`${
-                      user.image
-                        ? import.meta.env.VITE_SERVER_URL +
-                          '/images/users/' +
-                          user.image
-                        : '/images/user-placeholder.png'
-                    }`}
-                    alt="profile"
-                    className="profile-img"
-                  />
-                </NavLink>
-              </li>
-            )}
-            <li>
               <img
-                src={`/icons/${user ? "logout" : "login"}.svg`}
-                alt="login"
-                style={{ cursor: "pointer" }}
-                onClick={handleLoginClick}
-              />
+            src="/icons/logout.svg"
+            alt="logout"
+            className=""
+            onClick={() => logout('/')}
+          />
             </li>
             <li className="hamburger">
               <img
                 src="/icons/hamburger.svg"
                 alt="search"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
               />
             </li>
           </ul>
-          <div className={`mobile-menu ${showMobileMenu ? "open" : ""}`}>
+
+          <div className={`mobile-menu ${showMobileMenu ? 'open' : ''}`}>
             <img
               src="/icons/close.svg"
               alt="close"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => setShowMobileMenu(false)}
               className="close-icon"
             />
             <ul>
               <li>
                 <NavLink
-                  to="/tienda"
-                  className={({ isActive }) => (isActive ? "active" : "")}
+                  to="/productos"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Nuestra tienda
+                  Productos
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/categorias"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Categorias
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/usuarios"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Usuarios
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/suscripciones"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Suscripciones
                 </NavLink>
               </li>
               <li>
@@ -163,23 +178,15 @@ export const Navbar = () => {
                   to="/colmenas"
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Nuestras colmenas
+                  Colmenas
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/talleres"
-                  className={({ isActive }) => (isActive ? "active" : "")}
+                  to="/ventas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Cursos y talleres
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/apadrina"
-                  className={({ isActive }) => (isActive ? "active" : "")}
-                >
-                  Apoya una colmena
+                  Ventas
                 </NavLink>
               </li>
             </ul>
@@ -191,20 +198,20 @@ export const Navbar = () => {
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {login && (
           <LoginForm
-            onRegisterClick={() => changeModal("register")}
-            onRecoverPasswordClick={() => changeModal("recoverPassword")}
+            onRegisterClick={() => changeModal('register')}
+            onRecoverPasswordClick={() => changeModal('recoverPassword')}
             onClose={() => setIsOpen(false)}
           />
         )}
         {register && (
           <RegisterForm
-            onCancelClick={() => changeModal("login")}
+            onCancelClick={() => changeModal('login')}
             onClose={() => setIsOpen(false)}
           />
         )}
         {recoverPassword && (
           <RecoverPasswordForm
-            onLoginClick={() => changeModal("login")}
+            onLoginClick={() => changeModal('login')}
             onClose={() => setIsOpen(false)}
           />
         )}

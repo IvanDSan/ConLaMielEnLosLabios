@@ -1,16 +1,16 @@
 .galleryContainer {
   width: 100%;
   padding-inline: 5rem;
-
+  
   .slick-slide {
     padding: 0 10px;
     display: flex;
   }
-
+  
   .slick-list {
     display: flex;
   }
-
+  
   .slick-track {
     display: flex;
     align-items: stretch; 
@@ -24,7 +24,7 @@
     font-size: 24px;
     display: grid;
     place-items: center;
-    padding-top: 3px;
+    padding-top: 1px;
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.3s;
