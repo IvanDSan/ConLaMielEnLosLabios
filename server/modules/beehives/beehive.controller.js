@@ -39,46 +39,55 @@ class BeehivesController {
   };
 
   createBeehive = async (req, res) => {
-    const { name, description } = JSON.parse(req.body.newBeehive);
-    const connection = await dbPool.getConnection();
-
     try {
-      await connection.beginTransaction();
-
-      let sql = "INSERT INTO beehive (name, description) VALUES (?, ?) "; // consultas parametrizadas ( previenen inyecciones de sql )
-      let values = [name, description];
-      const result = await connection.query(sql, values);
-      let beehive_id = result[0].insertId;
-
-      for (const img of req.files) {
-        const filename = img.filename;
-        sql = "INSERT INTO beehive_image (beehive_id, image_url) VALUES (?, ?)";
-        values = [beehive_id, filename];
-        await connection.query(sql, values);
+      console.log("Datos recibidos:", req.body); // Agrega esto para depurar
+      
+      if (!req.body.newBeehive) {
+        return res.status(400).json({ error: "No se enviaron datos de la colmena" });
       }
-
-      connection.commit();
-      res.status(200).json({ message: "Beehive create" });
+  
+      const newBeehive = JSON.parse(req.body.newBeehive);
+      const { name, short_description, large_description } = newBeehive;
+  
+      if (!name || !short_description || !large_description) {
+        return res.status(400).json({ error: "Todos los campos son obligatorios" });
+      }
+  
+      const connection = await dbPool.getConnection();
+      await connection.beginTransaction();
+  
+      const sql = "INSERT INTO beehive (name, short_description, large_description) VALUES (?, ?, ?)";
+      const [result] = await connection.query(sql, [name, short_description, large_description]);
+  
+      const beehive_id = result.insertId;
+  
+      if (req.files && req.files.length > 0) {
+        for (const img of req.files) {
+          await connection.query("INSERT INTO beehive_image (beehive_id, image_url) VALUES (?, ?)", [
+            beehive_id,
+            img.filename,
+          ]);
+        }
+      }
+  
+      await connection.commit();
+      res.status(200).json({ message: "Colmena creada con éxito" });
     } catch (error) {
-      console.log(error);
-      await connection.rollback();
+      console.error("Error en createBeehive:", error);
       res.status(500).json({ error: "Error al crear la colmena" });
-    } finally {
-      //Siempre es obligatorio!!
-      if (connection) connection.release();
     }
   };
 
   updateBeehive = async (req, res) => {
     const { beehive_id } = req.params;
-    const { name, description } = JSON.parse(req.body.updatedBeehive);
+    const { name, short_description, large_description } = JSON.parse(req.body.updatedBeehive);
     const connection = await dbPool.getConnection();
 
     try {
       await connection.beginTransaction();
 
-      let sql = "UPDATE beehive SET name = ?, description = ? WHERE beehive_id = ?";
-      let values = [name, description, beehive_id];
+      let sql = "UPDATE beehive SET name = ?, short_description = ? , large_description = ? WHERE beehive_id = ?";
+      let values = [name, short_description, large_description, beehive_id];
       const result = await connection.query(sql, values);
 
       if (result.affectedRows === 0) {

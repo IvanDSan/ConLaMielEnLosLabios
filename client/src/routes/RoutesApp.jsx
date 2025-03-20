@@ -16,7 +16,9 @@ import { ProductDetail } from '../pages/ProductVerMas/ProductVerMas';
 import { SponsorColmena } from '../pages/SponsorColmena/sponsorColmena';
 import { Talleres } from '../pages/TalleresForm/TalleresForm';
 import { Home } from '../pages/Home/Home';
-import BeehiveList from '../components/BeehiveList/BeehiveList';
+import BeehiveList from '../pages/BeehiveList/BeehiveList';
+import BeehivesView from "../pages/BeehivesView/BeehivesView";
+import BeehiveIndividual from "../pages/IndividualBeehive/BeehiveIndividual";
 import { NavbarAdmin } from "../components/NavbarAdmin/NavbarAdmin";
 import UserOrders from "../pages/UserPedidos/UserPedidos";
 
@@ -71,7 +73,8 @@ export const RoutesApp = () => {
               <Route path="/talleres" element={<Talleres />} />
               <Route path="/carrito" element={<ShoppingCart />} />
               <Route path="/perfil" element={<h1>Perfil</h1>} />
-              <Route path="/colmenas" element={<h1>Colmenas</h1>} />
+              <Route path="/colmenas" element={<BeehivesView />} />
+              <Route path="/beehives/:id" element={<BeehiveIndividual />} />
               <Route path="/verify" element={<VerifyEmail />} />
               <Route path="/pedidos" element={<UserOrders />} />
               <Route path="/producto/:id" element={<ProductDetail />} />

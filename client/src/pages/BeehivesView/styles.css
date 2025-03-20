@@ -1,0 +1,402 @@
+:root {
+  --bg-color: #fff4e3;
+  --brown: #795548;
+  --honey-yellow: #f4c13d;
+  --dark-blue: #01010d;
+  --bg-cream: #fff4e3;
+  --text-brown: #5c3d1e;
+  --border-gold: #ffcc00;
+}
+
+.beehives-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 3rem 0;
+
+  h2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+
+.beehive-card {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background-color: #fceabb;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.3);
+    background-color: #f9df9f;
+  }
+
+  .beehive-image {
+    width: 50%;
+    height: 300px;
+    position: relative;
+
+    .slick-slider {
+      height: 100%;
+    }
+
+    .slick-list,
+    .slick-track {
+      height: 100%;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 0.5rem;
+      background-color: var(--brown);
+      z-index: 2;
+    }
+
+    .carousel-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+  }
+
+  .beehive-info {
+    width: 50%;
+    padding: 20px;
+    text-align: center;
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #444;
+    }
+
+    .beehive-button {
+      background-color: #ffcc00;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        background-color: #e6b800;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .honeycomb-icon {
+    position: absolute;
+    bottom: -1rem;
+    right: -1rem;
+    opacity: 0.5;
+
+    img {
+      width: 10rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .beehive-card {
+    flex-direction: column;
+    max-width: 90%;
+
+    .beehive-image {
+      width: 100%;
+      height: 200px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 0.5rem;
+        width: 100%;
+        background-color: var(--brown);
+      }
+
+      .carousel-image {
+        height: 200px;
+      }
+    }
+
+    .beehive-info {
+      width: 100%;
+      padding: 15px;
+
+      h3 {
+        font-size: 1.2rem;
+        margin-top: 10px;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+
+      .beehive-button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+    }
+
+    .honeycomb-icon {
+      font-size: 1.5rem;
+      bottom: -15px;
+      right: -10px;
+    }
+  }
+
+  .important-message-container {
+    margin: 2rem 15px;
+    padding: 15px;
+  }
+
+  .important-message {
+    padding: 20px 15px 10px;
+    font-size: 0.9rem;
+  }
+
+  .bee-container {
+    height: 50px;
+    margin-bottom: -25px;
+  }
+
+  .bee {
+    height: 30px;
+    width: 50px;
+
+    &::after {
+      height: 6px;
+      width: 6px;
+      top: 12px;
+      left: 8px;
+    }
+
+    .wings {
+      height: 20px;
+      width: 10px;
+      top: -3px;
+      left: 30px;
+    }
+
+    .stinger {
+      height: 4px;
+      width: 8px;
+      top: 13px;
+    }
+  }
+}
+
+@media (min-width: 577px) and (max-width: 992px) {
+  .beehive-card {
+    max-width: 85%;
+
+    .beehive-image {
+      height: 250px;
+
+      .carousel-image {
+        height: 250px;
+      }
+    }
+
+    .beehive-info {
+      h3 {
+        font-size: 1.3rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+    }
+
+    .honeycomb-icon {
+      font-size: 1.8rem;
+      bottom: -20px;
+      right: -12px;
+    }
+  }
+}
+
+@media (min-width: 993px) and (max-width: 1200px) {
+  .beehive-card {
+    max-width: 650px;
+
+    .beehive-image {
+      height: 280px;
+
+      .carousel-image {
+        height: 280px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1201px) {
+  .beehive-card {
+    max-width: 700px;
+
+    .beehive-image {
+      height: 300px;
+
+      .carousel-image {
+        height: 300px;
+      }
+    }
+  }
+}
+
+.important-message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3rem auto;
+  max-width: 800px;
+  position: relative;
+  padding: 20px;
+
+  .bee-container {
+    position: relative;
+    height: 60px;
+    width: 100%;
+    margin-bottom: -30px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+  }
+
+  .important-message {
+    background-color: var(--bg-cream);
+    padding: 30px 25px 20px;
+    color: var(--text-brown);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid var(--border-gold);
+    border-right: 5px solid var(--border-gold);
+    max-width: 100%;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: none;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      background-image: radial-gradient(var(--border-gold) 15%, transparent 16%),
+                        radial-gradient(var(--border-gold) 15%, transparent 16%);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      opacity: 0.1;
+      z-index: -1;
+      border-radius: 15px;
+    }
+  }
+}
+
+.bee {
+  height: 40px;
+  width: 70px;
+  background: var(--honey-yellow);
+  border-radius: 35px;
+  position: relative;
+  animation: fly 4s infinite ease-in-out;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 25px,
+      var(--dark-blue) 25px,
+      var(--dark-blue) 35px,
+      transparent 35px,
+      transparent 45px,
+      var(--dark-blue) 45px,
+      var(--dark-blue) 55px
+    );
+    border-radius: 35px;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    height: 8px;
+    width: 8px;
+    background-color: var(--dark-blue);
+    border-radius: 50%;
+    top: 15px;
+    left: 12px;
+  }
+
+  .wings {
+    position: absolute;
+    height: 25px;
+    width: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    top: -5px;
+    left: 40px;
+    transform: rotate(10deg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .stinger {
+    position: absolute;
+    height: 5px;
+    width: 10px;
+    background-color: var(--dark-blue);
+    top: 18px;
+    right: -5px;
+    border-radius: 0 5px 5px 0;
+  }
+}
+
+@keyframes fly {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+}
