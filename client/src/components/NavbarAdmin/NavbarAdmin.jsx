@@ -8,7 +8,7 @@ import './styles.css';
 import { UserContext } from '../../context/UserContext';
 
 export const NavbarAdmin = () => {
-  const { admin, user, logout } = useContext(UserContext);
+  const { admin, logout } = useContext(UserContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [login, setLogin] = useState(false);
@@ -17,7 +17,7 @@ export const NavbarAdmin = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const navigate = useNavigate();
-  console.log(user, "useeeeeeeeeeeeeeeeeeeeeeeeeer")
+  
   const changeModal = (modal) => {
     if (modal === 'login') {
       setLogin(true);
@@ -46,7 +46,7 @@ export const NavbarAdmin = () => {
   return (
     <>
       <header className="container">
-        <nav>
+        <nav className='navBarAdmin'>
           <img
             src="/images/logo.svg"
             alt="logo"
@@ -116,15 +116,6 @@ export const NavbarAdmin = () => {
           <ul>
             <li>
               <img
-                src={`/icons/${admin ? 'logout' : 'login'}.svg`}
-                alt="login"
-                style={{ cursor: 'pointer' }}
-                onClick={handleLoginClick}
-              />
-              
-            </li>
-            <li>
-              <img
             src="/icons/logout.svg"
             alt="logout"
             className=""
@@ -152,26 +143,50 @@ export const NavbarAdmin = () => {
             <ul>
               <li>
                 <NavLink
-                  to="/tienda"
+                  to="/productos"
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Nuestra tienda
+                  Productos
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/talleres"
+                  to="/categorias"
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Cursos y talleres
+                  Categorias
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/apadrina"
+                  to="/usuarios"
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >
-                  Apoya una colmena
+                  Usuarios
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/suscripciones"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Suscripciones
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/colmenas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Colmenas
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/ventas"
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  Ventas
                 </NavLink>
               </li>
             </ul>

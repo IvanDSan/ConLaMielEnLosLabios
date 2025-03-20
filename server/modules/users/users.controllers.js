@@ -443,11 +443,10 @@ class UsersController {
 
   completePurchaseCart = async (req, res) => {
     const connection = await dbPool.getConnection();
-  console.log(req.body, "REQQQQQQQQQQQQQQQQQQQQQ")
-  let user_id = req.user_id;
+    let user_id = req.user_id;
    try {
       await connection.beginTransaction();
-      let sql = "SELECT MAX(sale_id) as lastSale FROM sale"
+      let sql = "SELECT MAX(sale_id) as lastSale FROM sale";
       const result = await connection.query(sql);
       let maxId = result[0][0].lastSale || 0;
       let newSaleId = maxId + 1;
@@ -459,8 +458,12 @@ class UsersController {
          [newSaleId, user_id, product_id, quantity]
         );
      }
+
+     await connection.query(
+      "DELETE FROM cart WHERE user_id = ?", [user_id]
+     );
   
-      await connection.commit(); // Confirmar la transacción
+    await connection.commit(); // Confirmar la transacción
     //   console.log("Compra realizada con éxito");
      res.status(200).json({message: "compra realizada correctamente"})
     } catch (error) {
