@@ -9,11 +9,11 @@ export const NavbarAdmin = () => {
 
   return (
     <>
-      <header className="container">
+      <header>
         <nav className="navBarAdmin">
           <img
             src="/images/logo.svg"
-            alt="logo"
+            alt="l  ogo"
             className="logo"
             onClick={() => navigate('/')}
           />

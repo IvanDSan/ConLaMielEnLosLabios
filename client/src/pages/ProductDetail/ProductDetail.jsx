@@ -1,13 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { ProductCard } from '../../components/ProductCard/ProductCard';
+import { CartContext } from '../../context/CartContextProvider';
 import './styles.css';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * Muestra la informaci n detallada de un producto
+ *
+ * Obtendra el producto con el id pasado como par metro en la URL
+ * y lo renderizar  con su imagen, t tulo, descripci n y precio.
+ * Adem s, buscar  otros productos que tengan la misma categor a
+ * y no sean el mismo producto, y los renderizar  en una secci n
+ * aparte.
+ *
+ * @returns {React.ReactElement}
+ */
+/******  fe1cfe5e-1da4-4f53-a913-d20797761cf9  *******/
 export const ProductDetail = () => {
   const { id } = useParams();
+  const { addToCart } = useContext(CartContext);
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
@@ -68,21 +84,14 @@ export const ProductDetail = () => {
         <div className="productInfoContainer">
           <p className="productDescription">{product.description}</p>
 
-          <div className="productDetails">
-            <p className="productStock">
-              <strong>Stock:</strong> Disponible
-            </p>
-            <p className="productSize">
-              <strong>Tamaño:</strong> 1.5L
-            </p>
-            <p className="productColor">
-              <strong>Color:</strong> Amarillo
-            </p>
-          </div>
-
           <p className="productPrice">{product.price}€</p>
 
-          <button className="addToCartButton">Añadir al carrito</button>
+          <button
+            className="addToCartButton"
+            onClick={() => addToCart(product)}
+          >
+            Añadir al carrito
+          </button>
         </div>
       </div>
 
@@ -93,34 +102,10 @@ export const ProductDetail = () => {
           </h2>
           <div className="relatedProductsGrid">
             {relatedProducts.slice(0, 3).map((relatedProduct) => (
-              <div
+              <ProductCard
                 key={relatedProduct.product_id}
-                className="relatedProductCard"
-              >
-                <img
-                  src={relatedProduct.image_url || '/default-image.jpg'}
-                  alt={relatedProduct.title}
-                  className="relatedProductImage"
-                />
-                <div className="relatedProductContent">
-                  <h3 className="relatedProductTitle">
-                    {relatedProduct.title}
-                  </h3>
-                  <p className="relatedProductDescription">
-                    {relatedProduct.description}
-                  </p>
-                  <p className="relatedProductPrice">{relatedProduct.price}€</p>
-                  <div className="relatedProductActions">
-                    <Link
-                      to={`/producto/${relatedProduct.product_id}`}
-                      className="moreInfoButton"
-                    >
-                      Ver más
-                    </Link>
-                    <button className="addToCartButton">Añadir</button>
-                  </div>
-                </div>
-              </div>
+                product={relatedProduct}
+              />
             ))}
           </div>
         </>

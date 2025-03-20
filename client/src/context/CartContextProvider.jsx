@@ -121,6 +121,8 @@ export const CartContextProvider = ({ children }) => {
         }
         return [...prevCart, { ...product, quantity: 1 }];
       });
+
+      toast.success(`${product.title} agregado al carrito`);
     } catch (error) {
       console.error('Error al agregar producto:', error);
       if (error.status === 401) {

@@ -12,7 +12,7 @@ import { BeehivesView } from '../pages/BeehivesView/BeehivesView';
 import { BeehiveIndividual } from '../pages/IndividualBeehive/BeehiveIndividual';
 import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
 import { UserOrders } from '../pages/UserPedidos/UserPedidos';
-import { ProductDetail } from '../pages/ProductVerMas/ProductVerMas';
+import { ProductDetail } from '../pages/ProductDetail/ProductDetail';
 
 /** COMPONENTS */
 import { Navbar } from '../components/Navbar/Navbar';
