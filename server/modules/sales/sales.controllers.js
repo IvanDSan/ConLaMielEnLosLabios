@@ -53,7 +53,7 @@ class SalesControllers {
       if(![1, 2, 3].includes(sale_status)){
         res.status(400).json({error: 'Estado no valido'})
       }
-      console.log(req.body, "REqboooooodyyyyy")
+      
       const sql = 'UPDATE sale SET sale_status = ? WHERE user_id = ? AND product_id = ? AND sale_id = ?';
       const result = await executeQuery(sql, [sale_status, user_id, product_id, sale_id]);
       if (result.affectedRows > 0){
