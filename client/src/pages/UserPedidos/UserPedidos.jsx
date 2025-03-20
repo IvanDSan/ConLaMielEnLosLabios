@@ -161,14 +161,14 @@ export const UserOrders = () => {
                     className={`orderStatus ${
                       item.sale_status === 1
                         ? "pending"
-                        : item.sale_status === 2
+                        : item.sale_status === 3
                         ? "completed"
                         : "canceled"
                     }`}
                   >
                     {item.sale_status === 1
                       ? "Pendiente"
-                      : item.sale_status === 2
+                      : item.sale_status === 3
                       ? "Recibido"
                       : "Cancelado"}
                   </p>
