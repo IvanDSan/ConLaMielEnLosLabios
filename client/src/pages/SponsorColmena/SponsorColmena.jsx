@@ -1,43 +1,44 @@
-import React from "react";
-import "./Styles.css";
+import React from 'react';
+import './styles.css';
 
 export const SponsorColmena = () => {
   const subscriptionTiers = [
     {
-      title: "Single",
+      title: 'Single',
       description:
-        "Patrocinio anual individual que incluye acceso a contenido exclusivo y descuentos en productos.",
-      price: "70.00€",
+        'Patrocinio anual individual que incluye acceso a contenido exclusivo y descuentos en productos.',
+      price: '70.00€',
     },
     {
-      title: "Pro",
+      title: 'Pro',
       description:
-        "Patrocinio premium con ventajas exclusivas como visitas a colmenares y productos personalizados.",
-      price: "110.00€",
+        'Patrocinio premium con ventajas exclusivas como visitas a colmenares y productos personalizados.',
+      price: '110.00€',
     },
   ];
+
   const galleryImages = [
-    "/images/colmenas/caja1.png",
-    "/images/colmenas/caja2.png",
-    "/images/colmenas/caja3.png",
-    "/images/colmenas/caja4.png",
+    '/images/colmenas/caja1.png',
+    '/images/colmenas/caja2.png',
+    '/images/colmenas/caja3.png',
+    '/images/colmenas/caja4.png',
   ];
 
   const testimonials = [
     {
-      comment: "¡Gran iniciativa para salvar abejas!",
-      name: "María G.",
-      rating: "★★★★★",
+      comment: '¡Gran iniciativa para salvar abejas!',
+      name: 'María G.',
+      rating: '★★★★★',
     },
     {
-      comment: "La miel es deliciosa y apoyo una buena causa.",
-      name: "Juan P.",
-      rating: "★★★★★",
+      comment: 'La miel es deliciosa y apoyo una buena causa.',
+      name: 'Juan P.',
+      rating: '★★★★★',
     },
     {
-      comment: "Excelente servicio y compromiso.",
-      name: "Ana R.",
-      rating: "★★★★★",
+      comment: 'Excelente servicio y compromiso.',
+      name: 'Ana R.',
+      rating: '★★★★★',
     },
   ];
 

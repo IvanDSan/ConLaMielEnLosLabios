@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import './styles.css';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
@@ -12,7 +13,6 @@ export const ContactForm = () => {
     entidad: '',
     mensaje: '',
   });
-  const [status, setStatus] = useState({ success: false, message: '' });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -27,10 +27,7 @@ export const ContactForm = () => {
       !formData.email ||
       !formData.mensaje
     ) {
-      setStatus({
-        success: false,
-        message: 'Todos los campos son obligatorios.',
-      });
+      toast.error('Por favor, completa todos los campos.');
       return;
     }
 
@@ -38,10 +35,7 @@ export const ContactForm = () => {
       const response = await axios.post(`${apiURL}/users/contact`, formData);
 
       if (response.status === 200) {
-        setStatus({
-          success: true,
-          message: 'Formulario enviado correctamente.',
-        });
+        toast.success('Email enviado correctamente.');
 
         setFormData({
           nombre: '',
@@ -52,11 +46,8 @@ export const ContactForm = () => {
         });
       }
     } catch (error) {
-      setStatus({
-        success: false,
-        message: 'Error al enviar el formulario. Inténtalo de nuevo.',
-        error,
-      });
+      console.error('Error al enviar el formulario:', error);
+      toast.error('Error al enviar el formulario. Inténtalo de nuevo.');
     }
   };
 
@@ -106,18 +97,6 @@ export const ContactForm = () => {
           value={formData.mensaje}
           onChange={handleChange}
         ></textarea>
-
-        <div className="statusMessageContainer">
-          {status.message && (
-            <p
-              className={`statusMessage ${
-                status.success ? 'success' : 'error'
-              }`}
-            >
-              {status.message}
-            </p>
-          )}
-        </div>
 
         <button type="submit" className="contactSubmit">
           Enviar

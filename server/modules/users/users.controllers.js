@@ -7,6 +7,7 @@ import { dbPool } from '../../config/db.js';
 import {
   sendVerificationEmail,
   sendRecoveryPassword,
+  sendContactEmail
 } from '../../services/mailer.js';
 import generateRandomPassword from '../../utils/generateRandomPassword.js';
 
@@ -334,9 +335,9 @@ class UsersController {
   };
 
   addProductToCart = async (req, res) => {
-    const { product_id, quantity = 1 } = req.body; 
-    const {user_id} = req;
-    const checkCart = 'SELECT * FROM cart WHERE user_id = ? AND product_id = ?'; 
+    const { product_id, quantity = 1 } = req.body;
+    const { user_id } = req;
+    const checkCart = 'SELECT * FROM cart WHERE user_id = ? AND product_id = ?';
 
     try {
       let result = await executeQuery(checkCart, [user_id, product_id]);
@@ -366,7 +367,7 @@ class UsersController {
   };
 
   modifyCartQuantityToCart = async (req, res) => {
-    const { product_id, quantity } = req.body; 
+    const { product_id, quantity } = req.body;
     const { user_id } = req;
     const modifyCart =
       'UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?';
@@ -431,12 +432,12 @@ class UsersController {
       if (cart.length === 0) {
         return res
           .status(200)
-          .json({ message: 'El carrito está vacío', cart: []});
+          .json({ message: 'El carrito está vacío', cart: [] });
       }
-      res.status(200).json({cart, message:"ok"});
+      res.status(200).json({ cart, message: 'ok' });
     } catch (error) {
       res
-        .status(500) 
+        .status(500)
         .json({ message: 'Error al obtener el carrito', error: error.message });
     }
   };
@@ -444,36 +445,52 @@ class UsersController {
   completePurchaseCart = async (req, res) => {
     const connection = await dbPool.getConnection();
     let user_id = req.user_id;
-   try {
+    try {
       await connection.beginTransaction();
-      let sql = "SELECT MAX(sale_id) as lastSale FROM sale";
+      let sql = 'SELECT MAX(sale_id) as lastSale FROM sale';
       const result = await connection.query(sql);
       let maxId = result[0][0].lastSale || 0;
       let newSaleId = maxId + 1;
       let cart = req.body;
       for (const item of cart) {
         const { product_id, quantity } = item;
-         await connection.query(
-          "INSERT INTO sale (sale_id, user_id, product_id, quantity, sale_status) VALUES (?, ?, ?, ?, 1)",// Insertar cada producto en sale
-         [newSaleId, user_id, product_id, quantity]
+        await connection.query(
+          'INSERT INTO sale (sale_id, user_id, product_id, quantity, sale_status) VALUES (?, ?, ?, ?, 1)', // Insertar cada producto en sale
+          [newSaleId, user_id, product_id, quantity]
         );
-     }
+      }
 
-     await connection.query(
-      "DELETE FROM cart WHERE user_id = ?", [user_id]
-     );
-  
-    await connection.commit(); // Confirmar la transacción
-    //   console.log("Compra realizada con éxito");
-     res.status(200).json({message: "compra realizada correctamente"})
+      await connection.query('DELETE FROM cart WHERE user_id = ?', [user_id]);
+
+      await connection.commit(); // Confirmar la transacción
+      //   console.log("Compra realizada con éxito");
+      res.status(200).json({ message: 'compra realizada correctamente' });
     } catch (error) {
-       console.error("Error en la compra:", error);
-     await connection.rollback();
-       res.status(500).json(error)
-
-     } finally {
+      console.error('Error en la compra:', error);
+      await connection.rollback();
+      res.status(500).json(error);
+    } finally {
       connection.release();
-   }
+    }
+  };
+
+  sendContactEmail = async (req, res) => {
+    try {
+      const { nombre, apellido, email, telephone, mensaje } = req.body;
+
+      if (!nombre || !apellido || !email || !mensaje) {
+        return res
+          .status(400)
+          .json({ error: 'Todos los campos son obligatorios' });
+      }
+
+      await sendContactEmail(nombre, apellido, email, telephone, mensaje);
+      res.status(200).json({ message: 'Formulario enviado correctamente' });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: 'Error al enviar el formulario de contacto' });
+    }
   };
 }
 

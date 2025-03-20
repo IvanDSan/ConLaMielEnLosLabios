@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { fetchData } from "../../helpers/axiosHelper";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./styles.css";
+import { useState, useEffect, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchData } from '../../helpers/axiosHelper';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import './styles.css';
+import { toast } from 'react-toastify';
 
-const BeehiveDetailView = () => {
+export const BeehiveIndividual = () => {
   const [beehive, setBeehive] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams(); // Obtiene el ID de la colmena desde la URL
@@ -14,27 +15,28 @@ const BeehiveDetailView = () => {
 
   useEffect(() => {
     fetchBeehiveDetails();
-  }, [id]);
+  }, [fetchBeehiveDetails]);
 
-  const fetchBeehiveDetails = async () => {
+  const fetchBeehiveDetails = useCallback(async () => {
     try {
       setLoading(true);
       // Obtener datos de la colmena específica
-      const resBeehive = await fetchData(`/beehives/get/${id}`, "GET");
+      const resBeehive = await fetchData(`/beehives/get/${id}`, 'GET');
 
       // Obtener imágenes de la colmena
-      const resImages = await fetchData(`/beehives/images/${id}`, "GET");
+      const resImages = await fetchData(`/beehives/images/${id}`, 'GET');
 
       setBeehive({
         ...resBeehive.data,
         images: resImages.data || [],
       });
     } catch (error) {
-      console.error("Error al cargar la colmena:", error);
+      console.error('Error al cargar la colmena:', error);
+      toast.error('Error al cargar la colmena');
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   const sliderSettings = {
     dots: true,
@@ -72,7 +74,9 @@ const BeehiveDetailView = () => {
               {beehive.images.map((image, index) => (
                 <div key={index}>
                   <img
-                    src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
+                    src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${
+                      image.image_url
+                    }`}
                     alt={`${beehive.name} - imagen ${index + 1}`}
                     className="detail-carousel-image"
                   />
@@ -101,5 +105,3 @@ const BeehiveDetailView = () => {
     </div>
   );
 };
-
-export default BeehiveDetailView;

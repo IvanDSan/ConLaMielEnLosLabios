@@ -1,25 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
-// import axios from "axios";
-import './styles.css';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { fetchData } from '../../helpers/axiosHelper';
 import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
+import './styles.css';
 
-const CategoryList = () => {
+export const CategoryList = () => {
   const { token } = useContext(UserContext);
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('create');
   const [categoryName, setCategoryName] = useState('');
   const [editingCategoryId, setEditingCategoryId] = useState(null);
 
-  useEffect(() => {
-    dataCategories();
-  }, []);
-
-  const dataCategories = async () => {
+  const dataCategories = useCallback(async () => {
     try {
       setLoading(true);
       const res = await fetchData('/categories/get', 'GET', null, {
@@ -29,16 +24,19 @@ const CategoryList = () => {
       setCategories(
         Array.isArray(res.data) ? res.data : res.data.categories || []
       );
-      setError(null);
+
       setLoading(false);
     } catch (error) {
+      console.log(error);
+      toast.error('Error al obtener las categorias');
+    } finally {
       setLoading(false);
-      setError(
-        'Error al cargar las categorías: ' +
-          (error.message || 'Problema de conexión')
-      );
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    dataCategories();
+  }, [dataCategories]);
 
   const openModal = (type, category = null) => {
     setModalType(type);
@@ -77,11 +75,8 @@ const CategoryList = () => {
       setEditingCategoryId(null);
       dataCategories();
     } catch (error) {
-      setError(
-        `Error al ${
-          modalType === 'create' ? 'crear' : 'actualizar'
-        } la categoría: ${error.message}`
-      );
+      console.log(error);
+      toast.error('Error al guardar la categoría');
     }
   };
 
@@ -92,10 +87,8 @@ const CategoryList = () => {
       });
       dataCategories();
     } catch (error) {
-      setError(
-        'Error al borrar la categoría: ' +
-          (error.message || 'No se ha podido borrar la categoría')
-      );
+      console.log(error);
+      toast.error('Error al eliminar la categoría');
     }
   };
 
@@ -131,7 +124,6 @@ const CategoryList = () => {
       </button>
 
       {loading && <p className="loading">Cargando categorías...</p>}
-      {error && <p className="error">{error}</p>}
 
       <table className="category-table" border="1">
         <thead>
@@ -177,5 +169,3 @@ const CategoryList = () => {
     </div>
   );
 };
-
-export default CategoryList;

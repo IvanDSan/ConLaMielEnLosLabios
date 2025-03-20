@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import './styles.css';
 import { fetchData } from '../../helpers/axiosHelper';
 import { UserContext } from '../../context/UserContext';
+import './styles.css';
+import { toast } from 'react-toastify';
 
 export const Products = () => {
   const [products, setProducts] = useState([]);
@@ -19,7 +20,10 @@ export const Products = () => {
     axios
       .get('http://localhost:4000/products/all')
       .then((res) => setProducts(res.data))
-      .catch((error) => console.error('Error al obtener los productos', error));
+      .catch((error) => {
+        console.error('Error al obtener los productos', error);
+        toast.error('Error al obtener los productos');
+      });
   }, []);
 
   const handleCreateProduct = async (e) => {
@@ -34,6 +38,7 @@ export const Products = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error('Error al crear el producto');
     }
   };
 
@@ -51,7 +56,10 @@ export const Products = () => {
             })
             .then((res) => setProducts(res.data));
         })
-        .catch((error) => console.error('Error al editar el producto', error));
+        .catch((error) => {
+          console.error('Error al editar el producto', error);
+          toast.error('Error al editar el producto');
+        });
     }
   };
 
@@ -66,20 +74,15 @@ export const Products = () => {
       }
     } catch (error) {
       console.error('Error al eliminar el producto', error);
+      toast.error('Error al eliminar el producto');
     }
   };
 
   return (
     <div className="products-container">
-      <aside className="sidebar">
-        <div className="menu-item">📂 Apadrinamiento</div>
-        <div className="menu-item">👤 Users</div>
-        <div className="menu-item active">🛒 Productos</div>
-      </aside>
       <main className="content">
-        <h1>Productos</h1>
         <form className="create-form" onSubmit={handleCreateProduct}>
-          <h2>Crear Producto</h2>
+          <h1>Crear Producto</h1>
           <label>
             Título:
             <input
@@ -156,35 +159,23 @@ export const Products = () => {
         <table>
           <thead>
             <tr>
-              <th>All</th>
-              <th>No.</th>
+              <th>ID</th>
               <th>Imagen</th>
-              <th>ID del producto</th>
               <th>Título</th>
               <th>Descripción</th>
-              <th>Stock</th>
-              <th>Tamaño</th>
-              <th>Color</th>
               <th>Precio</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {products.map((product, index) => (
+            {products.map((product) => (
               <tr key={product.product_id}>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>{index + 1}</td>
+                <td>{product.product_id}</td>
                 <td>
                   <img src={product.image_url} alt={product.title} width="50" />
                 </td>
-                <td>{product.product_id}</td>
                 <td>{product.title}</td>
                 <td>{product.description}</td>
-                <td>{product.stock}</td>
-                <td>{product.size || 'N/A'}</td>
-                <td>{product.color || 'N/A'}</td>
                 <td>{product.price}€</td>
                 <td>
                   <button onClick={() => setProductToEdit(product)}>✏️</button>
@@ -198,12 +189,6 @@ export const Products = () => {
             ))}
           </tbody>
         </table>
-
-        <div className="pagination">
-          <button>◀ Previous</button>
-          <span>1 2 3</span>
-          <button>Next ▶</button>
-        </div>
 
         {productToEdit && (
           <div className="edit-form">

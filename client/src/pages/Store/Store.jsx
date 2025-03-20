@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import './styles.css';
+import { toast } from 'react-toastify';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
@@ -26,6 +27,7 @@ export const Store = () => {
         setCategories(categoriesResponse.data);
       } catch (err) {
         console.error('Error al obtener los productos o categorías:', err);
+        toast.error('Error al obtener los productos o categorías');
       }
     };
 

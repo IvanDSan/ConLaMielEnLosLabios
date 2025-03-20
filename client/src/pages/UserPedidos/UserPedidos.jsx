@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "./styles.css";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import './styles.css';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
-const UserOrders = () => {
+export const UserOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [authError, setAuthError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (!token) {
-          setAuthError(true);
+          toast.error('Debes iniciar sesión para ver tus pedidos.');
           return;
         }
 
@@ -47,9 +47,7 @@ const UserOrders = () => {
         setFilteredOrders(Object.values(groupedOrders));
       } catch (error) {
         console.log(error);
-        if (error.response?.status === 401) {
-          setAuthError(true);
-        }
+        toast.error('Error al obtener tus pedidos.');
       }
     };
 
@@ -63,7 +61,7 @@ const UserOrders = () => {
       filtered = orders.filter((order) => order.sale_status === status);
     }
 
-    if (searchQuery.trim() !== "") {
+    if (searchQuery.trim() !== '') {
       filtered = filtered.filter((order) =>
         order.sale_id.toString().includes(searchQuery)
       );
@@ -85,7 +83,7 @@ const UserOrders = () => {
       );
     }
 
-    if (query.trim() !== "") {
+    if (query.trim() !== '') {
       filtered = filtered.filter((order) =>
         order.sale_id.toString().includes(query)
       );
@@ -93,16 +91,6 @@ const UserOrders = () => {
 
     setFilteredOrders(filtered);
   };
-
-  if (authError) {
-    return (
-      <div className="authErrorContainer">
-        <p className="authErrorMessage">
-          Debes <a href="/login">iniciar sesión</a> para ver tus pedidos.
-        </p>
-      </div>
-    );
-  }
 
   if (orders.length === 0) {
     return <p className="noOrdersMessage">No tienes pedidos aún.</p>;
@@ -124,25 +112,25 @@ const UserOrders = () => {
 
       <div className="statusFilters">
         <button
-          className={`filterButton ${selectedStatus === null ? "active" : ""}`}
+          className={`filterButton ${selectedStatus === null ? 'active' : ''}`}
           onClick={() => filterByStatus(null)}
         >
           Todos
         </button>
         <button
-          className={`filterButton ${selectedStatus === 1 ? "active" : ""}`}
+          className={`filterButton ${selectedStatus === 1 ? 'active' : ''}`}
           onClick={() => filterByStatus(1)}
         >
           Pendiente
         </button>
         <button
-          className={`filterButton ${selectedStatus === 2 ? "active" : ""}`}
+          className={`filterButton ${selectedStatus === 2 ? 'active' : ''}`}
           onClick={() => filterByStatus(2)}
         >
           Recibido
         </button>
         <button
-          className={`filterButton ${selectedStatus === 3 ? "active" : ""}`}
+          className={`filterButton ${selectedStatus === 3 ? 'active' : ''}`}
           onClick={() => filterByStatus(3)}
         >
           Cancelado
@@ -155,12 +143,12 @@ const UserOrders = () => {
             <div key={order.sale_id} className="orderGroup">
               <h3 className="orderGroupTitle">Compra ID: {order.sale_id}</h3>
               <p className="orderDate">
-                {new Date(order.date).toLocaleDateString("es-ES")}
+                {new Date(order.date).toLocaleDateString('es-ES')}
               </p>
               {order.items.map((item, index) => (
                 <div key={index} className="orderCard">
                   <img
-                    src={item.image_url || "/default-image.jpg"}
+                    src={item.image_url || '/default-image.jpg'}
                     alt={item.title}
                     className="orderImage"
                   />
@@ -171,17 +159,17 @@ const UserOrders = () => {
                   <p
                     className={`orderStatus ${
                       order.sale_status === 1
-                        ? "pending"
+                        ? 'pending'
                         : order.sale_status === 2
-                        ? "completed"
-                        : "canceled"
+                        ? 'completed'
+                        : 'canceled'
                     }`}
                   >
                     {order.sale_status === 1
-                      ? "Pendiente"
+                      ? 'Pendiente'
                       : order.sale_status === 2
-                      ? "Recibido"
-                      : "Cancelado"}
+                      ? 'Recibido'
+                      : 'Cancelado'}
                   </p>
                 </div>
               ))}
@@ -194,5 +182,3 @@ const UserOrders = () => {
     </div>
   );
 };
-
-export default UserOrders;
