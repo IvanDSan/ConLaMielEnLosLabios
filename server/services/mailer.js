@@ -47,7 +47,7 @@ export const sendContactEmail = async (
   nombre,
   apellido,
   email,
-  entidad,
+  telephone,
   mensaje
 ) => {
   const mailOptions = {
@@ -58,7 +58,7 @@ export const sendContactEmail = async (
       <h3>Nuevo mensaje de contacto</h3>
       <p><strong>Nombre:</strong> ${nombre} ${apellido}</p>
       <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Entidad:</strong> ${entidad || "No especificado"}</p>
+      <p><strong>teléfono:</strong> ${telephone || "No especificado"}</p>
       <p><strong>Mensaje:</strong> ${mensaje}</p>
     `,
   };
