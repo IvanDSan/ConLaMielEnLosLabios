@@ -1,8 +1,8 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { fetchData } from '../../helpers/axiosHelper';
-import { UserContext } from '../../context/UserContext';
-import { toast } from 'react-toastify';
-import './styles.css';
+import { useCallback, useContext, useEffect, useState } from "react";
+import { fetchData } from "../../helpers/axiosHelper";
+import { UserContext } from "../../context/UserContext";
+import { toast } from "react-toastify";
+import "./styles.css";
 
 export const Sales = () => {
   const { token } = useContext(UserContext);
@@ -10,7 +10,7 @@ export const Sales = () => {
 
   const fetchSales = useCallback(async () => {
     try {
-      const response = await fetchData('/sales/all', 'GET', null, {
+      const response = await fetchData("/sales/all", "GET", null, {
         Authorization: `Bearer ${token}}`,
       });
       console.log(response);
@@ -26,7 +26,7 @@ export const Sales = () => {
 
   const deleteSale = async (sale_id) => {
     try {
-      await fetchData(`/sales/deleteLogic/${sale_id}`, 'PUT', null, {
+      await fetchData(`/sales/deleteLogic/${sale_id}`, "PUT", null, {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         if (res.status === 200) {
@@ -35,7 +35,7 @@ export const Sales = () => {
       });
     } catch (err) {
       console.log(err);
-      toast.error('Error al eliminar la venta');
+      toast.error("Error al eliminar la venta");
     }
   };
 
@@ -43,7 +43,7 @@ export const Sales = () => {
     try {
       const response = await fetchData(
         `/sales/modifyStatusOfOrder`,
-        'POST',
+        "POST",
         {
           sale_status: newStatus,
           user_id,
@@ -64,8 +64,8 @@ export const Sales = () => {
         );
       }
     } catch (err) {
-      console.log('Error en la petición', err);
-      toast.error('Error al modificar el estado de la venta');
+      console.log("Error en la petición", err);
+      toast.error("Error al modificar el estado de la venta");
     }
   };
 
@@ -96,10 +96,10 @@ export const Sales = () => {
                 <td>{sale.quantity}</td>
                 <td>
                   {sale.sale_status === 1
-                    ? 'Pendiente'
+                    ? "Pendiente"
                     : sale.sale_status === 2
-                    ? 'Cancelado'
-                    : 'Completado'}
+                    ? "Cancelado"
+                    : "Completado"}
                 </td>
                 <td>{sale.date}</td>
                 <td className="actions">
