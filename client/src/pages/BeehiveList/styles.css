@@ -10,7 +10,7 @@
   text-align: center;
   gap: 2rem;
 
-  h2{
+  h2 {
     padding-top: 3rem;
   }
 
@@ -27,14 +27,12 @@
 
     .image-wrapper {
       position: relative;
-      padding-top:1rem;
+      padding-top: 1rem;
       display: inline-block;
       margin: 10px;
       width: 10rem;
     }
-    
 
-    
     .delete-img-btn {
       position: absolute;
       top: 5px;
@@ -50,11 +48,11 @@
       align-items: center;
       cursor: pointer;
     }
-    
+
     .delete-img-btn:hover {
       background: rgba(0, 0, 0, 0.7);
     }
-    
+
     .beehive-image {
       width: 100px;
       height: 100px;
@@ -69,7 +67,7 @@
       border-radius: 0.5rem;
     }
 
-    textarea{
+    textarea {
       padding-top: 1rem;
       background-color: transparent;
       border-radius: 0.5rem;
@@ -101,9 +99,18 @@
 
   .category-table {
     width: 80%;
-    border-top: 2px solid #BAA9A9;
+    border-top: 2px solid #baa9a9;
     border-collapse: collapse;
     background-color: var(--bg-color);
+
+    img {
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
   }
 
   th {
@@ -134,7 +141,9 @@
     background-color: transparent;
 
     img {
-      width: 2rem;
+      width: 3rem;
+      object-fit: cover;
+      height: 3rem;
     }
   }
 
@@ -143,7 +152,9 @@
     border: none;
 
     img {
-      width: 2rem;
+      width: 3rem;
+      object-fit: cover;
+      height: 3rem;
     }
   }
 }

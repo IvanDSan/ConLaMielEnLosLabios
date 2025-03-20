@@ -14,7 +14,9 @@ import { UserManagement } from "../components/UserManagement/UserManagement";
 import { ProductDetail } from "../pages/ProductVerMas/ProductVerMas";
 import { Talleres } from "../pages/TalleresForm/TalleresForm";
 import { Home } from '../pages/Home/Home';
-import BeehiveList from '../components/BeehiveList/BeehiveList';
+import BeehiveList from '../pages/BeehiveList/BeehiveList';
+import BeehivesView from "../pages/BeehivesView/BeehivesView";
+import BeehiveIndividual from "../pages/IndividualBeehive/BeehiveIndividual";
 
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
@@ -65,7 +67,8 @@ export const RoutesApp = () => {
               <Route path="/apadrina" element={<h1>Apadrina</h1>} />
               <Route path="/carrito" element={<ShoppingCart />} />
               <Route path="/perfil" element={<h1>Perfil</h1>} />
-              <Route path="/colmenas" element={<h1>Colmenas</h1>} />
+              <Route path="/colmenas" element={<BeehivesView />} />
+              <Route path="/beehives/:id" element={<BeehiveIndividual />} />
               <Route path="/verify" element={<VerifyEmail />} />
               <Route path="/pedidos" element={<h1>Pedidos</h1>} />
               <Route path="/producto/:id" element={<ProductDetail />} />

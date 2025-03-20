@@ -1,0 +1,139 @@
+:root {
+  --primary-color: #eace4a;
+  --secondary-color: #795548;
+  --text-color: #333;
+  --text-light: #666;
+    --bg-color: #fff4e3;
+    --bg-color-dark: #ffe0b2;
+    --yellow: #eace4a;
+    --yellow-light: #f5dd7d;
+    --brown: #795548;
+    --red: #892634;
+    --purple: #a856ff;
+    --purple-light: #d6b0ff;
+    --purple-dark: #911bff; /*color de realce de los botones */
+    --white: #f3f3f3;
+    --black: #0e0e0e;
+    --gray: #ddccbc;
+
+}
+
+.beehive-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: var(--bg-color);
+}
+
+.back-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #e69617;
+    transform: scale(1.05);
+  }
+}
+
+.beehive-detail-header h2 {
+  color: var(--primary-color);
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.beehive-detail-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.beehive-detail-image {
+  flex: 1;
+  min-height: 350px;
+  max-width: 600px;
+  border-radius: 12px;
+
+  .slick-dots {
+    bottom: 10px;
+
+    li button:before {
+      color: var(--primary-color);
+      opacity: 0.6;
+    }
+
+    li.slick-active button:before {
+      opacity: 1;
+      color: var(--primary-color);
+    }
+  }
+
+  .slick-prev,
+  .slick-next {
+    z-index: 1;
+    &:before {
+      color: var(--primary-color);
+    }
+  }
+}
+
+.detail-carousel-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.beehive-detail-info {
+  flex: 1;
+  padding: 25px;
+  background-color: #fff9e6;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.info-section {
+  margin-bottom: 40px;
+
+  h3 {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+
+  p {
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 1.1rem;
+  }
+}
+
+.no-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+
+  p {
+    color: var(--text-light);
+    font-style: italic;
+  }
+}

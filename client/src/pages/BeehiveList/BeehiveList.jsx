@@ -3,11 +3,6 @@ import { fetchData } from "../../helpers/axiosHelper";
 import "./styles.css";
 import { UserContext } from "../../context/UserContext";
 
-const innitValues = {
-  name: "",
-  description: "",
-};
-
 const BeehiveList = () => {
   const [beehives, setBeehives] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,6 +11,7 @@ const BeehiveList = () => {
   const [modalType, setModalType] = useState("create");
   const [beehiveName, setBeehiveName] = useState("");
   const [beehiveDescription, setBeehiveDescription] = useState("");
+  const [beehiveLargeDescription, setBeehiveLargeDescription] = useState("");
   const [beehiveImages, setBeehiveImages] = useState([]);
   const [editingBeehiveId, setEditingBeehiveId] = useState(null);
   const { token } = useContext(UserContext);
@@ -28,19 +24,19 @@ const BeehiveList = () => {
     try {
       setLoading(true);
       const res = await fetchData("/beehives/get", "GET");
-
+      
       const beehives = await Promise.all(
         res.data.map(async (beehive) => {
           const resImages = await fetchData(`/beehives/images/${beehive.beehive_id}`, "GET");
           return {
             beehive_id: beehive.beehive_id,
             name: beehive.name,
-            description: beehive.description,
+            short_description: beehive.short_description,
+            large_description: beehive.large_description, // Make sure to include large_description
             images: resImages.data || [],
           };
         })
       );
-      console.log(beehives);
 
       setBeehives(beehives);
       setError(null);
@@ -59,65 +55,115 @@ const BeehiveList = () => {
   const openModal = (type, beehive = null) => {
     setModalType(type);
     setBeehiveName(beehive ? beehive.name : "");
-    setBeehiveDescription(beehive ? beehive.description : "");
-    setBeehiveImages(beehive ? beehive.images || [] : []);  
+    setBeehiveDescription(beehive ? beehive.short_description || "" : "");
+    setBeehiveLargeDescription(beehive ? beehive.large_description || "" : "");
+    setBeehiveImages(beehive ? beehive.images || [] : []);
     setEditingBeehiveId(beehive ? beehive.beehive_id : null);
     setShowModal(true);
+  };
+
+  const renameImageFile = (file, index) => {
+    if (!(file instanceof File)) return file;
+
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 8);
+    const extension = file.name.split(".").pop();
+
+    const newName = `bee_${timestamp.toString().slice(-4)}_${randomString}.${extension}`;
+
+    return new File([file], newName, { type: file.type });
   };
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const filesArray = Array.from(e.target.files);
-      setBeehiveImages((prevImages) => [...prevImages, ...filesArray]);  // Añadimos nuevas imágenes sin eliminar las anteriores
+
+      const renamedFiles = filesArray.map((file, index) => renameImageFile(file, index));
+
+      setBeehiveImages((prevImages) => [...prevImages, ...renamedFiles]);
     }
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
 
+    if (!beehiveName.trim() || !beehiveDescription.trim()) {
+      setError("El nombre y la descripción son obligatorios");
+      return;
+    }
+
     try {
-      const beehiveData = { name: beehiveName, description: beehiveDescription };
+      const beehiveData = {
+        name: beehiveName,
+        short_description: beehiveDescription,
+        large_description: beehiveLargeDescription,
+      };
+
       const newFormData = new FormData();
       newFormData.append("newBeehive", JSON.stringify(beehiveData));
-      if (beehiveImages) {
+
+      if (beehiveImages && beehiveImages.length > 0) {
         for (const elem of beehiveImages) {
-          newFormData.append("imgs", elem);
+          if (elem instanceof File) {
+            newFormData.append("imgs", elem);
+          }
         }
       }
-      const res = await fetchData("/beehives/create", "POST", newFormData);
+
+      const res = await fetchData("/beehives/create", "POST", newFormData, {
+        Authorization: `Bearer ${token}`,
+      });
+
       if (res.status === 200) {
         console.log("creado");
       }
+
       fetchBeehives();
+      setBeehiveName("");
       setBeehiveDescription("");
-      setBeehiveImages(null);
+      setBeehiveLargeDescription("");
+      setBeehiveImages([]);
       setShowModal(false);
     } catch (error) {
+      setError(`Error al crear la colmena: ${error.message || "Problema de conexión"}`);
       console.log(error);
     }
   };
 
   const handleUpdate = async () => {
-    if (!beehiveName.trim() || !beehiveDescription.trim()) return;
+    if (!beehiveName.trim() || !beehiveDescription.trim()) {
+      setError("El nombre y la descripción son obligatorios");
+      return;
+    }
 
     try {
-      const payload = { name: beehiveName, description: beehiveDescription };
+      const payload = {
+        name: beehiveName,
+        short_description: beehiveDescription,
+        large_description: beehiveLargeDescription,
+      };
+
       const newFormData = new FormData();
       newFormData.append("updatedBeehive", JSON.stringify(payload));
 
-      if (beehiveImages) {
+      if (beehiveImages && beehiveImages.length > 0) {
         for (const elem of beehiveImages) {
-          newFormData.append("imgs", elem);
+          if (elem instanceof File) {
+            const renamedFile = renameImageFile(elem);
+            newFormData.append("imgs", renamedFile);
+          }
         }
       }
-      const resp = await fetchData(`/beehives/update/${editingBeehiveId}`, "PUT", newFormData, {
+
+      await fetchData(`/beehives/update/${editingBeehiveId}`, "PUT", newFormData, {
         Authorization: `Bearer ${token}`,
       });
 
       fetchBeehives();
       setBeehiveName("");
       setBeehiveDescription("");
-      setBeehiveImages(null);
+      setBeehiveLargeDescription("");
+      setBeehiveImages([]);
       setEditingBeehiveId(null);
       setShowModal(false);
     } catch (error) {
@@ -127,17 +173,17 @@ const BeehiveList = () => {
 
   const handleDeleteImage = async (imageId, beehiveId) => {
     console.log("Eliminando imagen con ID:", imageId, "de la colmena con ID:", beehiveId);
-  
+
     try {
       if (!imageId) {
         console.error("Error: imageId es undefined");
         return;
       }
-  
+
       await fetchData(`/beehives/images/${imageId}`, "DELETE", null, {
         Authorization: `Bearer ${token}`,
       });
-  
+
       setBeehives((prevBeehives) =>
         prevBeehives.map((beehive) =>
           beehive.beehive_id === beehiveId
@@ -145,9 +191,8 @@ const BeehiveList = () => {
             : beehive
         )
       );
-  
+
       setBeehiveImages((prevImages) => prevImages.filter((img) => img.beehive_image_id !== imageId));
-  
     } catch (error) {
       setError("Error al eliminar la imagen: " + (error.message || "No se pudo eliminar la imagen"));
       console.error(error);
@@ -168,7 +213,6 @@ const BeehiveList = () => {
   return (
     <div className="beehives-list">
       <h2>Colmenas</h2>
-
       {showModal && (
         <div className="modal">
           <h3>{modalType === "create" ? "Agregar Nueva Colmena" : "Editar Colmena"}</h3>
@@ -184,16 +228,21 @@ const BeehiveList = () => {
                 {beehiveImages.length > 0 ? (
                   beehiveImages.map((image, index) => (
                     <div key={index} className="image-wrapper">
-                      <img
-                        src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
-                        alt="Beehive"
-                        className="beehive-image"
-                      />
-                      <button
-                        className="delete-img-btn"
-                        onClick={() => handleDeleteImage(image.beehive_image_id, editingBeehiveId)}>
-                        ❌
-                      </button>
+                      {image.image_url && (
+                        <>
+                          <img
+                            style={{ width: "10rem" }}
+                            src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
+                            alt="Beehive"
+                            className="beehive-image"
+                          />
+                          <button
+                            className="delete-img-btn"
+                            onClick={() => handleDeleteImage(image.beehive_image_id, editingBeehiveId)}>
+                            ❌
+                          </button>
+                        </>
+                      )}
                     </div>
                   ))
                 ) : (
@@ -209,12 +258,22 @@ const BeehiveList = () => {
             placeholder="Nombre de la colmena"
             value={beehiveName}
             onChange={(e) => setBeehiveName(e.target.value)}
+            required
           />
           <textarea
             className="category-description"
             placeholder="Descripción de la colmena"
             value={beehiveDescription}
             onChange={(e) => setBeehiveDescription(e.target.value)}
+            required
+          />
+
+          <textarea
+            className="category-description"
+            placeholder="Descripción larga de la colmena"
+            value={beehiveLargeDescription}
+            onChange={(e) => setBeehiveLargeDescription(e.target.value)}
+            required
           />
 
           <div className="buttonsModal">
@@ -241,8 +300,9 @@ const BeehiveList = () => {
             <th className="idTh">ID</th>
             <th>Nombre</th>
             <th>Descripción</th>
-            <th>Acciones</th>
-            <th className="actionTh">Imagenes</th>
+            <th>Descripción extensa</th>
+            <th>Imagenes</th>
+            <th className="actionTh">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -251,10 +311,11 @@ const BeehiveList = () => {
               <tr key={beehive.beehive_id || beehive.id}>
                 <td>{beehive.beehive_id || beehive.id}</td>
                 <td>{beehive.name}</td>
-                <td>{beehive.description}</td>
+                <td>{beehive.short_description}</td>
+                <td>{beehive.large_description}</td>
                 <td>
-                  {beehive.images.length > 0 ? (
-                    <div className="image-container">
+                  {beehive?.images?.length > 0 ? (
+                    <div className="image-container" width="10rem">
                       {beehive.images.map((image, index) => (
                         <div key={index} className="image-wrapper">
                           <img
@@ -282,7 +343,7 @@ const BeehiveList = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="5">No hay colmenas disponibles</td>
+              <td colSpan="6">No hay colmenas disponibles</td>
             </tr>
           )}
         </tbody>

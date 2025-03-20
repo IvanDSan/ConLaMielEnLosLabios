@@ -37,6 +37,7 @@ const CategoryList = () => {
     setCategoryName(category ? category.name : "");
     setEditingCategoryId(category ? category.category_id || category.id : null);
     setShowModal(true);
+    dataCategories();
   };
 
   const handleSave = async () => {

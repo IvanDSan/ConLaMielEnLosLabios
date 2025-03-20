@@ -6,7 +6,6 @@ export const CartContext = createContext();
 export const CartContextProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { token } = useContext(UserContext);
-  console.log(cart, "cart");
   useEffect(() => {
     const getCart = async () => {
       try {
