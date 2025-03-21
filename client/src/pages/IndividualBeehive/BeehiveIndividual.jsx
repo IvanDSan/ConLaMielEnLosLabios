@@ -10,22 +10,16 @@ import { toast } from 'react-toastify';
 export const BeehiveIndividual = () => {
   const [beehive, setBeehive] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { id } = useParams(); // Obtiene el ID de la colmena desde la URL
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchBeehiveDetails();
-  }, [fetchBeehiveDetails]);
-
+  
   const fetchBeehiveDetails = useCallback(async () => {
     try {
       setLoading(true);
-      // Obtener datos de la colmena específica
       const resBeehive = await fetchData(`/beehives/get/${id}`, 'GET');
-
-      // Obtener imágenes de la colmena
       const resImages = await fetchData(`/beehives/images/${id}`, 'GET');
-
+      
       setBeehive({
         ...resBeehive.data,
         images: resImages.data || [],
@@ -37,6 +31,10 @@ export const BeehiveIndividual = () => {
       setLoading(false);
     }
   }, [id]);
+  
+  useEffect(() => {
+    fetchBeehiveDetails();
+  }, [fetchBeehiveDetails]);
 
   const sliderSettings = {
     dots: true,
