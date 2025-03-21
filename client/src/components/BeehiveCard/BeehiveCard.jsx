@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import  Slider  from 'react-slick'
+import './styles.css'
 
 export const BeehiveCard = ({ beehive }) => {
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ export const BeehiveCard = ({ beehive }) => {
         </button>
 
         <div className="honeycomb-icon">
-          <img src="/icons/colmenaCards.png" alt="Colmena Icon" />
+          <img src="/icons/panal.svg" alt="Colmena Icon" />
         </div>
       </div>
     </div>

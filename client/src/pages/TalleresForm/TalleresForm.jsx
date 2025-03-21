@@ -19,7 +19,7 @@ export const Talleres = () => {
           Inspira a los niños a ser guardianes de la naturaleza
         </p>
         <p className="talleresDescription">
-          En <strong>Pastor D’Abeilles</strong>, ofrecemos talleres interactivos
+          En <strong>Con la Miel en los Labios</strong>, ofrecemos talleres interactivos
           para escuelas y grupos educativos. Nuestro objetivo es enseñar a los
           niños la importancia de las abejas y cómo proteger nuestro medio
           ambiente.
