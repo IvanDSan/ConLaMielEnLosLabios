@@ -95,18 +95,19 @@ export const UserOrders = () => {
           ? order.items
           : order.items.filter((item) => item.sale_status === selectedStatus);
 
-    if (query.trim() !== '') {
-      filtered = filtered.filter((order) =>
-        order.sale_id.toString().includes(query)
-      );
+      if (query.trim() !== '') {
+        filtered = filtered.filter((order) =>
+          order.sale_id.toString().includes(query)
+        );
+      }
+
+      setFilteredOrders(filtered);
+    });
+
+    if (orders.length === 0) {
+      return <p className="noOrdersMessage">No tienes pedidos aún.</p>;
     }
-
-    setFilteredOrders(filtered);
   };
-
-  if (orders.length === 0) {
-    return <p className="noOrdersMessage">No tienes pedidos aún.</p>;
-  }
 
   return (
     <div className="ordersContainer">
@@ -138,17 +139,12 @@ export const UserOrders = () => {
         <button
           className={`filterButton ${selectedStatus === 2 ? 'active' : ''}`}
           onClick={() => filterByStatus(2)}
-          className={`filterButton ${selectedStatus === 3 ? "active" : ""}`}
-          onClick={() => filterByStatus(3)}
         >
           Recibido
         </button>
         <button
           className={`filterButton ${selectedStatus === 3 ? 'active' : ''}`}
           onClick={() => filterByStatus(3)}
-
-          className={`filterButton ${selectedStatus === 2 ? "active" : ""}`}
-          onClick={() => filterByStatus(2)}
         >
           Cancelado
         </button>

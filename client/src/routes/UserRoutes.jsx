@@ -11,7 +11,7 @@ import { ShoppingCart } from '../pages/ShoppingCart/ShoppingCart';
 import { BeehivesView } from '../pages/BeehivesView/BeehivesView';
 import { BeehiveIndividual } from '../pages/IndividualBeehive/BeehiveIndividual';
 import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
-import { UserOrders } from '../pages/UserPedidos/UserPedidos';
+import { UserOrders } from '../pages/UserPedidos/UserOrders';
 import { ProductDetail } from '../pages/ProductDetail/ProductDetail';
 import { SponsorColmenaType } from '../pages/SponsorColmenaType/SponsorColmenaType';
 import { SponsorColmenaConfirmation } from '../pages/SponsorColmenaConfirmation/SponsorColmenaConfirmation';
