@@ -1,5 +1,5 @@
 .ordersContainer {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: var(--bg-color);
   color: var(--black);
   text-align: center;
@@ -65,81 +65,5 @@
     gap: 2rem;
     max-width: 800px;
     margin: 0 auto;
-
-    .orderGroup {
-      text-align: left;
-      background: var(--white);
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-      .orderGroupTitle {
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-      }
-
-      .orderDate {
-        font-size: 1rem;
-        color: var(--brown);
-        font-weight: bold;
-        margin-bottom: 1rem;
-      }
-
-      .orderCard {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-
-        .orderImage {
-          width: 80px;
-          height: 80px;
-          object-fit: cover;
-          border-radius: 6px;
-        }
-
-        .orderDetails {
-          flex-grow: 1;
-        }
-
-        .orderStatus {
-          font-size: 1rem;
-          font-weight: normal;
-          display: flex;
-          align-items: center;
-          gap: 5px;
-
-          &::before {
-            content: "●";
-            font-size: 1.2rem;
-          }
-
-          &.pending {
-            color: rgb(193, 158, 0);
-
-            &::before {
-              color: rgb(193, 158, 0);
-            }
-          }
-
-          &.completed {
-            color: green;
-
-            &::before {
-              color: green;
-            }
-          }
-
-          &.canceled {
-            color: red;
-
-            &::before {
-              color: red;
-            }
-          }
-        }
-      }
-    }
   }
 }

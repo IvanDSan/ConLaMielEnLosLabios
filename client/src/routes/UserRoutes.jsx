@@ -13,6 +13,8 @@ import { BeehiveIndividual } from '../pages/IndividualBeehive/BeehiveIndividual'
 import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
 import { UserOrders } from '../pages/UserPedidos/UserPedidos';
 import { ProductDetail } from '../pages/ProductDetail/ProductDetail';
+import { SponsorColmenaType } from '../pages/SponsorColmenaType/SponsorColmenaType';
+import { SponsorColmenaConfirmation } from '../pages/SponsorColmenaConfirmation/SponsorColmenaConfirmation';
 
 /** COMPONENTS */
 import { Navbar } from '../components/Navbar/Navbar';
@@ -28,11 +30,16 @@ export const UserRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/tienda" element={<Store />} />
           <Route path="/apadrina" element={<SponsorColmena />} />
+          <Route path="/apadrina/:id" element={<SponsorColmenaType />} />
+          <Route
+            path="/apadrina/confirmation"
+            element={<SponsorColmenaConfirmation />}
+          />
           <Route path="/talleres" element={<Talleres />} />
           <Route path="/carrito" element={<ShoppingCart />} />
           <Route path="/perfil" element={<h1>Perfil</h1>} />
           <Route path="/colmenas" element={<BeehivesView />} />
-          <Route path="/beehives/:id" element={<BeehiveIndividual />} />
+          <Route path="/colmenas/:id" element={<BeehiveIndividual />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/pedidos" element={<UserOrders />} />
           <Route path="/producto/:id" element={<ProductDetail />} />

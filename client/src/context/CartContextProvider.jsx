@@ -132,6 +132,7 @@ export const CartContextProvider = ({ children }) => {
       }
     }
   };
+
   const purchaseCart = async () => {
     try {
       await fetchData('/users/completePurchaseCart', 'POST', cart, {
@@ -141,6 +142,10 @@ export const CartContextProvider = ({ children }) => {
     } catch (error) {
       console.error('Error al comprar el carrito:', error);
     }
+  };
+
+  const getNumberOfTotalProducts = () => {
+    return cart.reduce((acc, item) => acc + item.quantity, 0);
   };
 
   return (
@@ -153,6 +158,7 @@ export const CartContextProvider = ({ children }) => {
         addToCart,
         cart,
         purchaseCart,
+        getNumberOfTotalProducts,
       }}
     >
       {children}

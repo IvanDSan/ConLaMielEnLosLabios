@@ -5,12 +5,13 @@ import { LoginForm } from '../LoginForm/LoginForm';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
 import { UserContext } from '../../context/UserContext';
-import './styles.css';
 import { CartContext } from '../../context/CartContextProvider';
+import { LogOut, Menu, ShoppingCart, UserRound, X } from 'lucide-react';
+import './styles.css';
 
 export const Navbar = () => {
   const { user, logout } = useContext(UserContext);
-  const { cart } = useContext(CartContext);
+  const { getNumberOfTotalProducts } = useContext(CartContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [login, setLogin] = useState(false);
@@ -99,8 +100,12 @@ export const Navbar = () => {
                 className={({ isActive }) => (isActive ? 'active' : '')}
               >
                 <div className="cart-container">
-                  {user && <span className="cart-quantity">{cart.length}</span>}
-                  <img src="/icons/cart.svg" alt="cart" />
+                  {user && (
+                    <span className="cart-quantity">
+                      {getNumberOfTotalProducts()}
+                    </span>
+                  )}
+                  <ShoppingCart size={28} />
                 </div>
               </NavLink>
             </li>
@@ -125,30 +130,31 @@ export const Navbar = () => {
               </li>
             )}
             <li>
-              <img
-                src={`/icons/${user ? 'logout' : 'login'}.svg`}
-                alt="login"
-                style={{ cursor: 'pointer' }}
-                onClick={handleLoginClick}
-              />
+              <a href="#">
+                {!user ? (
+                  <UserRound size={28} onClick={handleLoginClick} />
+                ) : (
+                  <LogOut size={28} onClick={handleLoginClick} />
+                )}
+              </a>
             </li>
             <li className="hamburger">
-              <img
-                src="/icons/hamburger.svg"
-                alt="search"
-                style={{ cursor: 'pointer' }}
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
-              />
+              <a href="#">
+                <Menu
+                  size={28}
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                />
+              </a>
             </li>
           </ul>
           <div className={`mobile-menu ${showMobileMenu ? 'open' : ''}`}>
-            <img
-              src="/icons/close.svg"
-              alt="close"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setShowMobileMenu(false)}
-              className="close-icon"
-            />
+            <a href="#">
+              <X
+                size={28}
+                onClick={() => setShowMobileMenu(false)}
+                className="close-icon"
+              />
+            </a>
             <ul>
               <li>
                 <NavLink

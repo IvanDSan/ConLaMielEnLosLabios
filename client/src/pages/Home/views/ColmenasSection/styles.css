@@ -1,0 +1,26 @@
+.colmenas-section {
+  h2 {
+    text-align: center;
+  }
+  
+  p{
+    text-align: center; 
+    margin-bottom: 2rem;
+  }
+
+  .flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    & > div {
+      width: calc(50% - 1rem);
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,8 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { fetchData } from '../../helpers/axiosHelper';
-import './styles.css';
 import { UserContext } from '../../context/UserContext';
 import { toast } from 'react-toastify';
+import { PencilLine, Trash2, X } from 'lucide-react';
+import './styles.css';
 
 export const BeehiveList = () => {
   const [beehives, setBeehives] = useState([]);
@@ -268,7 +269,8 @@ export const BeehiveList = () => {
                             alt="Beehive"
                             className="beehive-image"
                           />
-                          <button
+                          <X
+                            size={28}
                             className="delete-img-btn"
                             onClick={() =>
                               handleDeleteImage(
@@ -276,9 +278,7 @@ export const BeehiveList = () => {
                                 editingBeehiveId
                               )
                             }
-                          >
-                            ❌
-                          </button>
+                          />
                         </>
                       )}
                     </div>
@@ -378,7 +378,7 @@ export const BeehiveList = () => {
                     className="edit-btn"
                     onClick={() => openModal('edit', beehive)}
                   >
-                    <img src="/icons/edit.svg" alt="imagen edit" />
+                    <PencilLine size={28} color="black" />
                   </button>
                   <button
                     className="delete-btn"
@@ -386,7 +386,7 @@ export const BeehiveList = () => {
                       handleDelete(beehive.beehive_id || beehive.id)
                     }
                   >
-                    <img src="/icons/bin.svg" alt="bin image" />
+                    <Trash2 size={28} color="black" />
                   </button>
                 </td>
               </tr>

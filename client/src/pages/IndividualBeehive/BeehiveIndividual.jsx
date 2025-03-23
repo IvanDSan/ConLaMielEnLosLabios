@@ -13,7 +13,6 @@ export const BeehiveIndividual = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  
   const fetchBeehiveDetails = useCallback(async () => {
     try {
       setLoading(true);
@@ -36,6 +35,10 @@ export const BeehiveIndividual = () => {
     fetchBeehiveDetails();
   }, [fetchBeehiveDetails]);
 
+  useEffect(() => {
+    fetchBeehiveDetails();
+  }, [fetchBeehiveDetails]);
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -49,7 +52,7 @@ export const BeehiveIndividual = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/colmenas');
   };
 
   if (loading) return <p>Cargando detalles de la colmena...</p>;
