@@ -77,3 +77,5 @@ export const BeehivesView = () => {
     </div>
   );
 };
+
+export default BeehivesView;

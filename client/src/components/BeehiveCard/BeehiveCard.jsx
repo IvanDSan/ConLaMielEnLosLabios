@@ -52,7 +52,7 @@ export const BeehiveCard = ({ beehive }) => {
         </button>
 
         <div className="honeycomb-icon">
-          <img src="/icons/colmenaCards.png" alt="Colmena Icon" />
+          <img src="/icons/panal.svg" alt="Colmena Icon" />
         </div>
       </div>
     </div>

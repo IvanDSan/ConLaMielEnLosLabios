@@ -46,8 +46,9 @@ export const UserOrders = () => {
           return acc;
         }, {});
 
-        setOrders(Object.values(groupedOrders));
-        setFilteredOrders(Object.values(groupedOrders));
+        const groupedArray = Object.values(groupedOrders);
+        setOrders(groupedArray);
+        setFilteredOrders(groupedArray);
       } catch (error) {
         console.log(error);
         toast.error('Error al obtener tus pedidos.');
@@ -58,11 +59,19 @@ export const UserOrders = () => {
   }, []);
 
   const filterByStatus = (status) => {
-    let filtered = orders;
+    let filtered = [];
 
-    if (status !== null) {
-      filtered = orders.filter((order) => order.sale_status === status);
-    }
+    orders.forEach((order) => {
+      const matchingItems = order.items.filter(
+        (item) => item.sale_status === status
+      );
+      if (status === null || matchingItems.length > 0) {
+        filtered.push({
+          ...order,
+          items: status === null ? order.items : matchingItems,
+        });
+      }
+    });
 
     if (searchQuery.trim() !== '') {
       filtered = filtered.filter((order) =>
@@ -78,13 +87,13 @@ export const UserOrders = () => {
     const query = e.target.value;
     setSearchQuery(query);
 
-    let filtered = orders;
+    let filtered = [];
 
-    if (selectedStatus !== null) {
-      filtered = filtered.filter(
-        (order) => order.sale_status === selectedStatus
-      );
-    }
+    orders.forEach((order) => {
+      const matchingItems =
+        selectedStatus === null
+          ? order.items
+          : order.items.filter((item) => item.sale_status === selectedStatus);
 
     if (query.trim() !== '') {
       filtered = filtered.filter((order) =>
@@ -129,12 +138,17 @@ export const UserOrders = () => {
         <button
           className={`filterButton ${selectedStatus === 2 ? 'active' : ''}`}
           onClick={() => filterByStatus(2)}
+          className={`filterButton ${selectedStatus === 3 ? "active" : ""}`}
+          onClick={() => filterByStatus(3)}
         >
           Recibido
         </button>
         <button
           className={`filterButton ${selectedStatus === 3 ? 'active' : ''}`}
           onClick={() => filterByStatus(3)}
+
+          className={`filterButton ${selectedStatus === 2 ? "active" : ""}`}
+          onClick={() => filterByStatus(2)}
         >
           Cancelado
         </button>
