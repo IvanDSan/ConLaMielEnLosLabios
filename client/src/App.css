@@ -169,3 +169,64 @@ form {
     margin-top: -0.8rem;
   }
 }
+
+.admin-table {
+  h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  th:nth-child(1) {
+    width: 10%;
+  }
+  th:nth-child(5) {
+    width: 20%;
+  }
+
+  th,
+  td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid var(--gray);
+  }
+
+  td:not:nth-first-child,
+  td:not:nth-last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  button {
+    width: auto;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+    color: var(--black);
+    border: 1px solid var(--brown);
+  }
+
+  th {
+    background-color: var(--brown);
+    color: var(--white);
+    font-weight: bold;
+  }
+
+  tbody tr {
+    background-color: var(--bg-color);
+  }
+  td {
+    color: var(--black);
+  }
+}

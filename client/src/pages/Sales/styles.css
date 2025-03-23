@@ -1,0 +1,5 @@
+.ordersList {
+  & > div {
+    margin-bottom: 1rem;
+  }
+}

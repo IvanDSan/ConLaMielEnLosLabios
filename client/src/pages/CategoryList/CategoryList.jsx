@@ -3,6 +3,7 @@ import { fetchData } from '../../helpers/axiosHelper';
 import { UserContext } from '../../context/UserContext';
 import { toast } from 'react-toastify';
 import './styles.css';
+import { PencilLine, Trash2 } from 'lucide-react';
 
 export const CategoryList = () => {
   const { token } = useContext(UserContext);
@@ -94,7 +95,6 @@ export const CategoryList = () => {
 
   return (
     <div className="category-list">
-      <h2>Categorías</h2>
       {showModal && (
         <div className="modal">
           <h3>
@@ -119,53 +119,58 @@ export const CategoryList = () => {
           </div>
         </div>
       )}
-      <button className="add-category-btn" onClick={() => openModal('create')}>
-        Agregar Categoría
-      </button>
 
       {loading && <p className="loading">Cargando categorías...</p>}
 
-      <table className="category-table" border="1">
-        <thead>
-          <tr>
-            <th className="idTh">ID</th>
-            <th>Nombre</th>
-            <th className="actionTh">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.length > 0 ? (
-            categories.map((category) => (
-              <tr key={category.category_id || category.id}>
-                <td>{category.category_id || category.id}</td>
-                <td>{category.name}</td>
-                <td className="buttonsTable">
-                  <button
-                    className="edit-btn"
-                    onClick={() => openModal('edit', category)}
-                  >
-                    {' '}
-                    <img src="/icons/edit.svg" alt="imagen edit" />{' '}
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() =>
-                      handleDelete(category.category_id || category.id)
-                    }
-                  >
-                    {' '}
-                    <img src="/icons/bin.svg" alt="bin image" />
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No hay categorías disponibles</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <div className="admin-table">
+        <div className="container">
+          <h3>Categorías</h3>
+          <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+            <button
+              onClick={() => openModal('create')}
+            >
+              Agregar categoría
+            </button>
+          </div>
+          <div className="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories.length > 0 ? (
+                  categories.map((category) => (
+                    <tr key={category.category_id || category.id}>
+                      <td>{category.category_id || category.id}</td>
+                      <td>{category.name}</td>
+                      <td className="actions">
+                        <button onClick={() => openModal('edit', category)}>
+                          <PencilLine size={28} color="black" />
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleDelete(category.category_id || category.id)
+                          }
+                        >
+                          <Trash2 size={28} color="black" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3">No hay categorías disponibles</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

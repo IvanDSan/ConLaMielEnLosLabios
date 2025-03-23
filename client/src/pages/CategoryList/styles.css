@@ -1,18 +1,5 @@
-:root {
-  --bg-color: #fff4e3;
-  --brown: #795548;
-}
-
-.category-list{
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 2rem;
-
-
-  .modal{
+.category-list {
+  .modal {
     display: flex;
     flex-direction: column;
     background-color: var(--bg-color);
@@ -22,20 +9,19 @@
     h3 {
       margin-bottom: 1rem;
     }
-    
 
     input {
-      border-color: #BAA9A9;
+      border-color: #baa9a9;
       padding: 1rem 0;
       background-color: var(--bg-color);
       border-radius: 0.5rem;
     }
 
-    .buttonsModal{
+    .buttonsModal {
       display: flex;
       padding-top: 2rem;
       gap: 2rem;
-      justify-content: ;
+      justify-content: center;
     }
 
     .save-btn {
@@ -58,58 +44,4 @@
       border-radius: 0.5rem;
     }
   }
-
-
-
-
-  .category-table{
-    width: 80%;
-    border-top: 2px solid #BAA9A9;
-    border-collapse: collapse;
-    background-color: var(--bg-color);
-  }
-  
-
-  th {
-    color: white;
-    padding:0.5rem 2rem;
-    background-color: var(--brown);
-  }
-
-  .idTh{
-    border-radius: 1rem 0 0 0;
-  }
-
-  .actionTh {
-    border-radius:  0 1rem 0 0 ;
-  }
-
-  .add-category-btn {
-    background-color: var(--brown);
-    padding:0.5rem 2rem;
-    border-radius: 0.4rem;
-    color: white;
-    border: none;
-  }
-  .edit-btn {
-    color: white;
-    border: none;
-    background-color: transparent;
-
-    img{
-      width: 2rem;
-      background-image: red;
-    }
-  }
-
-
-  .delete-btn {
-   background-color: transparent;
-   border: none;
-
-  img{
-    width: 2rem;
-    background-image: red;
-  }
-}
 }

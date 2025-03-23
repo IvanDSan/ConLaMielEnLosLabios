@@ -13,10 +13,6 @@ export const BeehiveIndividual = () => {
   const { id } = useParams(); // Obtiene el ID de la colmena desde la URL
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchBeehiveDetails();
-  }, [fetchBeehiveDetails]);
-
   const fetchBeehiveDetails = useCallback(async () => {
     try {
       setLoading(true);
@@ -38,6 +34,10 @@ export const BeehiveIndividual = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    fetchBeehiveDetails();
+  }, [fetchBeehiveDetails]);
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -51,7 +51,7 @@ export const BeehiveIndividual = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/colmenas');
   };
 
   if (loading) return <p>Cargando detalles de la colmena...</p>;

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './styles.css';
+import { SpinnerLoading } from '../../components/SpinnerLoading/SpinnerLoading';
 
 export const BeehivesView = () => {
   const [beehives, setBeehives] = useState([]);
@@ -41,10 +42,8 @@ export const BeehivesView = () => {
     fetchBeehives();
   }, [fetchBeehives]);
 
-  if (loading) return <p>Cargando colmenas...</p>;
-  if (!beehives || beehives.length === 0)
-    return <p>No hay colmenas disponibles</p>;
-
+  if (loading) return <SpinnerLoading />;
+  
   return (
     <div>
       <div className="beehives-container">

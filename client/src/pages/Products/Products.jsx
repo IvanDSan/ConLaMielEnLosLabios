@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { fetchData } from '../../helpers/axiosHelper';
 import { UserContext } from '../../context/UserContext';
-import './styles.css';
 import { toast } from 'react-toastify';
+import { PencilLine, Trash2 } from 'lucide-react';
 
 export const Products = () => {
   const [products, setProducts] = useState([]);
@@ -82,7 +82,6 @@ export const Products = () => {
     <div className="products-container">
       <main className="content">
         <form className="create-form" onSubmit={handleCreateProduct}>
-          <h1>Crear Producto</h1>
           <label>
             Título:
             <input
@@ -135,60 +134,54 @@ export const Products = () => {
           </button>
         </form>
 
-        <div className="filters">
-          <select>
-            <option>Seleccionar</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Buscar por código o ID"
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, title: e.target.value })
-            }
-          />
-          <button>Productos</button>
-          <div className="right-controls">
-            <select>
-              <option>Hoy</option>
-            </select>
-
-            <button className="delete">🗑 Borrar</button>
+        <div className="admin-table">
+          <div className="container">
+            <h3>Productos</h3>
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Imagen</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map((product) => (
+                    <tr key={product.product_id}>
+                      <td>{product.product_id}</td>
+                      <td>
+                        <img
+                          src={product.image_url}
+                          alt={product.title}
+                          width="50"
+                        />
+                      </td>
+                      <td>{product.title}</td>
+                      <td>{product.description}</td>
+                      <td>{product.price}€</td>
+                      <td className="actions">
+                        <button onClick={() => setProductToEdit(product)}>
+                          <PencilLine />
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleDeleteProduct(product.product_id)
+                          }
+                        >
+                          <Trash2 />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Imagen</th>
-              <th>Título</th>
-              <th>Descripción</th>
-              <th>Precio</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.product_id}>
-                <td>{product.product_id}</td>
-                <td>
-                  <img src={product.image_url} alt={product.title} width="50" />
-                </td>
-                <td>{product.title}</td>
-                <td>{product.description}</td>
-                <td>{product.price}€</td>
-                <td>
-                  <button onClick={() => setProductToEdit(product)}>✏️</button>
-                  <button
-                    onClick={() => handleDeleteProduct(product.product_id)}
-                  >
-                    🗑
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
 
         {productToEdit && (
           <div className="edit-form">

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import Slider from 'react-slick';
 
 export const BeehiveCard = ({ beehive }) => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export const BeehiveCard = ({ beehive }) => {
 
         <button
           className="beehive-button"
-          onClick={() => navigate(`/beehives/${beehive.beehive_id}`)}
+          onClick={() => navigate(`/colmenas/${beehive.beehive_id}`)}
         >
           Ver más
         </button>

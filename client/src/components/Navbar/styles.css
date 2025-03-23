@@ -19,7 +19,7 @@ header {
       gap: 2rem;
 
       ul {
-        gap: 4rem;
+        gap: clamp(1rem, 4vw, 4rem);
       }
 
       @media (max-width: 1000px) {
@@ -119,7 +119,7 @@ header {
     }
 
     .active {
-      color: var(--yellow);
+      color: var(--brown);
       border-bottom: 2px solid var(--yellow);
     }
   }
