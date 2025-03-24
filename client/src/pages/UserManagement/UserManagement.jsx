@@ -1,4 +1,3 @@
-import './styles.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -50,9 +49,9 @@ export const UserManagement = () => {
   }
 
   return (
-    <div className="userAdmin">
+    <div className="admin-table">
       <div className="container">
-        <h2>Manejo de Usuarios</h2>
+        <h3>Usuarios</h3>
         <div className="table-wrapper">
           <table>
             <thead>

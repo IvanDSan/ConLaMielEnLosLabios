@@ -1,8 +1,27 @@
+import { useEffect, useState } from 'react';
 import { SubscriptionCard } from '../../../../components/SubscriptionCard/SubscriptionCard';
-import { subscriptions } from '../../../../constants/subscriptions';
+import { fetchData } from '../../../../helpers/axiosHelper';
+import { toast } from 'react-toastify';
 import './styles.css';
 
 export const ApadrinaSection = () => {
+  const [subscriptions, setSubscriptions] = useState([]);
+
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await fetchData('/sponsorships/types', 'GET');
+        console.log(response);
+        setSubscriptions(response.data);
+      } catch (error) {
+        console.error('Error fetching subscriptions:', error);
+        toast.error('Error al obtener los planes de apadrinamiento.');
+      }
+    };
+
+    fetchSubscriptions();
+  }, []);
+
   return (
     <section className="apadrina-section">
       <div className="container">
@@ -12,8 +31,12 @@ export const ApadrinaSection = () => {
           conservación de las abejas
         </p>
         <div className="flex">
-          {subscriptions.map((sub, index) => (
-            <SubscriptionCard key={index} {...sub} mostSelected={index === 1} />
+          {subscriptions && subscriptions.map((sub, index) => (
+            <SubscriptionCard
+              key={index}
+              subscription={sub}
+              mostSelected={index === 1}
+            />
           ))}
         </div>
       </div>

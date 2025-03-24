@@ -1,0 +1,157 @@
+.sponsor-confirmation {
+  .title,
+  .subtitle {
+    text-align: center;
+  }
+
+  .subtitle {
+    margin-bottom: 2rem;
+  }
+}
+
+.sponsor-confirmation-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: var(--bg-color);
+  color: var(--black);
+
+  .sponsor-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--purple-dark);
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--black);
+    }
+
+    .description {
+      font-size: 1rem;
+      color: var(--gray);
+    }
+
+    .sponsor-button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+
+      .sponsor-button {
+        padding: 10px 20px;
+        background-color: var(--purple-dark);
+        color: var(--white);
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: var(--purple);
+        }
+      }
+    }
+  }
+
+  .sponsor-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .sponsor-confirmation-container {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .sponsor-info {
+    h3 {
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    .description {
+      font-size: 0.9rem;
+    }
+
+    .sponsor-button-container {
+      .sponsor-button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sponsor-confirmation-container {
+    padding: 1rem;
+  }
+
+  .sponsor-info {
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+
+    .description {
+      font-size: 0.8rem;
+    }
+
+    .sponsor-button-container {
+      .sponsor-button {
+        font-size: 0.8rem;
+        padding: 8px 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .sponsor-confirmation-container {
+    padding: 0.5rem;
+  }
+
+  .sponsor-info {
+    h3 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
+
+    .description {
+      font-size: 0.7rem;
+    }
+
+    .sponsor-button-container {
+      .sponsor-button {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+      }
+    }
+  }
+}

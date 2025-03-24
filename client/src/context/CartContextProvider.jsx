@@ -111,6 +111,22 @@ export const CartContextProvider = ({ children }) => {
   };
   
   const purchaseCart = async () => {
+    if (cart.length === 0) {
+      toast.error('El carrito esta vacio');
+      return;
+    }
+
+    if (
+      !user.phone_number ||
+      !user.city ||
+      !user.province ||
+      !user.address ||
+      !user.zipcode
+    ) {
+      toast.error('Faltan datos, por favor completa tu perfil');
+      return;
+    }
+
     try {
       await fetchData("/users/completePurchaseCart", "POST", cart, {
         Authorization: `Bearer ${token}`,
@@ -119,6 +135,10 @@ export const CartContextProvider = ({ children }) => {
     } catch (error) {
       console.error("Error al comprar el carrito:", error);
     }
+  };
+
+  const getNumberOfTotalProducts = () => {
+    return cart.reduce((acc, item) => acc + item.quantity, 0);
   };
 
   return (
@@ -131,7 +151,8 @@ export const CartContextProvider = ({ children }) => {
         addToCart,
         cart,
         purchaseCart,
-      }}>
+        getNumberOfTotalProducts,
+      }}
       {children}
     </CartContext.Provider>
   );

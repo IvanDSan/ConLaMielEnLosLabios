@@ -2,6 +2,7 @@
   background-color: var(--bg-color);
   color: var(--black);
   text-align: center;
+  padding: 0;
 }
 
 .talleresHero {

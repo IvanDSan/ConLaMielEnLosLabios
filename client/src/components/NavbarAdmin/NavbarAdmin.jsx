@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
+import { LogOut, Menu, X } from 'lucide-react';
 
 export const NavbarAdmin = () => {
   const { logout } = useContext(UserContext);
@@ -78,34 +79,34 @@ export const NavbarAdmin = () => {
 
           <ul>
             <li>
-              <img
-                src="/icons/logout.svg"
-                alt="logout"
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  logout();
-                  navigate('/');
-                }}
-              />
+              <a href="#">
+                <LogOut
+                  size={24}
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                />
+              </a>
             </li>
             <li className="hamburger">
-              <img
-                src="/icons/hamburger.svg"
-                alt="search"
-                style={{ cursor: 'pointer' }}
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
-              />
+              <a href="#">
+                <Menu
+                  size={28}
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                />
+              </a>
             </li>
           </ul>
 
           <div className={`mobile-menu ${showMobileMenu ? 'open' : ''}`}>
-            <img
-              src="/icons/close.svg"
-              alt="close"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setShowMobileMenu(false)}
-              className="close-icon"
-            />
+            <a href="#">
+              <X
+                size={28}
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                className="close-icon"
+              />
+            </a>
             <ul>
               <li>
                 <NavLink

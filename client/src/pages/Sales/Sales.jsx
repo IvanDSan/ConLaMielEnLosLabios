@@ -1,8 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { fetchData } from "../../helpers/axiosHelper";
-import { UserContext } from "../../context/UserContext";
-import { toast } from "react-toastify";
-import "./styles.css";
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { fetchData } from '../../helpers/axiosHelper';
+import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
+import { ExpandableOrder } from '../../components/ExpandableOrder/ExpandableOrder';
+import './styles.css';
 
 export const Sales = () => {
   const { token } = useContext(UserContext);
@@ -10,13 +11,38 @@ export const Sales = () => {
 
   const fetchSales = useCallback(async () => {
     try {
-      const response = await fetchData("/sales/all", "GET", null, {
-        Authorization: `Bearer ${token}}`,
+      const response = await fetchData('/sales/all', 'GET', null, {
+        Authorization: `Bearer ${token}`,
       });
-      console.log(response);
-      setSales(response.data);
+
+      console.log(response.data);
+
+      const groupedOrders = response.data.reduce((acc, order) => {
+        if (!acc[order.sale_id]) {
+          acc[order.sale_id] = {
+            sale_id: order.sale_id,
+            user_id: order.user_id,
+            user: order.name + ' ' + order.lastname,
+            date: order.date,
+            items: [],
+          };
+        }
+
+        acc[order.sale_id].items.push({
+          title: order.title,
+          image_url: order.image_url,
+          quantity: order.quantity,
+          sale_status: order.sale_status,
+          product_id: order.product_id,
+        });
+
+        return acc;
+      }, {});
+
+      setSales(Object.values(groupedOrders));
     } catch (err) {
       console.log(err);
+      toast.error('Error al obtener las ventas');
     }
   }, [token]);
 
@@ -26,7 +52,7 @@ export const Sales = () => {
 
   const deleteSale = async (sale_id) => {
     try {
-      await fetchData(`/sales/deleteLogic/${sale_id}`, "PUT", null, {
+      await fetchData(`/sales/deleteLogic/${sale_id}`, 'PUT', null, {
         Authorization: `Bearer ${token}`,
       }).then((res) => {
         if (res.status === 200) {
@@ -35,15 +61,16 @@ export const Sales = () => {
       });
     } catch (err) {
       console.log(err);
-      toast.error("Error al eliminar la venta");
+      toast.error('Error al eliminar la venta');
     }
   };
 
   const modifyStatusOrder = async (sale_id, user_id, product_id, newStatus) => {
+    console.log(sale_id, user_id, product_id, newStatus);
     try {
       const response = await fetchData(
         `/sales/modifyStatusOfOrder`,
-        "POST",
+        'POST',
         {
           sale_status: newStatus,
           user_id,
@@ -57,93 +84,78 @@ export const Sales = () => {
       if (response.status === 200) {
         setSales((prevSales) =>
           prevSales.map((sale) =>
-            sale.sale_id === sale_id
+            sale.sale_id === sale_id &&
+            sale.product_id === product_id &&
+            sale.user_id === user_id
               ? { ...sale, sale_status: newStatus }
               : sale
           )
         );
       }
     } catch (err) {
-      console.log("Error en la petición", err);
-      toast.error("Error al modificar el estado de la venta");
+      console.log('Error en la petición', err);
+      toast.error('Error al modificar el estado de la venta');
     }
   };
 
+  console.log(sales);
+
   return (
-    <div className="sales-container">
-      <h1 className="sales-title">Historial de Ventas</h1>
-      <table className="sales-table">
-        <thead>
-          <tr>
-            <th>ID Venta</th>
-            <th>Cliente</th>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="admin-table">
+      <div className="container">
+        <h3>Historial de Ventas</h3>
+        <div className="ordersList">
           {sales && sales.length > 0 ? (
-            sales.map((sale) => (
-              <tr key={sale.sale_id}>
-                <td>{sale.sale_id}</td>
-                <td>
-                  {sale.name} {sale.lastname}
-                </td>
-                <td>{sale.title}</td>
-                <td>{sale.quantity}</td>
-                <td>
-                  {sale.sale_status === 1
-                    ? "Pendiente"
-                    : sale.sale_status === 2
-                    ? "Cancelado"
-                    : "Completado"}
-                </td>
-                <td>{sale.date}</td>
-                <td className="actions">
-                  <button onClick={() => deleteSale(sale.sale_id)}>
-                    Borrar
-                  </button>
-                  {sale.sale_status === 1 && (
-                    <>
-                      <button
-                        onClick={() =>
-                          modifyStatusOrder(
-                            sale.sale_id,
-                            sale.user_id,
-                            sale.product_id,
-                            3
-                          )
-                        }
-                      >
-                        Completar
-                      </button>
-                      <button
-                        onClick={() =>
-                          modifyStatusOrder(
-                            sale.sale_id,
-                            sale.user_id,
-                            sale.product_id,
-                            2
-                          )
-                        }
-                      >
-                        Cancelar
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
+            sales.map((sale, index) => (
+              <ExpandableOrder
+                key={index}
+                orderId={sale.sale_id}
+                userId={sale.user_id}
+                userDetails={sale.user}
+                orderTitle={`Compra ID: ${sale.sale_id}`}
+                orderDate={sale.date}
+                items={sale.items || []}
+                modifyStatusOrder={modifyStatusOrder}
+                actions={
+                  sale.sale_status === 1
+                    ? [
+                        <button
+                          key="complete"
+                          onClick={() =>
+                            modifyStatusOrder(
+                              sale.sale_id,
+                              sale.user_id,
+                              sale.product_id,
+                              3
+                            )
+                          }
+                        >
+                          Completar
+                        </button>,
+                        <button
+                          key="cancel"
+                          onClick={() =>
+                            modifyStatusOrder(
+                              sale.sale_id,
+                              sale.user_id,
+                              sale.product_id,
+                              2
+                            )
+                          }
+                        >
+                          Cancelar
+                        </button>,
+                      ]
+                    : []
+                }
+                deleteSale={() => deleteSale(sale.sale_id)} // Acciones de eliminar
+              />
             ))
           ) : (
-            <tr>
-              <td>No hay pedidos</td>
-            </tr>
+            <p>No hay pedidos</p>
           )}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

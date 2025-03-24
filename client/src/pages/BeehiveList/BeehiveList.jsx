@@ -1,8 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { fetchData } from "../../helpers/axiosHelper";
-import "./styles.css";
-import { UserContext } from "../../context/UserContext";
-import { toast } from "react-toastify";
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { fetchData } from '../../helpers/axiosHelper';
+import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
+import { PencilLine, Trash2, X } from 'lucide-react';
+import './styles.css';
 
 export const BeehiveList = () => {
   const [beehives, setBeehives] = useState([]);
@@ -236,11 +237,16 @@ export const BeehiveList = () => {
                             alt="Beehive"
                             className="beehive-image"
                           />
-                          <button
+                          <X
+                            size={28}
                             className="delete-img-btn"
-                            onClick={() => handleDeleteImage(image.beehive_image_id, editingBeehiveId)}>
-                            ❌
-                          </button>
+                            onClick={() =>
+                              handleDeleteImage(
+                                image.beehive_image_id,
+                                editingBeehiveId
+                              )
+                            }
+                          />
                         </>
                       )}
                     </div>
@@ -331,11 +337,19 @@ export const BeehiveList = () => {
                   )}
                 </td>
                 <td className="buttonsTable">
-                  <button className="edit-btn" onClick={() => openModal("edit", beehive)}>
-                    <img src="/icons/edit.svg" alt="imagen edit" />
+                  <button
+                    className="edit-btn"
+                    onClick={() => openModal('edit', beehive)}
+                  >
+                    <PencilLine size={28} color="black" />
                   </button>
-                  <button className="delete-btn" onClick={() => handleDelete(beehive.beehive_id || beehive.id)}>
-                    <img src="/icons/bin.svg" alt="bin image" />
+                  <button
+                    className="delete-btn"
+                    onClick={() =>
+                      handleDelete(beehive.beehive_id || beehive.id)
+                    }
+                  >
+                    <Trash2 size={28} color="black" />
                   </button>
                 </td>
               </tr>

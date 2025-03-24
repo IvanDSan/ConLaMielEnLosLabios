@@ -1,73 +1,89 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
+import { SubscriptionCard } from '../../components/SubscriptionCard/SubscriptionCard';
+import { fetchData } from '../../helpers/axiosHelper';
+import { toast } from 'react-toastify';
+
+const testimonials = [
+  {
+    comment: '¡Gran iniciativa para salvar abejas!',
+    name: 'María G.',
+    rating: '★★★★★',
+  },
+  {
+    comment: 'La miel es deliciosa y apoyo una buena causa.',
+    name: 'Juan P.',
+    rating: '★★★★★',
+  },
+  {
+    comment: 'Excelente servicio y compromiso.',
+    name: 'Ana R.',
+    rating: '★★★★★',
+  },
+];
 
 export const SponsorColmena = () => {
-  const subscriptionTiers = [
-    {
-      title: 'Single',
-      description:
-        'Patrocinio anual individual que incluye acceso a contenido exclusivo y descuentos en productos.',
-      price: '70.00€',
-    },
-    {
-      title: 'Pro',
-      description:
-        'Patrocinio premium con ventajas exclusivas como visitas a colmenares y productos personalizados.',
-      price: '110.00€',
-    },
-  ];
+  const [subscriptions, setSubscriptions] = useState([]);
+  const [beehivesImages, setBeehivesImages] = useState([]);
 
-  const galleryImages = [
-    '/images/colmenas/caja1.png',
-    '/images/colmenas/caja2.png',
-    '/images/colmenas/caja3.png',
-    '/images/colmenas/caja4.png',
-  ];
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await fetchData('/sponsorships/types', 'GET');
+        setSubscriptions(response.data);
+      } catch (error) {
+        console.error('Error fetching subscriptions:', error);
+        toast.error('Error al obtener los planes de apadrinamiento.');
+      }
+    };
 
-  const testimonials = [
-    {
-      comment: '¡Gran iniciativa para salvar abejas!',
-      name: 'María G.',
-      rating: '★★★★★',
-    },
-    {
-      comment: 'La miel es deliciosa y apoyo una buena causa.',
-      name: 'Juan P.',
-      rating: '★★★★★',
-    },
-    {
-      comment: 'Excelente servicio y compromiso.',
-      name: 'Ana R.',
-      rating: '★★★★★',
-    },
-  ];
+    const fetchBeehivesImages = async () => {
+      try {
+        const response = await fetchData('/beehives/images', 'GET');
+        setBeehivesImages(response.data);
+      } catch (error) {
+        console.error('Error fetching beehives images:', error);
+        toast.error('Error al obtener las imagenes de las colmenas.');
+      }
+    };
+
+    fetchSubscriptions();
+    fetchBeehivesImages();
+  }, []);
+
+  console.log(beehivesImages);
 
   return (
     <div className="subscriptions-container">
       <div className="header">
         <h1>¡HAZ LA DIFERENCIA!</h1>
-        <h1>Apadrina una colmena y salva abejas</h1>
+        <h4>Apadrina una colmena y salva abejas</h4>
         <p>
           Disfruta de miel exclusiva, ayuda a la biodiversidad y vive una
           experiencia única en el campo
         </p>
       </div>
       <div className="subscription-tiers">
-        {subscriptionTiers.map((tier, index) => (
-          <div className="tier-card" key={index}>
-            <div className="title">{tier.title}</div>
-            <div className="description">{tier.description}</div>
-            <div className="price">{tier.price}</div>
-            <button className="button">Seleccionar</button>
-          </div>
-        ))}
+        {subscriptions.length > 0 &&
+          subscriptions.map((sub, index) => (
+            <SubscriptionCard
+              key={index}
+              subscription={sub}
+              mostSelected={index === 1}
+            />
+          ))}
       </div>
       <div className="gallery">
         <h2>Nuestras Colmenas</h2>
         <div className="gallery-grid">
-          {galleryImages.map((src, index) => (
+          {beehivesImages.slice(0, 4).map((img, index) => (
             <div className="gallery-item" key={index}>
-              <img src={src} alt={`Beehive ${index + 1}`} />
+              <img
+                src={`${
+                  import.meta.env.VITE_SERVER_URL
+                }/images/beehives/${img.image_url}`}
+                alt={`Beehive ${index + 1}`}
+              />
             </div>
           ))}
         </div>

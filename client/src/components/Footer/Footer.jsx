@@ -1,23 +1,24 @@
+import { GlobeLock, Handshake, Home, PencilRuler, ReceiptText, Store } from 'lucide-react';
 import './styles.css';
 
 const links = [
   {
-    img: '/icons/footer-home.svg',
+    img: <Home />,
     href: '/',
     name: 'Inicio',
   },
   {
-    img: '/icons/footer-deal.svg',
+    img: <Handshake />,
     href: '/apadrina',
     name: 'Apadrina',
   },
   {
-    img: '/icons/footer-bee.svg',
+    img: <PencilRuler />,
     href: '/talleres',
     name: 'Talleres y visitas',
   },
   {
-    img: '/icons/footer-shop.svg',
+    img: <Store />,
     href: '/tienda',
     name: 'Tienda',
   },
@@ -31,7 +32,7 @@ export const Footer = () => {
           <div className="links">
             {links.map((link, index) => (
               <a href={link.href} key={index}>
-                <img src={link.img} alt={link.name} />
+                {link.img}
                 <p>{link.name}</p>
               </a>
             ))}
@@ -43,8 +44,14 @@ export const Footer = () => {
           </div>
           <div className="separator"></div>
           <div className="terms">
-            <a href="#">Términos y condiciones</a>
-            <a href="#">Políticas de privacidad</a>
+            <a href="#">
+              <ReceiptText />
+              Términos y condiciones
+            </a>
+            <a href="#">
+              <GlobeLock />
+              Políticas de privacidad
+            </a>
           </div>
         </div>
       </div>

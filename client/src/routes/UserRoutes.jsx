@@ -11,10 +11,13 @@ import { ShoppingCart } from '../pages/ShoppingCart/ShoppingCart';
 import { BeehivesView } from '../pages/BeehivesView/BeehivesView';
 import { BeehiveIndividual } from '../pages/IndividualBeehive/BeehiveIndividual';
 import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
-import { UserOrders } from '../pages/UserPedidos/UserPedidos';
+import { UserOrders } from '../pages/UserPedidos/UserOrders';
 import { ProductDetail } from '../pages/ProductDetail/ProductDetail';
 import { Success } from '../pages/Success/Success'
 import { Cancel } from '../pages/Cancel/Cancel'
+import { SponsorColmenaType } from '../pages/SponsorColmenaType/SponsorColmenaType';
+import { SponsorColmenaConfirmation } from '../pages/SponsorColmenaConfirmation/SponsorColmenaConfirmation';
+import { Profile } from '../pages/Profile/Profile';
 
 /** COMPONENTS */
 import { Navbar } from '../components/Navbar/Navbar';
@@ -30,19 +33,25 @@ export const UserRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/tienda" element={<Store />} />
           <Route path="/apadrina" element={<SponsorColmena />} />
+          <Route path="/apadrina/:id" element={<SponsorColmenaType />} />
+          <Route
+            path="/apadrina/confirmation"
+            element={<SponsorColmenaConfirmation />}
+          />
           <Route path="/talleres" element={<Talleres />} />
           <Route path="/carrito" element={<ShoppingCart />} />
-          <Route path="/perfil" element={<h1>Perfil</h1>} />
+          <Route path="/perfil" element={<Profile />} />
           <Route path="/colmenas" element={<BeehivesView />} />
-          <Route path="/beehives/:id" element={<BeehiveIndividual />} />
+          <Route path="/colmenas/:id" element={<BeehiveIndividual />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/pedidos" element={<UserOrders />} />
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/producto/:id" element={<ProductDetail />} />
+          <Route path="/suscripciones" element={<h1>Suscripciones</h1>} />
           <Route path="/*" element={<h1>404</h1>} />
         </Routes>
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer position="top-left" autoClose={3000} />
       </main>
 
       <Footer />
