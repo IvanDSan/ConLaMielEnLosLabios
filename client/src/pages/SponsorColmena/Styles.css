@@ -1,6 +1,5 @@
 .subscriptions-container {
   background-color: var(--bg-color);
-  padding: 60px 20px 80px;
   min-height: calc(100vh - 140px);
 
   .header {
@@ -11,18 +10,6 @@
     border-bottom: 2px solid var(--brown);
     padding: 10px;
   }
-
-  .header h1 {
-    font-size: 48px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .header p {
-    font-size: 24px;
-  }
-
   .subscription-tiers {
     margin: 4rem auto;
     display: flex;
@@ -130,7 +117,8 @@
 
   .gallery-item img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
   }
 
   .testimonials {

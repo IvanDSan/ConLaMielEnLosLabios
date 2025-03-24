@@ -55,13 +55,39 @@ header {
       }
     }
 
+    .profile-img {
+      position: relative;
+
+      .user-menu {
+        position: absolute;
+        top: 2.5rem;
+        right: 0;
+        background-color: var(--bg-color);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        padding: 1rem;
+        min-width: 12rem;
+        border-radius: 0.5rem;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        align-items: flex-start;
+
+        .separator {
+          height: 1px;
+          width: 100%;
+          background-color: var(--gray);
+        }
+      }
+    }
+
     .cart-container {
       position: relative;
 
       .cart-quantity {
         position: absolute;
         top: 1rem;
-        left: -.8rem;
+        left: -0.8rem;
         background-color: var(--purple);
         color: var(--bg-color);
         border-radius: 50%;

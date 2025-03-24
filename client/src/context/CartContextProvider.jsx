@@ -134,6 +134,22 @@ export const CartContextProvider = ({ children }) => {
   };
 
   const purchaseCart = async () => {
+    if (cart.length === 0) {
+      toast.error('El carrito esta vacio');
+      return;
+    }
+
+    if (
+      !user.phone_number ||
+      !user.city ||
+      !user.province ||
+      !user.address ||
+      !user.zipcode
+    ) {
+      toast.error('Faltan datos, por favor completa tu perfil');
+      return;
+    }
+
     try {
       await fetchData('/users/completePurchaseCart', 'POST', cart, {
         Authorization: `Bearer ${token}`,

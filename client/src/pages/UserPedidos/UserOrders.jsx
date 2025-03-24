@@ -56,7 +56,7 @@ export const UserOrders = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [token]);
 
   const filterByStatus = (status) => {
     let filtered = [];

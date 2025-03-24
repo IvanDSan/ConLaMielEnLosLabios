@@ -18,6 +18,7 @@ export const Navbar = () => {
   const [register, setRegister] = useState(false);
   const [recoverPassword, setRecoverPassword] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const navigate = useNavigate();
 
@@ -110,23 +111,59 @@ export const Navbar = () => {
               </NavLink>
             </li>
             {user && (
-              <li>
-                <NavLink
-                  to="/perfil"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  <img
-                    src={`${
-                      user.image
-                        ? import.meta.env.VITE_SERVER_URL +
-                          '/images/users/' +
-                          user.image
-                        : '/images/user-placeholder.png'
-                    }`}
-                    alt="profile"
-                    className="profile-img"
-                  />
-                </NavLink>
+              <li
+                className="profile-img"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                onMouseLeave={() => setShowUserMenu(false)}
+                onMouseEnter={() => setShowUserMenu(true)}
+              >
+                <img
+                  src={`${
+                    user.image
+                      ? import.meta.env.VITE_SERVER_URL +
+                        '/images/users/' +
+                        user.image
+                      : '/images/user-placeholder.png'
+                  }`}
+                  alt="profile"
+                  className="profile-img"
+                />
+                {showUserMenu && (
+                  <ul className="user-menu">
+                    <li>
+                      <NavLink
+                        to="/perfil"
+                        className={({ isActive }) => (isActive ? 'active' : '')}
+                      >
+                        Perfil
+                      </NavLink>
+                    </li>
+                    <div className="separator"></div>
+                    <li>
+                      <NavLink
+                        to="/pedidos"
+                        className={({ isActive }) => (isActive ? 'active' : '')}
+                      >
+                        Mis pedidos
+                      </NavLink>
+                    </li>
+                    <div className="separator"></div>
+                    <li>
+                      <NavLink
+                        to="/suscripciones"
+                        className={({ isActive }) => (isActive ? 'active' : '')}
+                      >
+                        Mis suscripciones
+                      </NavLink>
+                    </li>
+                    <div className="separator"></div>
+                    <li>
+                      <a href="#" onClick={handleLoginClick}>
+                        Cerrar sesión
+                      </a>
+                    </li>
+                  </ul>
+                )}
               </li>
             )}
             <li>
