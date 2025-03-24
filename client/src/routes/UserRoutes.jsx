@@ -13,6 +13,8 @@ import { BeehiveIndividual } from '../pages/IndividualBeehive/BeehiveIndividual'
 import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
 import { UserOrders } from '../pages/UserPedidos/UserPedidos';
 import { ProductDetail } from '../pages/ProductDetail/ProductDetail';
+import { Success } from '../pages/Success/Success'
+import { Cancel } from '../pages/Cancel/Cancel'
 
 /** COMPONENTS */
 import { Navbar } from '../components/Navbar/Navbar';
@@ -35,6 +37,8 @@ export const UserRoutes = () => {
           <Route path="/beehives/:id" element={<BeehiveIndividual />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/pedidos" element={<UserOrders />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/cancel" element={<Cancel />} />
           <Route path="/producto/:id" element={<ProductDetail />} />
           <Route path="/*" element={<h1>404</h1>} />
         </Routes>
