@@ -107,8 +107,8 @@
 
   .honeycomb-icon {
     position: absolute;
-    bottom: -1rem;
-    right: -1rem;
+    bottom: -4rem;
+    right: -4rem;
     opacity: 0.5;
 
     img {

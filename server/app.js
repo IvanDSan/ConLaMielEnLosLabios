@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //rutas de los endpoints
+import paymentRoutes from "./modules/payment/payment.routes.js";
 import adminRouter from './modules/admin/admin.routes.js';
 import categoriesRouter from './modules/categories/categories.routes.js';
 import usersRouter from './modules/users/users.routes.js';
@@ -27,9 +28,11 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
+app.use("/payment", paymentRoutes);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
