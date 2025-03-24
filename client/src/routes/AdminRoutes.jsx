@@ -28,7 +28,7 @@ export const AdminRoutes = () => {
           <Route path="/ventas" element={<Sales />} />
           <Route path="*" element={<h1>404</h1>} />
         </Routes>
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer position="top-left" autoClose={3000} />
       </main>
     </BrowserRouter>
   );

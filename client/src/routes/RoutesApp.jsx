@@ -7,6 +7,8 @@ import { UserRoutes } from './UserRoutes';
 export const RoutesApp = () => {
   const { user, loading } = useContext(UserContext);
 
+  console.log(user);
+
   if (loading) {
     return (
       <main

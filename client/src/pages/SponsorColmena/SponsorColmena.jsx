@@ -4,13 +4,6 @@ import { SubscriptionCard } from '../../components/SubscriptionCard/Subscription
 import { fetchData } from '../../helpers/axiosHelper';
 import { toast } from 'react-toastify';
 
-const galleryImages = [
-  '/images/colmenas/caja1.png',
-  '/images/colmenas/caja2.png',
-  '/images/colmenas/caja3.png',
-  '/images/colmenas/caja4.png',
-];
-
 const testimonials = [
   {
     comment: '¡Gran iniciativa para salvar abejas!',
@@ -31,6 +24,7 @@ const testimonials = [
 
 export const SponsorColmena = () => {
   const [subscriptions, setSubscriptions] = useState([]);
+  const [beehivesImages, setBeehivesImages] = useState([]);
 
   useEffect(() => {
     const fetchSubscriptions = async () => {
@@ -43,14 +37,27 @@ export const SponsorColmena = () => {
       }
     };
 
+    const fetchBeehivesImages = async () => {
+      try {
+        const response = await fetchData('/beehives/images', 'GET');
+        setBeehivesImages(response.data);
+      } catch (error) {
+        console.error('Error fetching beehives images:', error);
+        toast.error('Error al obtener las imagenes de las colmenas.');
+      }
+    };
+
     fetchSubscriptions();
+    fetchBeehivesImages();
   }, []);
+
+  console.log(beehivesImages);
 
   return (
     <div className="subscriptions-container">
       <div className="header">
         <h1>¡HAZ LA DIFERENCIA!</h1>
-        <h1>Apadrina una colmena y salva abejas</h1>
+        <h4>Apadrina una colmena y salva abejas</h4>
         <p>
           Disfruta de miel exclusiva, ayuda a la biodiversidad y vive una
           experiencia única en el campo
@@ -69,9 +76,14 @@ export const SponsorColmena = () => {
       <div className="gallery">
         <h2>Nuestras Colmenas</h2>
         <div className="gallery-grid">
-          {galleryImages.map((src, index) => (
+          {beehivesImages.slice(0, 4).map((img, index) => (
             <div className="gallery-item" key={index}>
-              <img src={src} alt={`Beehive ${index + 1}`} />
+              <img
+                src={`${
+                  import.meta.env.VITE_SERVER_URL
+                }/images/beehives/${img.image_url}`}
+                alt={`Beehive ${index + 1}`}
+              />
             </div>
           ))}
         </div>
