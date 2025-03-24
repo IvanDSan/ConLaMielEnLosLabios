@@ -1,35 +1,37 @@
-import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import { fetchData } from '../../helpers/axiosHelper';
-import { UserContext } from '../../context/UserContext';
-import { toast } from 'react-toastify';
-import { PencilLine, Trash2 } from 'lucide-react';
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { fetchData } from "../../helpers/axiosHelper";
+import { UserContext } from "../../context/UserContext";
+import { toast } from "react-toastify";
+import { PencilLine, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const Products = () => {
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
-    title: '',
-    description: '',
-    price: '',
-    category_id: '',
+    title: "",
+    description: "",
+    price: "",
+    category_id: "",
   });
   const [productToEdit, setProductToEdit] = useState(null);
   const { token } = useContext(UserContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
-      .get('http://localhost:4000/products/all')
+      .get("http://localhost:4000/products/all")
       .then((res) => setProducts(res.data))
       .catch((error) => {
-        console.error('Error al obtener los productos', error);
-        toast.error('Error al obtener los productos');
+        console.error("Error al obtener los productos", error);
+        toast.error(t("error_fetching_products"));
       });
-  }, []);
+  }, [t]);
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetchData('/products/create', 'POST', newProduct, {
+      const res = await fetchData("/products/create", "POST", newProduct, {
         Authorization: `Bearer ${token}`,
       });
       if (res.status === 200) {
@@ -38,7 +40,7 @@ export const Products = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error('Error al crear el producto');
+      toast.error(t("error_creating_product"));
     }
   };
 
@@ -51,21 +53,21 @@ export const Products = () => {
         .then(() => {
           setProductToEdit(null);
           axios
-            .get('http://localhost:4000/products/all', {
+            .get("http://localhost:4000/products/all", {
               headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => setProducts(res.data));
         })
         .catch((error) => {
-          console.error('Error al editar el producto', error);
-          toast.error('Error al editar el producto');
+          console.error("Error al editar el producto", error);
+          toast.error(t("error_editing_product"));
         });
     }
   };
 
   const handleDeleteProduct = async (id) => {
     try {
-      const res = await fetchData(`/products/${id}`, 'delete', null, {
+      const res = await fetchData(`/products/${id}`, "delete", null, {
         Authorization: `Bearer ${token}`,
       });
 
@@ -73,8 +75,8 @@ export const Products = () => {
         setProducts(products.filter((product) => product.id !== id));
       }
     } catch (error) {
-      console.error('Error al eliminar el producto', error);
-      toast.error('Error al eliminar el producto');
+      console.error("Error al eliminar el producto", error);
+      toast.error(t("error_deleting_product"));
     }
   };
 
@@ -83,70 +85,70 @@ export const Products = () => {
       <main className="content">
         <form className="create-form" onSubmit={handleCreateProduct}>
           <label>
-            Título:
+            {t("title")}:
             <input
               type="text"
               value={newProduct.title}
               onChange={(e) =>
                 setNewProduct({ ...newProduct, title: e.target.value })
               }
-              placeholder="Título"
+              placeholder={t("title")}
               required
             />
           </label>
           <label>
-            Descripción:
+            {t("description")}:
             <textarea
               value={newProduct.description}
               onChange={(e) =>
                 setNewProduct({ ...newProduct, description: e.target.value })
               }
-              placeholder="Descripción"
+              placeholder={t("description")}
               required
             />
           </label>
           <label>
-            Precio:
+            {t("price")}:
             <input
               type="number"
               value={newProduct.price}
               onChange={(e) =>
                 setNewProduct({ ...newProduct, price: e.target.value })
               }
-              placeholder="Precio"
+              placeholder={t("price")}
               required
             />
           </label>
           <label>
-            ID de categoría:
+            {t("category_id")}:
             <input
               type="text"
               value={newProduct.category_id}
               onChange={(e) =>
                 setNewProduct({ ...newProduct, category_id: e.target.value })
               }
-              placeholder="ID de categoría"
+              placeholder={t("category_id")}
               required
             />
           </label>
           <button onClick={handleCreateProduct} type="submit">
-            Crear Producto
+            {t("create_product")}
           </button>
         </form>
 
         <div className="admin-table">
           <div className="container">
-            <h3>Productos</h3>
+            <h3>{t("products")}</h3>
             <div className="table-wrapper">
               <table>
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Imagen</th>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Acciones</th>
+                    <th>{t("image")}</th>
+                    <th>{t("title")}</th>
+                    <th>{t("description")}</th>
+                    <th>{t("price")}</th>
+                    <th>{t("actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,14 +187,14 @@ export const Products = () => {
 
         {productToEdit && (
           <div className="edit-form">
-            <h2>Editar Producto</h2>
+            <h2>{t("edit_product")}</h2>
             <input
               type="text"
               value={productToEdit.title}
               onChange={(e) =>
                 setProductToEdit({ ...productToEdit, title: e.target.value })
               }
-              placeholder="Título"
+              placeholder={t("title")}
             />
             <textarea
               value={productToEdit.description}
@@ -202,7 +204,7 @@ export const Products = () => {
                   description: e.target.value,
                 })
               }
-              placeholder="Descripción"
+              placeholder={t("description")}
             />
             <input
               type="number"
@@ -210,7 +212,7 @@ export const Products = () => {
               onChange={(e) =>
                 setProductToEdit({ ...productToEdit, price: e.target.value })
               }
-              placeholder="Precio"
+              placeholder={t("price")}
             />
             <input
               type="text"
@@ -221,10 +223,10 @@ export const Products = () => {
                   category_id: e.target.value,
                 })
               }
-              placeholder="ID de categoría"
+              placeholder={t("category_id")}
             />
             <button onClick={() => handleEditProduct(productToEdit.product_id)}>
-              Actualizar
+              {t("update")}
             </button>
           </div>
         )}

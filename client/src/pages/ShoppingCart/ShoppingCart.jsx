@@ -1,6 +1,7 @@
-import { useContext } from 'react';
-import { CartContext } from '../../context/CartContextProvider';
-import './styles.css';
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContextProvider";
+import "./styles.css";
+import { useTranslation } from "react-i18next";
 
 export const ShoppingCart = () => {
   const {
@@ -12,11 +13,13 @@ export const ShoppingCart = () => {
     purchaseCart,
   } = useContext(CartContext);
 
+  const { t } = useTranslation();
+
   return (
     <div className="carrito">
-      <h1>Carrito</h1>
+      <h1>{t("cart")}</h1>
       {cart.length === 0 ? (
-        <p>El carrito está vacío.</p>
+        <p>{t("cart_empty")}</p>
       ) : (
         <ul>
           {cart?.map((item) =>
@@ -45,27 +48,35 @@ export const ShoppingCart = () => {
                   </div>
 
                   <button onClick={() => removeFromCart(item.product_id)}>
-                    Eliminar
+                    {t("remove")}
                   </button>
                 </div>
               </li>
             ) : (
-              <li key={item.product_id || Math.random()}>Producto no válido</li>
+              <li key={item.product_id || Math.random()}>
+                {t("invalid_product")}
+              </li>
             )
           )}
           <div className="cartTotal">
-            <p>Total del carrito</p>
-            <p>Subtotal: {calculateTotal().subtotal.toFixed(2)} €</p>
-            <p>Envío: {calculateTotal().envio.toFixed(2)} €</p>
+            <p>{t("cart_total")}</p>
+            <p>
+              {t("subtotal")}: {calculateTotal().subtotal.toFixed(2)} €
+            </p>
+            <p>
+              {t("shipping")}: {calculateTotal().envio.toFixed(2)} €
+            </p>
             <span className="rayaCart"></span>
-            <p>Total: {calculateTotal().total.toFixed(2)} €</p>
+            <p>
+              {t("total")}: {calculateTotal().total.toFixed(2)} €
+            </p>
 
             <div>
               <button className="botonesCart2" onClick={() => purchaseCart()}>
-                Finaliza tu compra
+                {t("checkout")}
               </button>
               <button className="botonesCart2" onClick={() => clearCart()}>
-                Vaciar Carrito
+                {t("clear_cart")}
               </button>
             </div>
           </div>

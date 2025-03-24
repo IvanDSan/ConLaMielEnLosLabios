@@ -1,16 +1,18 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CartContext } from '../../context/CartContextProvider';
-import './styles.css';
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "../../context/CartContextProvider";
+import "./styles.css";
+import { useTranslation } from "react-i18next";
 
 export const ProductCard = ({ product }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
 
   return (
     <div key={product.product_id} className="productCard">
       <img
-        src={product.image_url || '/images/product-placeholder.jpg'}
+        src={product.image_url || "/images/product-placeholder.jpg"}
         alt={product.title}
         className="productImage"
       />
@@ -24,7 +26,7 @@ export const ProductCard = ({ product }) => {
             className="moreInfo"
             onClick={() => navigate(`/producto/${product.product_id}`)}
           >
-            Ver Más
+            {t("view_more")}
           </button>
           <button
             className="addToCart"
@@ -32,7 +34,7 @@ export const ProductCard = ({ product }) => {
               addToCart(product);
             }}
           >
-            Añadir
+            {t("add")}
           </button>
         </div>
       </div>

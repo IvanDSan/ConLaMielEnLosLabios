@@ -1,15 +1,17 @@
-import { useContext, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Modal } from '../Modal/Modal';
-import { LoginForm } from '../LoginForm/LoginForm';
-import { RegisterForm } from '../RegisterForm/RegisterForm';
-import { RecoverPasswordForm } from '../RecoverPasswordForm/RecoverPasswordForm';
-import { UserContext } from '../../context/UserContext';
-import { CartContext } from '../../context/CartContextProvider';
-import { LogOut, Menu, ShoppingCart, UserRound, X } from 'lucide-react';
-import './styles.css';
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Modal } from "../Modal/Modal";
+import { LoginForm } from "../LoginForm/LoginForm";
+import { RegisterForm } from "../RegisterForm/RegisterForm";
+import { RecoverPasswordForm } from "../RecoverPasswordForm/RecoverPasswordForm";
+import { UserContext } from "../../context/UserContext";
+import { CartContext } from "../../context/CartContextProvider";
+import { LogOut, Menu, ShoppingCart, UserRound, X } from "lucide-react";
+import "./styles.css";
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
+  const { t } = useTranslation();
   const { user, logout } = useContext(UserContext);
   const { getNumberOfTotalProducts } = useContext(CartContext);
 
@@ -23,15 +25,15 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   const changeModal = (modal) => {
-    if (modal === 'login') {
+    if (modal === "login") {
       setLogin(true);
       setRegister(false);
       setRecoverPassword(false);
-    } else if (modal === 'register') {
+    } else if (modal === "register") {
       setLogin(false);
       setRegister(true);
       setRecoverPassword(false);
-    } else if (modal === 'recoverPassword') {
+    } else if (modal === "recoverPassword") {
       setLogin(false);
       setRegister(false);
       setRecoverPassword(true);
@@ -40,11 +42,11 @@ export const Navbar = () => {
 
   const handleLoginClick = () => {
     if (!user) {
-      changeModal('login');
+      changeModal("login");
       setIsOpen(true);
     } else {
       logout();
-      navigate('/');
+      navigate("/");
     }
   };
 
@@ -56,40 +58,40 @@ export const Navbar = () => {
             src="/images/logo.svg"
             alt="logo"
             className="logo"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           />
           <div className="links">
             <ul>
               <li>
                 <NavLink
                   to="/tienda"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Nuestra tienda
+                  {t("our_store")}
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/colmenas"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Nuestras colmenas
+                  {t("our_beehives")}
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/talleres"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Cursos y talleres
+                  {t("workshops_visits")}
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/apadrina"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Apoya una colmena
+                  {t("sponsor_beehive")}
                 </NavLink>
               </li>
             </ul>
@@ -98,7 +100,7 @@ export const Navbar = () => {
             <li>
               <NavLink
                 to="/carrito"
-                className={({ isActive }) => (isActive ? 'active' : '')}
+                className={({ isActive }) => (isActive ? "active" : "")}
               >
                 <div className="cart-container">
                   {user && (
@@ -121,9 +123,9 @@ export const Navbar = () => {
                   src={`${
                     user.image
                       ? import.meta.env.VITE_SERVER_URL +
-                        '/images/users/' +
+                        "/images/users/" +
                         user.image
-                      : '/images/user-placeholder.png'
+                      : "/images/user-placeholder.png"
                   }`}
                   alt="profile"
                   className="profile-img"
@@ -133,33 +135,33 @@ export const Navbar = () => {
                     <li>
                       <NavLink
                         to="/perfil"
-                        className={({ isActive }) => (isActive ? 'active' : '')}
+                        className={({ isActive }) => (isActive ? "active" : "")}
                       >
-                        Perfil
+                        {t("profile")}
                       </NavLink>
                     </li>
                     <div className="separator"></div>
                     <li>
                       <NavLink
                         to="/pedidos"
-                        className={({ isActive }) => (isActive ? 'active' : '')}
+                        className={({ isActive }) => (isActive ? "active" : "")}
                       >
-                        Mis pedidos
+                        {t("my_orders")}
                       </NavLink>
                     </li>
                     <div className="separator"></div>
                     <li>
                       <NavLink
                         to="/suscripciones"
-                        className={({ isActive }) => (isActive ? 'active' : '')}
+                        className={({ isActive }) => (isActive ? "active" : "")}
                       >
-                        Mis suscripciones
+                        {t("my_subscriptions")}
                       </NavLink>
                     </li>
                     <div className="separator"></div>
                     <li>
                       <a href="#" onClick={handleLoginClick}>
-                        Cerrar sesión
+                        {t("logout")}
                       </a>
                     </li>
                   </ul>
@@ -184,7 +186,7 @@ export const Navbar = () => {
               </a>
             </li>
           </ul>
-          <div className={`mobile-menu ${showMobileMenu ? 'open' : ''}`}>
+          <div className={`mobile-menu ${showMobileMenu ? "open" : ""}`}>
             <a href="#">
               <X
                 size={28}
@@ -196,33 +198,33 @@ export const Navbar = () => {
               <li>
                 <NavLink
                   to="/tienda"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Nuestra tienda
+                  {t("our_store")}
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/colmenas"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Nuestras colmenas
+                  {t("our_beehives")}
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/talleres"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Cursos y talleres
+                  {t("workshops_visits")}
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/apadrina"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  Apoya una colmena
+                  {t("sponsor_beehive")}
                 </NavLink>
               </li>
             </ul>
@@ -234,23 +236,23 @@ export const Navbar = () => {
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {login && (
           <LoginForm
-            onRegisterClick={() => changeModal('register')}
-            onRecoverPasswordClick={() => changeModal('recoverPassword')}
+            onRegisterClick={() => changeModal("register")}
+            onRecoverPasswordClick={() => changeModal("recoverPassword")}
             onClose={() => {
               setIsOpen(false);
-              navigate('/');
+              navigate("/");
             }}
           />
         )}
         {register && (
           <RegisterForm
-            onCancelClick={() => changeModal('login')}
+            onCancelClick={() => changeModal("login")}
             onClose={() => setIsOpen(false)}
           />
         )}
         {recoverPassword && (
           <RecoverPasswordForm
-            onLoginClick={() => changeModal('login')}
+            onLoginClick={() => changeModal("login")}
             onClose={() => setIsOpen(false)}
           />
         )}

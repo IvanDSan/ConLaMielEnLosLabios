@@ -1,8 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import Slider from 'react-slick';
+import { useNavigate } from "react-router-dom";
+import Slider from "react-slick";
+import { useTranslation } from "react-i18next";
 
 export const BeehiveCard = ({ beehive }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const sliderSettings = {
     dots: true,
@@ -35,7 +37,7 @@ export const BeehiveCard = ({ beehive }) => {
           </Slider>
         ) : (
           <div className="no-image">
-            <p>No hay imagen disponible</p>
+            <p>{t("no_image")}</p>
           </div>
         )}
       </div>
@@ -48,7 +50,7 @@ export const BeehiveCard = ({ beehive }) => {
           className="beehive-button"
           onClick={() => navigate(`/colmenas/${beehive.beehive_id}`)}
         >
-          Ver más
+          {t("view_more")}
         </button>
 
         <div className="honeycomb-icon">

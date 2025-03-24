@@ -1,8 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
-import './styles.css';
+import { useNavigate } from "react-router-dom";
+import { Sparkles } from "lucide-react";
+import "./styles.css";
+import { useTranslation } from "react-i18next";
 
 export const SubscriptionCard = ({ subscription, mostSelected }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -10,7 +12,7 @@ export const SubscriptionCard = ({ subscription, mostSelected }) => {
       {mostSelected && (
         <span className="most-selected">
           <Sparkles size={20} />
-          Más elegido
+          {t("most_selected")}
         </span>
       )}
       <div className="subscription-card">
@@ -18,7 +20,7 @@ export const SubscriptionCard = ({ subscription, mostSelected }) => {
         <p className="price">
           <span>€ </span>
           {subscription.price}
-          <span>/mes</span>
+          <span>{t("per_month")}</span>
         </p>
         <p>{subscription.description}</p>
         <button
@@ -26,7 +28,7 @@ export const SubscriptionCard = ({ subscription, mostSelected }) => {
             navigate(`/apadrina/${subscription.sponsorship_type_id}`)
           }
         >
-          Quiero apadrinar
+          {t("sponsor_now")}
         </button>
       </div>
     </article>

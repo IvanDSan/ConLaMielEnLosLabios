@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { UserContext } from '../../context/UserContext';
-import './styles.css';
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+import "./styles.css";
+import { useTranslation } from "react-i18next";
 
 export const UpdateProfileForm = () => {
+  const { t } = useTranslation();
   const { user, setUser } = useContext(UserContext);
   const [formData, setFormData] = useState({ ...user });
   const [image, setImage] = useState(user?.image);
@@ -14,16 +16,16 @@ export const UpdateProfileForm = () => {
 
   return (
     <form className="profile-content">
-      {/** IMAGEN */}
+      {/* IMAGEN */}
       <div className="profile-left">
-        <img src={image || '/images/user-placeholder.png'} alt="Perfil" />
+        <img src={image || "/images/user-placeholder.png"} alt="Perfil" />
         {isEditing && <input type="file" onChange={handleFileChange} />}
       </div>
 
-      {/** DATOS PERSONALES */}
+      {/* DATOS PERSONALES */}
       <div className="profile-right">
         <div className="profile-field">
-          <label htmlFor="name">Nombre:</label>
+          <label htmlFor="name">{t("name")}:</label>
           {isEditing ? (
             <input
               type="text"
@@ -35,14 +37,12 @@ export const UpdateProfileForm = () => {
               }
             />
           ) : (
-            <span>{user && user.name}</span>
+            <span>{user?.name}</span>
           )}
         </div>
 
         <div className="profile-field">
-          <label htmlFor="lastname">
-            <strong>Apellidos:</strong>
-          </label>
+          <label htmlFor="lastname">{t("last_name")}:</label>
           {isEditing ? (
             <input
               type="text"
@@ -59,16 +59,12 @@ export const UpdateProfileForm = () => {
         </div>
 
         <div className="profile-field">
-          <label htmlFor="email">
-            <strong>Email:</strong>
-          </label>
+          <label htmlFor="email">Email:</label>
           <span>{user?.email}</span>
         </div>
 
         <div className="profile-field">
-          <label htmlFor="password">
-            <strong>Contraseña:</strong>
-          </label>
+          <label htmlFor="password">{t("password")}:</label>
           {isEditing ? (
             <input
               type="password"
@@ -86,9 +82,7 @@ export const UpdateProfileForm = () => {
 
         {isEditing && (
           <div className="profile-field">
-            <label htmlFor="confirmPassword">
-              <strong>Repetir contraseña:</strong>
-            </label>
+            <label htmlFor="confirmPassword">{t("confirm_password")}:</label>
             <input
               type="password"
               id="confirmPassword"
@@ -102,16 +96,12 @@ export const UpdateProfileForm = () => {
         )}
 
         <div className="profile-field">
-          <label htmlFor="dni">
-            <strong>DNI:</strong>
-          </label>
+          <label htmlFor="dni">DNI:</label>
           <span>{user?.dni}</span>
         </div>
 
         <div className="profile-field">
-          <label htmlFor="phone_number">
-            <strong>Teléfono:</strong>
-          </label>
+          <label htmlFor="phone_number">{t("phone")}:</label>
           {isEditing ? (
             <input
               type="tel"
@@ -128,9 +118,7 @@ export const UpdateProfileForm = () => {
         </div>
 
         <div className="profile-field">
-          <label htmlFor="address">
-            <strong>Dirección:</strong>
-          </label>
+          <label htmlFor="address">{t("address")}:</label>
           {isEditing ? (
             <input
               type="text"
@@ -142,14 +130,12 @@ export const UpdateProfileForm = () => {
               }
             />
           ) : (
-            <span>{user?.address || 'No especificada'}</span>
+            <span>{user?.address || "No especificada"}</span>
           )}
         </div>
 
         <div className="profile-field">
-          <label htmlFor="city">
-            <strong>Ciudad:</strong>
-          </label>
+          <label htmlFor="city">{t("city")}:</label>
           {isEditing ? (
             <input
               type="text"
@@ -166,9 +152,7 @@ export const UpdateProfileForm = () => {
         </div>
 
         <div className="profile-field">
-          <label htmlFor="province">
-            <strong>Provincia:</strong>
-          </label>
+          <label htmlFor="province">{t("province")}:</label>
           {isEditing ? (
             <input
               type="text"
@@ -185,9 +169,7 @@ export const UpdateProfileForm = () => {
         </div>
 
         <div className="profile-field">
-          <label htmlFor="zipcode">
-            <strong>Código Postal:</strong>
-          </label>
+          <label htmlFor="zipcode">{t("zipcode")}:</label>
           {isEditing ? (
             <input
               type="text"
@@ -204,7 +186,7 @@ export const UpdateProfileForm = () => {
         </div>
 
         <button type="button" onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? 'Guardar cambios' : 'Editar perfil'}
+          {isEditing ? t("save_changes") : t("edit_profile")}
         </button>
       </div>
     </form>

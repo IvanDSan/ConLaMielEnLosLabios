@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { fetchData } from '../../helpers/axiosHelper';
-import './styles.css';
-import { SpinnerLoading } from '../SpinnerLoading/SpinnerLoading';
+import { useState } from "react";
+import { fetchData } from "../../helpers/axiosHelper";
+import "./styles.css";
+import { SpinnerLoading } from "../SpinnerLoading/SpinnerLoading";
+import { useTranslation } from "react-i18next";
 
 export const RecoverPasswordForm = ({ onLoginClick, onClose }) => {
-  const [email, setEmail] = useState('');
+  const { t } = useTranslation();
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(true);
 
@@ -13,7 +15,7 @@ export const RecoverPasswordForm = ({ onLoginClick, onClose }) => {
 
     setLoading(true);
     try {
-      const response = await fetchData('/users/recoveryPassword', 'POST', {
+      const response = await fetchData("/users/recoveryPassword", "POST", {
         email,
       });
 
@@ -31,14 +33,14 @@ export const RecoverPasswordForm = ({ onLoginClick, onClose }) => {
     <>
       {showForm ? (
         <form onSubmit={handleSubmit}>
-          <h2>Recuperar contraseña</h2>
+          <h2>{t("recover_password_title")}</h2>
 
           <label htmlFor="email">
-            Email *
+            {t("email")} *
             <input
               type="email"
               name="email"
-              placeholder="Introduce tu email"
+              placeholder={t("enter_email")}
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -46,10 +48,10 @@ export const RecoverPasswordForm = ({ onLoginClick, onClose }) => {
           </label>
 
           <button type="submit" className="btn-primary">
-            {loading ? <SpinnerLoading /> : 'Recuperar contraseña'}
+            {loading ? <SpinnerLoading /> : t("recover_password_button")}
           </button>
           <button type="button" className="btn-primary" onClick={onLoginClick}>
-            Volver
+            {t("back")}
           </button>
 
           <div>
@@ -58,12 +60,8 @@ export const RecoverPasswordForm = ({ onLoginClick, onClose }) => {
         </form>
       ) : (
         <div className="message">
-          <p>
-            Si tu correo está registrado en nuestros sitemas, recibirás un correo
-            con tu nueva contraseña. La podrás cambiar cuando quieras desde tu
-            perfil de usuario.
-          </p>
-          <button onClick={onClose}>Volver</button>
+          <p>{t("recover_password_message")}</p>
+          <button onClick={onClose}>{t("back")}</button>
         </div>
       )}
     </>

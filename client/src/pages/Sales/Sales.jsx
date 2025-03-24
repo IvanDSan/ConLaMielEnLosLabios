@@ -1,28 +1,28 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { fetchData } from '../../helpers/axiosHelper';
-import { UserContext } from '../../context/UserContext';
-import { toast } from 'react-toastify';
-import { ExpandableOrder } from '../../components/ExpandableOrder/ExpandableOrder';
-import './styles.css';
+import { useCallback, useContext, useEffect, useState } from "react";
+import { fetchData } from "../../helpers/axiosHelper";
+import { UserContext } from "../../context/UserContext";
+import { toast } from "react-toastify";
+import { ExpandableOrder } from "../../components/ExpandableOrder/ExpandableOrder";
+import "./styles.css";
+import { useTranslation } from "react-i18next";
 
 export const Sales = () => {
   const { token } = useContext(UserContext);
   const [sales, setSales] = useState([]);
+  const { t } = useTranslation();
 
   const fetchSales = useCallback(async () => {
     try {
-      const response = await fetchData('/sales/all', 'GET', null, {
+      const response = await fetchData("/sales/all", "GET", null, {
         Authorization: `Bearer ${token}`,
       });
-
-      console.log(response.data);
 
       const groupedOrders = response.data.reduce((acc, order) => {
         if (!acc[order.sale_id]) {
           acc[order.sale_id] = {
             sale_id: order.sale_id,
             user_id: order.user_id,
-            user: order.name + ' ' + order.lastname,
+            user: order.name + " " + order.lastname,
             date: order.date,
             items: [],
           };
@@ -42,9 +42,9 @@ export const Sales = () => {
       setSales(Object.values(groupedOrders));
     } catch (err) {
       console.log(err);
-      toast.error('Error al obtener las ventas');
+      toast.error(t("error_fetching_sales"));
     }
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     fetchSales();
@@ -52,25 +52,28 @@ export const Sales = () => {
 
   const deleteSale = async (sale_id) => {
     try {
-      await fetchData(`/sales/deleteLogic/${sale_id}`, 'PUT', null, {
-        Authorization: `Bearer ${token}`,
-      }).then((res) => {
-        if (res.status === 200) {
-          setSales(sales.filter((sale) => sale.sale_id !== sale_id));
+      const res = await fetchData(
+        `/sales/deleteLogic/${sale_id}`,
+        "PUT",
+        null,
+        {
+          Authorization: `Bearer ${token}`,
         }
-      });
+      );
+      if (res.status === 200) {
+        setSales(sales.filter((sale) => sale.sale_id !== sale_id));
+      }
     } catch (err) {
       console.log(err);
-      toast.error('Error al eliminar la venta');
+      toast.error(t("error_deleting_sale"));
     }
   };
 
   const modifyStatusOrder = async (sale_id, user_id, product_id, newStatus) => {
-    console.log(sale_id, user_id, product_id, newStatus);
     try {
       const response = await fetchData(
         `/sales/modifyStatusOfOrder`,
-        'POST',
+        "POST",
         {
           sale_status: newStatus,
           user_id,
@@ -93,17 +96,15 @@ export const Sales = () => {
         );
       }
     } catch (err) {
-      console.log('Error en la petición', err);
-      toast.error('Error al modificar el estado de la venta');
+      console.log("Error en la petición", err);
+      toast.error(t("error_updating_sale_status"));
     }
   };
-
-  console.log(sales);
 
   return (
     <div className="admin-table">
       <div className="container">
-        <h3>Historial de Ventas</h3>
+        <h3>{t("sales_history")}</h3>
         <div className="ordersList">
           {sales && sales.length > 0 ? (
             sales.map((sale, index) => (
@@ -112,7 +113,7 @@ export const Sales = () => {
                 orderId={sale.sale_id}
                 userId={sale.user_id}
                 userDetails={sale.user}
-                orderTitle={`Compra ID: ${sale.sale_id}`}
+                orderTitle={`${t("purchase_id")}: ${sale.sale_id}`}
                 orderDate={sale.date}
                 items={sale.items || []}
                 modifyStatusOrder={modifyStatusOrder}
@@ -130,7 +131,7 @@ export const Sales = () => {
                             )
                           }
                         >
-                          Completar
+                          {t("complete")}
                         </button>,
                         <button
                           key="cancel"
@@ -143,16 +144,16 @@ export const Sales = () => {
                             )
                           }
                         >
-                          Cancelar
+                          {t("cancel")}
                         </button>,
                       ]
                     : []
                 }
-                deleteSale={() => deleteSale(sale.sale_id)} // Acciones de eliminar
+                deleteSale={() => deleteSale(sale.sale_id)}
               />
             ))
           ) : (
-            <p>No hay pedidos</p>
+            <p>{t("no_orders")}</p>
           )}
         </div>
       </div>
