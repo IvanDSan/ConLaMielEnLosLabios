@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import { CartContext } from '../../context/CartContextProvider';
 import './styles.css';
+import { CheckoutButton } from '../../components/PaymentButton/PaymentButton';
+
 
 export const ShoppingCart = () => {
   const {
@@ -9,7 +11,7 @@ export const ShoppingCart = () => {
     updateQuantity,
     clearCart,
     cart,
-    purchaseCart,
+    // purchaseCart,
   } = useContext(CartContext);
 
   return (
@@ -18,24 +20,28 @@ export const ShoppingCart = () => {
       {cart.length === 0 ? (
         <p>El carrito está vacío.</p>
       ) : (
-        <ul>
-          {cart?.map((item) =>
-            item && item.title && item.price ? (
-              <li className="cartItem" key={item.product_id}>
-                <span>
-                  {item.title} - {parseFloat(item.price).toFixed(2)} €
-                </span>
-                <div className="botonesCart">
+        <div className="cart-container">
+          <div className="cart-items">
+            {cart?.map((item) =>
+              item && item.title && item.price ? (
+                <div className="cartItem" key={item.product_id}>
+                  <div className="item-info">
+                    <h3 className="item-title">{item.title}</h3>
+                    <p className="item-price">{parseFloat(item.price).toFixed(2)} €</p>
+                  </div>
+                  
                   <div className="contador">
                     <button
+                      className="quantity-btn"
                       onClick={() =>
                         updateQuantity(item.product_id, item.quantity, -1)
                       }
                     >
                       -
                     </button>
-                    <span>{item.quantity}</span>
+                    <span className="quantity-display">{item.quantity}</span>
                     <button
+                      className="quantity-btn"
                       onClick={() =>
                         updateQuantity(item.product_id, item.quantity, 1)
                       }
@@ -43,33 +49,53 @@ export const ShoppingCart = () => {
                       +
                     </button>
                   </div>
-
-                  <button onClick={() => removeFromCart(item.product_id)}>
+                  
+                  <div className="item-subtotal">
+                    <p>Subtotal: {(parseFloat(item.price) * item.quantity).toFixed(2)} €</p>
+                  </div>
+                  
+                  <button 
+                    className="remove-btn"
+                    onClick={() => removeFromCart(item.product_id)}
+                  >
                     Eliminar
                   </button>
                 </div>
-              </li>
-            ) : (
-              <li key={item.product_id || Math.random()}>Producto no válido</li>
-            )
-          )}
-          <div className="cartTotal">
-            <p>Total del carrito</p>
-            <p>Subtotal: {calculateTotal().subtotal.toFixed(2)} €</p>
-            <p>Envío: {calculateTotal().envio.toFixed(2)} €</p>
-            <span className="rayaCart"></span>
-            <p>Total: {calculateTotal().total.toFixed(2)} €</p>
+              ) : (
+                <div className="invalid-item" key={item.product_id || Math.random()}>
+                  Producto no válido
+                </div>
+              )
+            )}
+          </div>
 
-            <div>
-              <button className="botonesCart2" onClick={() => purchaseCart()}>
-                Finaliza tu compra
-              </button>
-              <button className="botonesCart2" onClick={() => clearCart()}>
+          <div className="cart-summary">
+            <h2>Resumen del pedido</h2>
+            <div className="summary-row">
+              <p>Subtotal:</p>
+              <p>{calculateTotal().subtotal.toFixed(2)} €</p>
+            </div>
+            <div className="summary-row">
+              <p>Envío:</p>
+              <p>{calculateTotal().envio.toFixed(2)} €</p>
+            </div>
+            <div className="summary-divider"></div>
+            <div className="summary-row total">
+              <p>Total:</p>
+              <p>{calculateTotal().total.toFixed(2)} €</p>
+            </div>
+
+            <div className="cart-actions">
+              {/* <button className="checkout-btn" onClick={() => purchaseCart()}>
+                Finalizar compra
+              </button> */}
+              <CheckoutButton />
+              <button className="clear-btn" onClick={() => clearCart()}>
                 Vaciar Carrito
               </button>
             </div>
           </div>
-        </ul>
+        </div>
       )}
     </div>
   );

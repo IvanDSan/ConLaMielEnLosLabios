@@ -13,6 +13,8 @@ import { BeehiveIndividual } from '../pages/IndividualBeehive/BeehiveIndividual'
 import { VerifyEmail } from '../pages/VerifyEmail/VerifyEmail';
 import { UserOrders } from '../pages/UserPedidos/UserOrders';
 import { ProductDetail } from '../pages/ProductDetail/ProductDetail';
+import { Success } from '../pages/Success/Success'
+import { Cancel } from '../pages/Cancel/Cancel'
 import { SponsorColmenaType } from '../pages/SponsorColmenaType/SponsorColmenaType';
 import { SponsorColmenaConfirmation } from '../pages/SponsorColmenaConfirmation/SponsorColmenaConfirmation';
 import { Profile } from '../pages/Profile/Profile';
@@ -44,6 +46,8 @@ export const UserRoutes = () => {
           <Route path="/colmenas/:id" element={<BeehiveIndividual />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/pedidos" element={<UserOrders />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/cancel" element={<Cancel />} />
           <Route path="/producto/:id" element={<ProductDetail />} />
           <Route path="/suscripciones" element={<UserSponsorships />} />
           <Route path="/*" element={<h1>404</h1>} />
