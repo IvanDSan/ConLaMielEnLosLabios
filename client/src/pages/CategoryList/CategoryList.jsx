@@ -51,7 +51,7 @@ export const CategoryList = () => {
 
     try {
       if (modalType === 'create') {
-        fetchData(
+        await fetchData(
           '/categories/create',
           'POST',
           { name: categoryName },
