@@ -1,0 +1,18 @@
+.products-container {
+  .open-modal-btn {
+    display: block;
+    margin: 1rem auto;
+    padding: 10px 20px;
+    background-color: var(--yellow);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+  }
+  
+  .open-modal-btn:hover {
+    background-color: var(yellow-light);
+  }
+}
