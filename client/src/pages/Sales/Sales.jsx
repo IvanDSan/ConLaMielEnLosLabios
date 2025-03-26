@@ -15,8 +15,6 @@ export const Sales = () => {
         Authorization: `Bearer ${token}`,
       });
 
-      console.log(response.data);
-
       const groupedOrders = response.data.reduce((acc, order) => {
         if (!acc[order.sale_id]) {
           acc[order.sale_id] = {
@@ -66,7 +64,6 @@ export const Sales = () => {
   };
 
   const modifyStatusOrder = async (sale_id, user_id, product_id, newStatus) => {
-    console.log(sale_id, user_id, product_id, newStatus);
     try {
       const response = await fetchData(
         `/sales/modifyStatusOfOrder`,
@@ -97,8 +94,6 @@ export const Sales = () => {
       toast.error('Error al modificar el estado de la venta');
     }
   };
-
-  console.log(sales);
 
   return (
     <div className="admin-table">

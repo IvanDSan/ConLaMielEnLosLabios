@@ -48,8 +48,6 @@ class BeehivesController {
 
   createBeehive = async (req, res) => {
     try {
-      console.log('Datos recibidos:', req.body); // Agrega esto para depurar
-
       if (!req.body.newBeehive) {
         return res
           .status(400)

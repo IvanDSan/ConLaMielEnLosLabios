@@ -33,8 +33,13 @@ export const VerifyEmail = () => {
         <p>Spinner</p>
       ) : (
         <div>
-          <h2>Email verificado correctamente</h2>
-          <button onClick={() => navigate('/')}>Volver al inicio</button>
+          <h2 style={{ textAlign: 'center' }}>
+            Email verificado correctamente
+          </h2>
+          <p style={{ textAlign: 'center' }}>Gracias por confiar en nosotros</p>
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <button onClick={() => navigate('/')}>Volver al inicio</button>
+          </div>
         </div>
       )}
     </>

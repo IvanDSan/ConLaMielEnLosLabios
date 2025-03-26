@@ -58,9 +58,16 @@ header {
     .profile-img {
       position: relative;
 
+      img {
+        width: 2rem;
+        height: 2rem;
+        cursor: pointer;
+        object-fit: cover;
+      }
+
       .user-menu {
         position: absolute;
-        top: 2.5rem;
+        top: 1.5rem;
         right: 0;
         background-color: var(--bg-color);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);

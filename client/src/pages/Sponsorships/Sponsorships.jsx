@@ -26,8 +26,6 @@ export const Sponsorships = () => {
     fetchSponsorships();
   }, [token]);
 
-  console.log('sponsorships', sponsorships);
-
   return (
     <div className="admin-table">
       <div className="container">

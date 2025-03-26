@@ -7,7 +7,7 @@ import { dbPool } from '../../config/db.js';
 import {
   sendVerificationEmail,
   sendRecoveryPassword,
-  sendContactEmail
+  sendContactEmail,
 } from '../../services/mailer.js';
 import generateRandomPassword from '../../utils/generateRandomPassword.js';
 
@@ -191,6 +191,128 @@ class UsersController {
       );
 
       res.status(200).json({ token });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Internal error' });
+    }
+  };
+
+  editUser = async (req, res) => {
+    /**
+     *    ENDPOINT: http://localhost:4000/users/edit
+     *
+     *    INPUT (body): {
+     *      name: string,
+     *      lastname: string,
+     *      password: string,
+     *      confirmPassword: string,
+     *      phone_number: string,
+     *      dni: string,
+     *      city: string,
+     *      province: string,
+     *      address: string,
+     *      zipcode: string
+     *    }
+     *
+     *    OUTPUT:
+     *      - En caso de exito: 200 - {message: "Usuario editado correctamente"}
+     *      - En caso de error:
+     *        - Faltan inputs: 400 - {error: "Faltan campos obligatorios"}
+     *        - Password incorrecta: 401 - {error: "Password incorrecta"}
+     *        - Error interno: 500 - {error: "Internal error"}
+     */
+
+    const { user_id } = req;
+    const {
+      name,
+      lastname,
+      email,
+      dni,
+      phoneNumber,
+      city,
+      province,
+      address,
+      zipcode,
+      password,
+      confirmPassword,
+    } = req.body;
+
+    // VALIDACIONES
+    // Falta alguno de los campos
+    if (
+      !name ||
+      !lastname ||
+      !email ||
+      !dni ||
+      !phoneNumber ||
+      !city ||
+      !province ||
+      !address ||
+      !zipcode
+    ) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+    
+    // Password incorrecta
+    if (password !== confirmPassword) {
+      return res.status(401).json({ error: 'Password incorrecta' });
+    }
+    
+    // Zod
+    const result = validateUser(req.body);
+    if ('error' in result) {
+      console.log(req.body);
+      return res.status(400).json(result);
+    }
+
+    try {
+      // HASEAR PASSWORD
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+
+      // ACTUALIZAR EN BD
+      let sql =
+        'UPDATE user SET name = ?, lastname = ?, email = ?, password = ?, dni = ?, phone_number = ?, city = ?, province = ?, address = ?, zipcode = ? WHERE user_id = ?';
+      let values = [
+        name,
+        lastname,
+        email,
+        hashedPassword,
+        dni,
+        phoneNumber,
+        city,
+        province,
+        address,
+        zipcode,
+        user_id,
+      ];
+
+      if (req.file) {
+        sql =
+          'UPDATE user SET name = ?, lastname = ?, email = ?, password = ?, dni = ?, phone_number = ?, city = ?, province = ?, address = ?, zipcode = ?, image_url = ? WHERE user_id = ?';
+        values = [
+          name,
+          lastname,
+          email,
+          hashedPassword,
+          dni,
+          phoneNumber,
+          city,
+          province,
+          address,
+          zipcode,
+          req.file.filename,
+          user_id,
+        ];
+      }
+
+      const result = await executeQuery(sql, values);
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      return res.status(200).json({ message: 'Usuario editado correctamente' });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ error: 'Internal error' });
