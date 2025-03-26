@@ -16,6 +16,7 @@ import { ProductDetail } from '../pages/ProductDetail/ProductDetail';
 import { SponsorColmenaType } from '../pages/SponsorColmenaType/SponsorColmenaType';
 import { SponsorColmenaConfirmation } from '../pages/SponsorColmenaConfirmation/SponsorColmenaConfirmation';
 import { Profile } from '../pages/Profile/Profile';
+import { UserSponsorships } from '../pages/UserSponsorships/UserSponsorships';
 
 /** COMPONENTS */
 import { Navbar } from '../components/Navbar/Navbar';
@@ -44,7 +45,7 @@ export const UserRoutes = () => {
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/pedidos" element={<UserOrders />} />
           <Route path="/producto/:id" element={<ProductDetail />} />
-          <Route path="/suscripciones" element={<h1>Suscripciones</h1>} />
+          <Route path="/suscripciones" element={<UserSponsorships />} />
           <Route path="/*" element={<h1>404</h1>} />
         </Routes>
         <ToastContainer position="top-left" autoClose={3000} />

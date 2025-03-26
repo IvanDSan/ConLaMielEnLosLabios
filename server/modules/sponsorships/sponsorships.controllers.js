@@ -86,6 +86,35 @@ class SponsorshipController {
         .json({ error: 'Error al obtener los patrocinios registrados' });
     }
   };
+
+  getSponsorshipByUserId = async (req, res) => {
+    const { user_id } = req;
+
+    try {
+      let sql =
+        'SELECT s.sponsorship_id, b.name AS beehive_name, st.title AS sponsorship_type, s.start_date, s.is_deleted, (SELECT bi.image_url FROM beehive_image bi WHERE bi.beehive_id = b.beehive_id LIMIT 1) AS beehive_image FROM sponsorship s JOIN beehive b ON s.beehive_id = b.beehive_id JOIN sponsorship_type st ON s.sponsorship_type_id = st.sponsorship_type_id WHERE s.user_id = ? ORDER BY s.start_date DESC';
+
+      const sponsorships = await executeQuery(sql, [user_id]);
+      res.status(200).json(sponsorships);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal error' });
+    }
+  };
+
+  cancelSponsorship = async (req, res) => {
+    const { sponsorship_id } = req.params;
+    try {
+      await executeQuery(
+        'UPDATE sponsorship SET is_deleted = 1 WHERE sponsorship_id = ?',
+        [sponsorship_id]
+      );
+      res.status(200).json({ message: 'Patrocinio cancelado' });
+    } catch (error) {
+      console.error('Error en cancelSponsorship:', error);
+      res.status(500).json({ error: 'Error al cancelar el patrocinio' });
+    }
+  };
 }
 
 export default new SponsorshipController();

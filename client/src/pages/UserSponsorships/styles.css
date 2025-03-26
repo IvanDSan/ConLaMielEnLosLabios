@@ -1,0 +1,68 @@
+.sponsorships {
+  border-radius: 8px;
+  max-width: 600px;
+  margin: auto;
+
+  h2 {
+    text-align: center;
+  }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cancel-sponsorship {
+    background-color: var(--red);
+    color: var(--white);
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
+
+  .sponsorship-list {
+    list-style: none;
+    padding: 0;
+
+    .sponsorship-item {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      .sponsorship-details {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        img {
+          width: 100px;
+          height: 100px;
+          object-fit: cover;
+        }
+
+        .sponsorship-info {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .beehive-name {
+          font-weight: bold;
+          color: #222;
+        }
+
+        .sponsorship-type {
+          color: #666;
+        }
+
+        .start-date {
+          font-size: 0.9em;
+          color: #888;
+        }
+      }
+    }
+  }
+}

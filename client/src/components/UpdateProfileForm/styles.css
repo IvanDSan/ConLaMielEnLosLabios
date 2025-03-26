@@ -11,10 +11,12 @@
     align-items: center;
 
     img {
-      width: 250px;
+      min-width: 250px;
+      height: 250px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--brown);
+      margin-bottom: 1rem;
     }
 
     input {
@@ -24,28 +26,15 @@
 
   .profile-right {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     gap: .5rem;
     padding: 1rem;
-    background: var(--light-gray);
-    border-radius: 8px;
 
-    .profile-field {
+    .form-field {
       display: flex;
       flex-direction: row;
-      justify-content: flex-start;
-      width: 100%;
-      gap: 5px;
-
-      label {
-        font-weight: bold;
-        color: var(--brown);
-      }
-
-      input {
-        width: 100%;
-      }
+      gap: .5rem;
     }
 
     .profile-image {
