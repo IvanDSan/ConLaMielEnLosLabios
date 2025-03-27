@@ -6,31 +6,32 @@ export const CheckoutButton = () => {
 
   const handleCheckout = async () => {
     try {
-      // Obtener el token de autenticación (ajusta esto según como manejas la autenticación)
-      const token = localStorage.getItem("token"); // o de donde almacenes el token
+      const token = localStorage.getItem("token");
       
-      const response = await fetch("http://localhost:4000/payment/checkout", {
+      const formattedCart = cart.map(item => ({
+        title: item.title,
+        sponsorship_type_id: item.sponsorship_type_id,
+        price: item.price,
+        quantity: item.quantity,
+        isSubscription: item.isSubscription || false,
+      }));
+  
+      const response = await fetch('http://localhost:4000/payment/checkout', {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` // Añadir el token de autenticación
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ 
-          items: cart, 
+          items: formattedCart, 
           email: "cliente@email.com",
-          // Si no quieres usar autenticación por token, puedes enviar el userId directamente:
-          userId: localStorage.getItem("userId") // o de donde obtengas el ID del usuario
+          type: "cart"
         }),
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Error al procesar el pago");
-      }
-
+  
       const data = await response.json();
       if (data.url) {
-        window.location.href = data.url; // Redirige a Stripe Checkout
+        window.location.href = data.url;
       } else {
         alert("Error: No se recibió URL de pago");
       }

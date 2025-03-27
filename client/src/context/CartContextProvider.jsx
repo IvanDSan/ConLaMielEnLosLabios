@@ -2,6 +2,7 @@ import { useEffect, useContext, createContext, useState } from "react";
 import { UserContext } from "./UserContext";
 import { fetchData } from "../helpers/axiosHelper";
 import { toast } from "react-toastify";
+
 export const CartContext = createContext();
 
 export const CartContextProvider = ({ children }) => {
@@ -15,7 +16,7 @@ export const CartContextProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         });
         if (res.status === 200) {
-          setCart(res.data.cart);
+          setCart(res.data.cart || []);
         }
       } catch (error) {
         console.error("Error al obtener el carrito:", error);
@@ -68,13 +69,22 @@ export const CartContextProvider = ({ children }) => {
 
   const clearCart = async () => {
     try {
-      await fetchData("/users/deleteCartFromUser", "POST", null, {
-        Authorization: `Bearer ${token}`,
-      });
+      if (cart.length > 0) {
+        const res = await fetchData("/users/deleteCartFromUser", "POST", null, {
+          Authorization: `Bearer ${token}`,
+        });
+
+        if (res.status !== 200) {
+          throw new Error("Error al vaciar carrito en backend");
+        }
+      }
+
       setCart([]);
+      return true;
     } catch (error) {
       console.error("Error al vaciar carrito:", error);
-      toast.error("Error al vaciar carrito");
+      toast.error("Error al vaciar el carrito");
+      return false;
     }
   };
 
@@ -102,38 +112,48 @@ export const CartContextProvider = ({ children }) => {
       toast.success(`${product.title} agregado al carrito`);
     } catch (error) {
       console.error("Error al agregar producto:", error);
-      if (error.status === 401) {
+      if (error.response?.status === 401) {
         toast.error("Debes iniciar sesión para agregar productos al carrito");
       } else {
         toast.error("Error al agregar producto");
       }
     }
   };
-  
+
   const purchaseCart = async () => {
     if (cart.length === 0) {
-      toast.error('El carrito esta vacio');
-      return;
+      toast.error("El carrito está vacío");
+      return false;
     }
 
-    if (
-      !user.phone_number ||
-      !user.city ||
-      !user.province ||
-      !user.address ||
-      !user.zipcode
-    ) {
-      toast.error('Faltan datos, por favor completa tu perfil');
-      return;
+    const requiredUserFields = ["phone_number", "city", "province", "address", "zipcode"];
+
+    const missingFields = requiredUserFields.filter((field) => !user[field]);
+
+    if (missingFields.length > 0) {
+      toast.error("Faltan datos de perfil. Por favor completa: " + missingFields.join(", "));
+      return false;
     }
 
     try {
-      await fetchData("/users/completePurchaseCart", "POST", cart, {
-        Authorization: `Bearer ${token}`,
-      });
+      const purchaseResponse = await fetchData(
+        "/users/completePurchaseCart",
+        "POST",
+        { products: cart },
+        { Authorization: `Bearer ${token}` }
+      );
+
+      if (purchaseResponse.status !== 200) {
+        throw new Error(purchaseResponse.message || "Error en la compra");
+      }
+
       setCart([]);
+      toast.success("Compra realizada con éxito");
+      return true;
     } catch (error) {
       console.error("Error al comprar el carrito:", error);
+      toast.error(error.message || "Error al procesar la compra");
+      return false;
     }
   };
 
@@ -152,7 +172,7 @@ export const CartContextProvider = ({ children }) => {
         cart,
         purchaseCart,
         getNumberOfTotalProducts,
-      }}
+      }}>
       {children}
     </CartContext.Provider>
   );
