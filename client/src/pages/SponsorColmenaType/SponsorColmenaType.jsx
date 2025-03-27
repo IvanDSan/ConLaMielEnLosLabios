@@ -1,70 +1,71 @@
-import { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
-import './styles.css';
-import { toast } from 'react-toastify';
-import { fetchData } from '../../helpers/axiosHelper';
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
+import "./styles.css";
+import { toast } from "react-toastify";
+import { fetchData } from "../../helpers/axiosHelper";
+import { useTranslation } from "react-i18next";
 
 export const SponsorColmenaType = () => {
   const [subscription, setSubscription] = useState(null);
   const { id } = useParams();
   const { user, token } = useContext(UserContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchSubscription = async () => {
       try {
-        const response = await fetchData(`/sponsorships/types/${id}`, 'GET');
+        const response = await fetchData(`/sponsorships/types/${id}`, "GET");
 
         if (response.data.length === 0) {
-          navigate('/', { replace: true });
+          navigate("/", { replace: true });
           return;
         }
 
-        const benefits = await fetchData(`/sponsorships/benefits/${id}`, 'GET');
+        const benefits = await fetchData(`/sponsorships/benefits/${id}`, "GET");
 
         const suscription = response.data[0];
         suscription.benefits = benefits.data;
 
         setSubscription(suscription);
       } catch (error) {
-        console.error('Error fetching subscription:', error);
-        toast.error('Error al obtener el plan de apadrinamiento.');
+        console.error("Error fetching subscription:", error);
+        toast.error(t("error_fetching_plan"));
       }
     };
 
     fetchSubscription();
-  }, [id, navigate]);
+  }, [id, navigate, t]);
 
   const handlePayment = async () => {
     if (!user) {
-      toast.error('Debes iniciar sesión para apadrinar.');
+      toast.error(t("must_login_to_sponsor"));
       return;
     }
 
-    // STRIPE CHECKOUT
     try {
       const response = await fetchData(
         `/sponsorships/create`,
-        'POST',
+        "POST",
         { sponsorship_type_id: id },
         {
           Authorization: `Bearer ${token}`,
         }
       );
 
-      console.log(response);
-
       if (response.status === 201) {
-        navigate(`/apadrina/confirmation?beehive=${response.data.data.beehive_id}`);
+        navigate(
+          `/apadrina/confirmation?beehive=${response.data.data.beehive_id}`
+        );
       }
     } catch (error) {
       console.log(error);
-      toast.error('Error al realizar el pago.');
+      toast.error(t("payment_error"));
     }
   };
 
-  if (!subscription) return null; // Evita renderizado antes de redirigir
+  if (!subscription) return null;
 
   return (
     <div className="sponsor-container">
@@ -81,15 +82,11 @@ export const SponsorColmenaType = () => {
       <div className="separator"></div>
 
       <div className="payment-section">
-        <p>
-          Se te asignará una colmena de las disponibles para apadrinar. Disfruta
-          de los beneficios de tu elección y apoya la conservación de las
-          abejas.
-        </p>
+        <p>{t("assigned_beehive_info")}</p>
         <div className="payment-footer">
           <span className="price">${subscription.price}</span>
           <button className="sponsor-button" onClick={handlePayment}>
-            Apadrinar ahora
+            {t("sponsor_now")}
           </button>
         </div>
       </div>

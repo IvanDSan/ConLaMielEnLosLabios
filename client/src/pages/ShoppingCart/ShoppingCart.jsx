@@ -1,6 +1,7 @@
 import { useContext, useState, useMemo } from "react";
 import { CartContext } from "../../context/CartContextProvider";
 import "./styles.css";
+import { useTranslation } from "react-i18next";
 import { CheckoutButton } from "../../components/PaymentButton/PaymentButton";
 
 export const ShoppingCart = () => {
@@ -48,13 +49,15 @@ export const ShoppingCart = () => {
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <div className="carrito">
-      <h1>Carrito</h1>
+      <h1>{t("cart")}</h1>
+      {cart.length === 0 ? (
+        <p>{t("cart_empty")}</p>
       {error && <div className="error-message">{error}</div>}
 
-      {cart?.length === 0 ? (
-        <p>El carrito está vacío.</p>
       ) : (
         <div className="cart-container">
           <div className="cart-items">
@@ -90,38 +93,37 @@ export const ShoppingCart = () => {
                     </button>
                   </div>
 
-                  <div className="item-subtotal">
-                    <p>Subtotal: {(parseFloat(item.price) * item.quantity).toFixed(2)} €</p>
-                  </div>
-
-                  <button className="remove-btn" onClick={() => handleRemove(item.product_id)} disabled={isRemoving}>
-                    {isRemoving ? "Eliminando..." : "Eliminar"}
+                  <button onClick={() => removeFromCart(item.product_id)}>
+                    {t("remove")}
                   </button>
                 </div>
-              );
-            })}
-          </div>
+              </li>
+            ) : (
+              <li key={item.product_id || Math.random()}>
+                {t("invalid_product")}
+              </li>
+            )
+          )}
+          <div className="cartTotal">
+            <p>{t("cart_total")}</p>
+            <p>
+              {t("subtotal")}: {calculateTotal().subtotal.toFixed(2)} €
+            </p>
+            <p>
+              {t("shipping")}: {calculateTotal().envio.toFixed(2)} €
+            </p>
+            <span className="rayaCart"></span>
+            <p>
+              {t("total")}: {calculateTotal().total.toFixed(2)} €
+            </p>
 
-          <div className="cart-summary">
-            <h2>Resumen del pedido</h2>
-            <div className="summary-row">
-              <p>Subtotal:</p>
-              <p>{total.subtotal.toFixed(2)} €</p>
-            </div>
-            <div className="summary-row">
-              <p>Envío:</p>
-              <p>{total.envio.toFixed(2)} €</p>
-            </div>
-            <div className="summary-divider"></div>
-            <div className="summary-row total">
-              <p>Total:</p>
-              <p>{total.total.toFixed(2)} €</p>
-            </div>
+            <div>
+              <button className="botonesCart2" onClick={() => purchaseCart()}>
+                {t("checkout")}
+              </button>
+              <button className="botonesCart2" onClick={() => clearCart()}>
+                {t("clear_cart")}
 
-            <div className="cart-actions">
-              <CheckoutButton />
-              <button className="clear-btn" onClick={handleClearCart} disabled={isClearing || cart.length === 0}>
-                {isClearing ? "Vaciando..." : "Vaciar Carrito"}
               </button>
             </div>
           </div>

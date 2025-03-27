@@ -1,6 +1,6 @@
 /** REACT UTILS */
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 /** PAGES */
 import { Home } from '../pages/Home/Home';
@@ -21,8 +21,8 @@ import { Profile } from '../pages/Profile/Profile';
 import { UserSponsorships } from '../pages/UserSponsorships/UserSponsorships';
 
 /** COMPONENTS */
-import { Navbar } from '../components/Navbar/Navbar';
-import { Footer } from '../components/Footer/Footer';
+import { Navbar } from "../components/Navbar/Navbar";
+import Footer from "../components/Footer/Footer";
 
 export const UserRoutes = () => {
   return (

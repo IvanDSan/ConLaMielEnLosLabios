@@ -1,11 +1,13 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { fetchData } from '../../helpers/axiosHelper';
-import { UserContext } from '../../context/UserContext';
-import { toast } from 'react-toastify';
-import { PencilLine, Trash2, X } from 'lucide-react';
-import './styles.css';
+import { useCallback, useContext, useEffect, useState } from "react";
+import { fetchData } from "../../helpers/axiosHelper";
+import { UserContext } from "../../context/UserContext";
+import { toast } from "react-toastify";
+import { PencilLine, Trash2, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import "./styles.css";
 
 export const BeehiveList = () => {
+  const { t } = useTranslation();
   const [beehives, setBeehives] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -24,12 +26,16 @@ export const BeehiveList = () => {
 
       const beehives = await Promise.all(
         res.data.map(async (beehive) => {
-          const resImages = await fetchData(`/beehives/images/${beehive.beehive_id}`, "GET");
+          const resImages = await fetchData(
+            `/beehives/images/${beehive.beehive_id}`,
+            "GET"
+          );
+
           return {
             beehive_id: beehive.beehive_id,
             name: beehive.name,
             short_description: beehive.short_description,
-            large_description: beehive.large_description, // Make sure to include large_description
+            large_description: beehive.large_description,
             images: resImages.data || [],
           };
         })
@@ -38,11 +44,11 @@ export const BeehiveList = () => {
       setBeehives(beehives);
     } catch (error) {
       console.log(error);
-      toast.error("Error al cargar las colmenas");
+      toast.error(t("error_loading_beehives"));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchBeehives();
@@ -60,31 +66,27 @@ export const BeehiveList = () => {
 
   const renameImageFile = (file) => {
     if (!(file instanceof File)) return file;
-
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 8);
     const extension = file.name.split(".").pop();
-
-    const newName = `bee_${timestamp.toString().slice(-4)}_${randomString}.${extension}`;
-
+    const newName = `bee_${timestamp
+      .toString()
+      .slice(-4)}_${randomString}.${extension}`;
     return new File([file], newName, { type: file.type });
   };
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const filesArray = Array.from(e.target.files);
-
       const renamedFiles = filesArray.map((file, index) => renameImageFile(file, index));
-
       setBeehiveImages((prevImages) => [...prevImages, ...renamedFiles]);
     }
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
-
     if (!beehiveName.trim() || !beehiveDescription.trim()) {
-      toast.error("Por favor, completa todos los campos");
+      toast.error(t("error_fields_required"));
       return;
     }
 
@@ -119,14 +121,14 @@ export const BeehiveList = () => {
         setShowModal(false);
       }
     } catch (error) {
+      toast.error(t("error_create_beehive"));
       console.log(error);
-      toast.error("Error al crear la colmena");
     }
   };
 
   const handleUpdate = async () => {
     if (!beehiveName.trim() || !beehiveDescription.trim()) {
-      toast.error("Por favor, completa todos los campos");
+      toast.error(t("error_fields_required"));
       return;
     }
 
@@ -162,13 +164,11 @@ export const BeehiveList = () => {
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      toast.error("Error al actualizar la colmena");
+      toast.error(t("error_update_beehive"));
     }
   };
 
   const handleDeleteImage = async (imageId, beehiveId) => {
-    console.log("Eliminando imagen con ID:", imageId, "de la colmena con ID:", beehiveId);
-
     try {
       if (!imageId) {
         console.error("Error: imageId es undefined");
@@ -179,8 +179,8 @@ export const BeehiveList = () => {
         Authorization: `Bearer ${token}`,
       });
 
-      setBeehives((prevBeehives) =>
-        prevBeehives.map((beehive) =>
+      setBeehives((prev) =>
+        prev.map((beehive) =>
           beehive.beehive_id === beehiveId
             ? {
                 ...beehive,
@@ -211,18 +211,25 @@ export const BeehiveList = () => {
 
   return (
     <div className="beehives-list">
-      <h2>Colmenas</h2>
+      <h2>{t("beehives")}</h2>
+
       {showModal && (
         <div className="modal">
-          <h3>{modalType === "create" ? "Agregar Nueva Colmena" : "Editar Colmena"}</h3>
-          <div>
-            <label>Seleccionar Imagen:</label>
-            <input type="file" accept="image/*" onChange={handleImageChange} multiple />
-          </div>
+          <h3>
+            {modalType === "create" ? t("add_beehive") : t("edit_beehive")}
+          </h3>
+
+          <label>{t("select_image")}:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            multiple
+          />
 
           {modalType === "edit" && (
             <div>
-              <h4>Imágenes actuales:</h4>
+              <h4>{t("current_images")}:</h4>
               <div className="image-container">
                 {beehiveImages.length > 0 ? (
                   beehiveImages.map((image, index) => (
@@ -231,9 +238,10 @@ export const BeehiveList = () => {
                         <>
                           <img
                             style={{ width: "10rem" }}
-                            src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
+                            src={`${
+                              import.meta.env.VITE_SERVER_URL
+                            }/images/beehives/${image.image_url}`}
                             alt="Beehive"
-                            className="beehive-image"
                           />
                           <X
                             size={28}
@@ -250,7 +258,7 @@ export const BeehiveList = () => {
                     </div>
                   ))
                 ) : (
-                  <p>No hay imágenes para esta colmena.</p>
+                  <p>{t("no_image")}</p>
                 )}
               </div>
             </div>
@@ -259,60 +267,61 @@ export const BeehiveList = () => {
           <input
             type="text"
             className="category-input"
-            placeholder="Nombre de la colmena"
+            placeholder={t("beehive_name")}
             value={beehiveName}
             onChange={(e) => setBeehiveName(e.target.value)}
-            required
           />
           <textarea
             className="category-description"
-            placeholder="Descripción de la colmena"
+            placeholder={t("beehive_short_description")}
             value={beehiveDescription}
             onChange={(e) => setBeehiveDescription(e.target.value)}
-            required
           />
-
           <textarea
             className="category-description"
-            placeholder="Descripción larga de la colmena"
+            placeholder={t("beehive_large_description")}
             value={beehiveLargeDescription}
             onChange={(e) => setBeehiveLargeDescription(e.target.value)}
-            required
           />
 
           <div className="buttonsModal">
-            <button className="save-btn" onClick={modalType === "create" ? handleSave : handleUpdate}>
-              {modalType === "create" ? "Guardar" : "Actualizar"}
+            <button
+              className="save-btn"
+              onClick={modalType === "create" ? handleSave : handleUpdate}
+            >
+              {modalType === "create" ? t("save") : t("update")}
+
             </button>
             <button className="cancel-btn" onClick={() => setShowModal(false)}>
-              Cancelar
+              {t("cancel")}
             </button>
           </div>
         </div>
       )}
 
       <button className="add-category-btn" onClick={() => openModal("create")}>
-        Agregar Colmena
+        {t("add_beehive")}
+
       </button>
 
-      {loading && <p className="loading">Cargando colmenas...</p>}
+      {loading && <p className="loading">{t("loading_beehives")}</p>}
 
       <table className="category-table" border="1">
         <thead>
           <tr>
             <th className="idTh">ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Descripción extensa</th>
-            <th>Imagenes</th>
-            <th className="actionTh">Acciones</th>
+            <th>{t("name")}</th>
+            <th>{t("description")}</th>
+            <th>{t("long_description")}</th>
+            <th>{t("images")}</th>
+            <th className="actionTh">{t("actions")}</th>
           </tr>
         </thead>
         <tbody>
           {beehives.length > 0 ? (
             beehives.map((beehive) => (
-              <tr key={beehive.beehive_id || beehive.id}>
-                <td>{beehive.beehive_id || beehive.id}</td>
+              <tr key={beehive.beehive_id}>
+                <td>{beehive.beehive_id}</td>
                 <td>{beehive.name}</td>
                 <td>{beehive.short_description}</td>
                 <td>{beehive.large_description}</td>
@@ -325,27 +334,24 @@ export const BeehiveList = () => {
                             width="60"
                             src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
                             alt="Beehive"
-                            className="beehive-image"
                           />
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <span>No Image</span>
+                    <span>{t("no_image")}</span>
                   )}
                 </td>
                 <td className="buttonsTable">
                   <button
                     className="edit-btn"
-                    onClick={() => openModal('edit', beehive)}
+                    onClick={() => openModal("edit", beehive)}
                   >
                     <PencilLine size={28} color="black" />
                   </button>
                   <button
                     className="delete-btn"
-                    onClick={() =>
-                      handleDelete(beehive.beehive_id || beehive.id)
-                    }
+                    onClick={() => handleDelete(beehive.beehive_id)}
                   >
                     <Trash2 size={28} color="black" />
                   </button>
@@ -354,7 +360,7 @@ export const BeehiveList = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6">No hay colmenas disponibles</td>
+              <td colSpan="6">{t("no_beehives")}</td>
             </tr>
           )}
         </tbody>

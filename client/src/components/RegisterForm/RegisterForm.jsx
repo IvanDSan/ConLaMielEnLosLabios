@@ -1,23 +1,25 @@
-import { useState } from 'react';
-import { fetchData } from '../../helpers/axiosHelper';
-import './styles.css';
-import { SpinnerLoading } from '../SpinnerLoading/SpinnerLoading';
+import { useState } from "react";
+import { fetchData } from "../../helpers/axiosHelper";
+import "./styles.css";
+import { SpinnerLoading } from "../SpinnerLoading/SpinnerLoading";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
-  email: '',
-  password: '',
-  confirmPassword: '',
-  name: '',
-  lastname: '',
-  dni: '',
-  phoneNumber: '',
-  city: '',
-  province: '',
-  address: '',
-  zipcode: '',
+  email: "",
+  password: "",
+  confirmPassword: "",
+  name: "",
+  lastname: "",
+  dni: "",
+  phoneNumber: "",
+  city: "",
+  province: "",
+  address: "",
+  zipcode: "",
 };
 
 export const RegisterForm = ({ onCancelClick, onClose }) => {
+  const { t } = useTranslation();
   const [registerForm, setRegisterForm] = useState(initialState);
   const [image, setImage] = useState(null);
   const [showValidateMessage, setShowValidateMessage] = useState(false);
@@ -43,11 +45,11 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
     }
 
     const formData = new FormData();
-    formData.append('registerData', JSON.stringify(registerForm));
-    formData.append('img', image);
+    formData.append("registerData", JSON.stringify(registerForm));
+    formData.append("img", image);
 
     try {
-      const res = await fetchData('/users/register', 'POST', formData);
+      const res = await fetchData("/users/register", "POST", formData);
 
       if (res.status === 201) {
         setShowValidateMessage(true);
@@ -80,22 +82,22 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/;
 
-    if (!email) newErrors.push('email');
+    if (!email) newErrors.push("email");
     if (!password || password.length < 8 || !passwordRegex.test(password))
-      newErrors.push('password');
-    if (!confirmPassword) newErrors.push('confirmPassword');
-    if (!name || name.length < 2) newErrors.push('name');
-    if (!lastname || lastname.length < 2) newErrors.push('lastname');
-    if (!dni) newErrors.push('dni');
+      newErrors.push("password");
+    if (!confirmPassword) newErrors.push("confirmPassword");
+    if (!name || name.length < 2) newErrors.push("name");
+    if (!lastname || lastname.length < 2) newErrors.push("lastname");
+    if (!dni) newErrors.push("dni");
     if (!phoneNumber || phoneNumber.length < 9 || phoneNumber.length > 15)
-      newErrors.push('phoneNumber');
-    if (!city || city.length < 2) newErrors.push('city');
-    if (!province || province.length < 2) newErrors.push('province');
-    if (!address || address.length < 5) newErrors.push('address');
-    if (!zipcode || zipcode.length < 5) newErrors.push('zipcode');
+      newErrors.push("phoneNumber");
+    if (!city || city.length < 2) newErrors.push("city");
+    if (!province || province.length < 2) newErrors.push("province");
+    if (!address || address.length < 5) newErrors.push("address");
+    if (!zipcode || zipcode.length < 5) newErrors.push("zipcode");
 
     if (password && confirmPassword && password !== confirmPassword) {
-      newErrors.push('passwordMismatch');
+      newErrors.push("passwordMismatch");
     }
 
     setErrors(newErrors);
@@ -104,40 +106,40 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Registrarse</h2>
+      <h2>{t("register_title")}</h2>
       {!showValidateMessage ? (
         <>
           <div className="register">
             <div>
               <label htmlFor="email">
-                Email *
+                {t("email")} *
                 <input
                   type="email"
                   name="email"
-                  placeholder="Introduce tu email"
+                  placeholder={t("enter_email")}
                   required
                   value={registerForm.email}
                   onChange={handleChange}
                   style={
-                    errors.includes('email') ? { border: '1px solid red' } : {}
+                    errors.includes("email") ? { border: "1px solid red" } : {}
                   }
                 />
               </label>
 
               <label htmlFor="password" className="password">
-                Password *
+                {t("password")} *
                 <input
                   type="password"
                   name="password"
-                  placeholder="Introduce tu password"
+                  placeholder={t("enter_password")}
                   autoComplete="off"
                   required
                   value={registerForm.password}
                   onChange={handleChange}
                   style={
-                    errors.includes('confirmPassword') ||
-                    errors.includes('passwordMismatch')
-                      ? { border: '1px solid red' }
+                    errors.includes("confirmPassword") ||
+                    errors.includes("passwordMismatch")
+                      ? { border: "1px solid red" }
                       : {}
                   }
                   onFocus={() => setShowPasswordConditions(true)}
@@ -145,64 +147,64 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
                 />
                 {showPasswordConditions && (
                   <div className="password-conditions">
-                    <p>La password debe tener:</p>
+                    <p>{t("password_conditions_title")}</p>
                     <ul>
-                      <li>8 o m&aacute;s caracteres</li>
-                      <li>Una letra may&uacute;scula</li>
-                      <li>Una letra min&uacute;scula</li>
-                      <li>Un n&uacute;mero</li>
-                      <li>Un car&aacute;cter especial</li>
+                      <li>{t("password_min_length")}</li>
+                      <li>{t("password_uppercase")}</li>
+                      <li>{t("password_lowercase")}</li>
+                      <li>{t("password_number")}</li>
+                      <li>{t("password_special")}</li>
                     </ul>
                   </div>
                 )}
               </label>
 
               <label htmlFor="confirmPassword">
-                Confirmar Password *
+                {t("confirm_password")} *
                 <input
                   type="password"
                   name="confirmPassword"
-                  placeholder="Confirma tu password"
+                  placeholder={t("confirm_password")}
                   autoComplete="off"
                   required
                   value={registerForm.confirmPassword}
                   onChange={handleChange}
                   style={
-                    errors.includes('confirmPassword') ||
-                    errors.includes('passwordMismatch')
-                      ? { border: '1px solid red' }
+                    errors.includes("confirmPassword") ||
+                    errors.includes("passwordMismatch")
+                      ? { border: "1px solid red" }
                       : {}
                   }
                 />
               </label>
 
               <label htmlFor="name">
-                Nombre *
+                {t("name")} *
                 <input
                   type="text"
                   name="name"
-                  placeholder="Introduce tu nombre"
+                  placeholder={t("placeholder_name")}
                   required
                   value={registerForm.name}
                   onChange={handleChange}
                   style={
-                    errors.includes('name') ? { border: '1px solid red' } : {}
+                    errors.includes("name") ? { border: "1px solid red" } : {}
                   }
                 />
               </label>
 
               <label htmlFor="lastname">
-                Apellido *
+                {t("last_name")} *
                 <input
                   type="text"
                   name="lastname"
-                  placeholder="Introduce tu apellido"
+                  placeholder={t("placeholder_lastname")}
                   required
                   value={registerForm.lastname}
                   onChange={handleChange}
                   style={
-                    errors.includes('lastname')
-                      ? { border: '1px solid red' }
+                    errors.includes("lastname")
+                      ? { border: "1px solid red" }
                       : {}
                   }
                 />
@@ -218,7 +220,7 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
                   value={registerForm.dni}
                   onChange={handleChange}
                   style={
-                    errors.includes('dni') ? { border: '1px solid red' } : {}
+                    errors.includes("dni") ? { border: "1px solid red" } : {}
                   }
                 />
               </label>
@@ -226,90 +228,90 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
 
             <div>
               <label htmlFor="phoneNumber">
-                Teléfono *
+                {t("phone")} *
                 <input
                   type="tel"
                   name="phoneNumber"
-                  placeholder="Introduce tu teléfono"
+                  placeholder={t("placeholder_phone")}
                   required
                   value={registerForm.phoneNumber}
                   onChange={handleChange}
                   style={
-                    errors.includes('phoneNumber')
-                      ? { border: '1px solid red' }
+                    errors.includes("phoneNumber")
+                      ? { border: "1px solid red" }
                       : {}
                   }
                 />
               </label>
 
               <label htmlFor="city">
-                Ciudad *
+                {t("city")} *
                 <input
                   type="text"
                   name="city"
-                  placeholder="Introduce tu ciudad"
+                  placeholder={t("placeholder_city")}
                   required
                   value={registerForm.city}
                   onChange={handleChange}
                   style={
-                    errors.includes('city') ? { border: '1px solid red' } : {}
+                    errors.includes("city") ? { border: "1px solid red" } : {}
                   }
                 />
               </label>
 
               <label htmlFor="province">
-                Provincia *
+                {t("province")} *
                 <input
                   type="text"
                   name="province"
-                  placeholder="Introduce tu provincia"
+                  placeholder={t("placeholder_province")}
                   required
                   value={registerForm.province}
                   onChange={handleChange}
                   style={
-                    errors.includes('province')
-                      ? { border: '1px solid red' }
+                    errors.includes("province")
+                      ? { border: "1px solid red" }
                       : {}
                   }
                 />
               </label>
 
               <label htmlFor="address">
-                Dirección *
+                {t("address")} *
                 <input
                   type="text"
                   name="address"
-                  placeholder="Introduce tu dirección"
+                  placeholder={t("placeholder_address")}
                   required
                   value={registerForm.address}
                   onChange={handleChange}
                   style={
-                    errors.includes('address')
-                      ? { border: '1px solid red' }
+                    errors.includes("address")
+                      ? { border: "1px solid red" }
                       : {}
                   }
                 />
               </label>
 
               <label htmlFor="zipcode">
-                Código Postal *
+                {t("zipcode")} *
                 <input
                   type="text"
                   name="zipcode"
-                  placeholder="Introduce tu código postal"
+                  placeholder={t("placeholder_zipcode")}
                   required
                   value={registerForm.zipcode}
                   onChange={handleChange}
                   style={
-                    errors.includes('zipcode')
-                      ? { border: '1px solid red' }
+                    errors.includes("zipcode")
+                      ? { border: "1px solid red" }
                       : {}
                   }
                 />
               </label>
 
               <label htmlFor="imagen">
-                Imagen de perfil
+                {t("profile_image")}
                 <input
                   type="file"
                   name="img"
@@ -321,24 +323,21 @@ export const RegisterForm = ({ onCancelClick, onClose }) => {
           </div>
 
           {errors.length > 0 && (
-            <span className="error">Corrige los errores del formulario</span>
+            <span className="error">{t("form_error")}</span>
           )}
 
           <button type="submit">
-            {loading ? <SpinnerLoading /> : 'Registrar'}
+            {loading ? <SpinnerLoading /> : t("register_button")}
           </button>
           <button type="button" onClick={onCancelClick}>
-            Volver
+            {t("back")}
           </button>
         </>
       ) : (
         <>
-          <p>
-            Para poder usar tu cuenta antes tienes que verificarla. Revisa tu
-            correo electrónico.
-          </p>
+          <p>{t("register_validation_message")}</p>
           <button type="button" onClick={onClose}>
-            Cerrar
+            {t("close")}
           </button>
         </>
       )}

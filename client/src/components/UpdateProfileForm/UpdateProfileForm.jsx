@@ -3,9 +3,11 @@ import { UserContext } from '../../context/UserContext';
 import './styles.css';
 import { toast } from 'react-toastify';
 import { fetchData } from '../../helpers/axiosHelper';
-
+import { useTranslation } from "react-i18next";
+  
 export const UpdateProfileForm = () => {
   const { user, setUser, token } = useContext(UserContext);
+  const { t } = useTranslation();
 
   const initialState = {
     name: user?.name,
@@ -66,7 +68,7 @@ export const UpdateProfileForm = () => {
 
   return (
     <form className="profile-content">
-      {/** IMAGEN */}
+      {/* IMAGEN */}
       <div className="profile-left">
         <img
           src={
@@ -81,8 +83,10 @@ export const UpdateProfileForm = () => {
         {isEditing && <input type="file" onChange={handleFileChange} />}
       </div>
 
-      {/** DATOS PERSONALES */}
+      {/* DATOS PERSONALES */}
       <div className="profile-right">
+        <div className="profile-field">
+          <label htmlFor="name">{t("name")}:</label>
         <div className="form-field">
           <p>
             <strong>Email: </strong>
@@ -101,6 +105,12 @@ export const UpdateProfileForm = () => {
               onChange={handleChange}
             />
           ) : (
+            <span>{user?.name}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
+          <label htmlFor="lastname">{t("last_name")}:</label>
             <span>********</span>
           )}
         </div>
@@ -131,6 +141,14 @@ export const UpdateProfileForm = () => {
             <span>{user?.name}</span>
           )}
         </div>
+
+        <div className="profile-field">
+          <label htmlFor="email">Email:</label>
+          <span>{user?.email}</span>
+        </div>
+
+        <div className="profile-field">
+          <label htmlFor="password">{t("password")}:</label>
         <div className="form-field">
           <p>
             <strong>Apellidos:</strong>
@@ -146,6 +164,29 @@ export const UpdateProfileForm = () => {
             <span>{user?.lastname}</span>
           )}
         </div>
+
+        {isEditing && (
+          <div className="profile-field">
+            <label htmlFor="confirmPassword">{t("confirm_password")}:</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
+            />
+          </div>
+        )}
+
+        <div className="profile-field">
+          <label htmlFor="dni">DNI:</label>
+          <span>{user?.dni}</span>
+        </div>
+
+        <div className="profile-field">
+          <label htmlFor="phone_number">{t("phone")}:</label>
         <div className="form-field">
           <p>
             <strong>DNI:</strong> {user?.dni}
@@ -166,6 +207,9 @@ export const UpdateProfileForm = () => {
             <span>{user?.phone_number}</span>
           )}
         </div>
+
+        <div className="profile-field">
+          <label htmlFor="address">{t("address")}:</label>
         <div className="form-field">
           <p>
             <strong>Provincia:</strong>
@@ -178,6 +222,12 @@ export const UpdateProfileForm = () => {
               onChange={handleChange}
             />
           ) : (
+            <span>{user?.address || "No especificada"}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
+          <label htmlFor="city">{t("city")}:</label>
             <span>{user?.province}</span>
           )}
         </div>
@@ -197,6 +247,8 @@ export const UpdateProfileForm = () => {
           )}
         </div>
 
+        <div className="profile-field">
+          <label htmlFor="province">{t("province")}:</label>
         <div className="form-field">
           <p>
             <strong>Dirección:</strong>
@@ -213,6 +265,8 @@ export const UpdateProfileForm = () => {
           )}
         </div>
 
+        <div className="profile-field">
+          <label htmlFor="zipcode">{t("zipcode")}:</label>
         <div className="form-field">
           <p>
             <strong>Código Postal:</strong>
@@ -229,6 +283,8 @@ export const UpdateProfileForm = () => {
           )}
         </div>
 
+        <button type="button" onClick={() => setIsEditing(!isEditing)}>
+          {isEditing ? t("save_changes") : t("edit_profile")}
         <button type="button" onClick={handleSubmit}>
           {isEditing ? 'Guardar cambios' : 'Editar perfil'}
         </button>

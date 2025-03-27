@@ -1,17 +1,20 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import './styles.css';
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+import "./styles.css";
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
 export const ContactForm = () => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    email: '',
-    entidad: '',
-    mensaje: '',
+    nombre: "",
+    apellido: "",
+    email: "",
+    entidad: "",
+    mensaje: "",
   });
 
   const handleChange = (e) => {
@@ -27,7 +30,7 @@ export const ContactForm = () => {
       !formData.email ||
       !formData.mensaje
     ) {
-      toast.error('Por favor, completa todos los campos.');
+      toast.error(t("contact_error_required"));
       return;
     }
 
@@ -35,71 +38,70 @@ export const ContactForm = () => {
       const response = await axios.post(`${apiURL}/users/contact`, formData);
 
       if (response.status === 200) {
-        toast.success('Email enviado correctamente.');
-
+        toast.success(t("contact_success"));
         setFormData({
-          nombre: '',
-          apellido: '',
-          email: '',
-          entidad: '',
-          mensaje: '',
+          nombre: "",
+          apellido: "",
+          email: "",
+          entidad: "",
+          mensaje: "",
         });
       }
     } catch (error) {
-      console.error('Error al enviar el formulario:', error);
-      toast.error('Error al enviar el formulario. Inténtalo de nuevo.');
+      console.error("Error al enviar el formulario:", error);
+      toast.error(t("contact_submit_error"));
     }
   };
 
   return (
     <div className="contactFormContainer">
       <form className="contactForm" onSubmit={handleSubmit}>
-        <label htmlFor="nombre">Nombre:</label>
+        <label htmlFor="nombre">{t("name")}:</label>
         <input
           type="text"
           id="nombre"
-          placeholder="Introduce tu nombre"
+          placeholder={t("placeholder_name")}
           value={formData.nombre}
           onChange={handleChange}
         />
 
-        <label htmlFor="apellido">Apellido:</label>
+        <label htmlFor="apellido">{t("last_name")}:</label>
         <input
           type="text"
           id="apellido"
-          placeholder="Introduce tus apellidos"
+          placeholder={t("placeholder_lastname")}
           value={formData.apellido}
           onChange={handleChange}
         />
 
-        <label htmlFor="email">Correo electrónico:</label>
+        <label htmlFor="email">{t("email")}:</label>
         <input
           type="email"
           id="email"
-          placeholder="correo@ejemplo.com"
+          placeholder={t("placeholder_email")}
           value={formData.email}
           onChange={handleChange}
         />
 
-        <label htmlFor="entidad">Número de teléfono:</label>
+        <label htmlFor="entidad">{t("phone")}:</label>
         <input
           type="text"
           id="entidad"
-          placeholder="Nombre de la entidad"
+          placeholder={t("placeholder_phone")}
           value={formData.entidad}
           onChange={handleChange}
         />
 
-        <label htmlFor="mensaje">Mensaje:</label>
+        <label htmlFor="mensaje">{t("message")}:</label>
         <textarea
           id="mensaje"
-          placeholder="¿Qué nos quieres decir?"
+          placeholder={t("placeholder_message")}
           value={formData.mensaje}
           onChange={handleChange}
         ></textarea>
 
         <button type="submit" className="contactSubmit">
-          Enviar
+          {t("send")}
         </button>
       </form>
     </div>

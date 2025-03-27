@@ -1,9 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import { SparklesIcon } from "lucide-react";
-import './styles.css';
-import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Sparkles } from "lucide-react";
+import "./styles.css";
+import { useTranslation } from "react-i18next";
 
-export const SubscriptionCard = ({ subscription, mostSelected, userEmail, userId }) => {
+export const SubscriptionCard = ({ subscription, mostSelected }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,8 +55,9 @@ export const SubscriptionCard = ({ subscription, mostSelected, userEmail, userId
     <article className="subscription-card-container">
       {mostSelected && (
         <span className="most-selected">
-          <SparklesIcon size={20} />
-          Más elegido
+          <Sparkles size={20} />
+          {t("most_selected")}
+
         </span>
       )}
       <div className="subscription-card">
@@ -63,14 +65,15 @@ export const SubscriptionCard = ({ subscription, mostSelected, userEmail, userId
         <p className="price">
           <span>€ </span>
           {subscription.price}
-          <span>/mes</span>
+          <span>{t("per_month")}</span>
         </p>
         <p>{subscription.description}</p>
         <button
           onClick={handleSubscription}
           disabled={isLoading}
         >
-          {isLoading ? 'Procesando...' : 'Quiero apadrinar'}
+          {t("sponsor_now")}
+
         </button>
       </div>
     </article>

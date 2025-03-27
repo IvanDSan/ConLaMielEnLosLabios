@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import './styles.css';
-import { ExpandableOrder } from '../../components/ExpandableOrder/ExpandableOrder';
-import { UserContext } from '../../context/UserContext';
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "./styles.css";
+import { ExpandableOrder } from "../../components/ExpandableOrder/ExpandableOrder";
+import { UserContext } from "../../context/UserContext";
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
@@ -11,7 +11,7 @@ export const UserOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { token } = useContext(UserContext);
 
@@ -21,7 +21,7 @@ export const UserOrders = () => {
     const fetchOrders = async () => {
       try {
         if (!token) {
-          toast.error('Debes iniciar sesión para ver tus pedidos.');
+          toast.error("Debes iniciar sesión para ver tus pedidos.");
           return;
         }
 
@@ -53,7 +53,7 @@ export const UserOrders = () => {
         setFilteredOrders(groupedArray);
       } catch (error) {
         console.log(error);
-        toast.error('Error al obtener tus pedidos.');
+        toast.error("Error al obtener tus pedidos.");
       }
     };
 
@@ -75,7 +75,7 @@ export const UserOrders = () => {
       }
     });
 
-    if (searchQuery.trim() !== '') {
+    if (searchQuery.trim() !== "") {
       filtered = filtered.filter((order) =>
         order.sale_id.toString().includes(searchQuery)
       );
@@ -97,7 +97,7 @@ export const UserOrders = () => {
           ? order.items
           : order.items.filter((item) => item.sale_status === selectedStatus);
 
-      if (query.trim() !== '') {
+      if (query.trim() !== "") {
         filtered = filtered.filter((order) =>
           order.sale_id.toString().includes(query)
         );
@@ -127,25 +127,25 @@ export const UserOrders = () => {
 
       <div className="statusFilters">
         <button
-          className={`filterButton ${selectedStatus === null ? 'active' : ''}`}
+          className={`filterButton ${selectedStatus === null ? "active" : ""}`}
           onClick={() => filterByStatus(null)}
         >
           Todos
         </button>
         <button
-          className={`filterButton ${selectedStatus === 1 ? 'active' : ''}`}
+          className={`filterButton ${selectedStatus === 1 ? "active" : ""}`}
           onClick={() => filterByStatus(1)}
         >
           Pendiente
         </button>
         <button
-          className={`filterButton ${selectedStatus === 2 ? 'active' : ''}`}
+          className={`filterButton ${selectedStatus === 2 ? "active" : ""}`}
           onClick={() => filterByStatus(2)}
         >
           Recibido
         </button>
         <button
-          className={`filterButton ${selectedStatus === 3 ? 'active' : ''}`}
+          className={`filterButton ${selectedStatus === 3 ? "active" : ""}`}
           onClick={() => filterByStatus(3)}
         >
           Cancelado

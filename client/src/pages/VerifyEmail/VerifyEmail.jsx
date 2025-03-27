@@ -1,26 +1,26 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { fetchData } from '../../helpers/axiosHelper';
-import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { fetchData } from "../../helpers/axiosHelper";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const VerifyEmail = () => {
+  const { t } = useTranslation();
   const [queryParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Recoger el token
-  const token = queryParams.get('token');
+  const token = queryParams.get("token");
 
   useEffect(() => {
     const verify = async () => {
       try {
-        const response = await fetchData(`/users/verify/${token}`, 'GET');
-
+        const response = await fetchData(`/users/verify/${token}`, "GET");
         if (response.status === 200) {
           setLoading(false);
         }
       } catch (err) {
         console.log(err);
-        navigate('/');
+        navigate("/");
       }
     };
 
@@ -30,7 +30,7 @@ export const VerifyEmail = () => {
   return (
     <>
       {loading ? (
-        <p>Spinner</p>
+        <p>{t("loading")}</p>
       ) : (
         <div>
           <h2 style={{ textAlign: 'center' }}>

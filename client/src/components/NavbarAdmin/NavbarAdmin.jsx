@@ -1,9 +1,11 @@
-import { useContext, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
-import { LogOut, Menu, X } from 'lucide-react';
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
+import { LogOut, Menu, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const NavbarAdmin = () => {
+  const { t } = useTranslation();
   const { logout } = useContext(UserContext);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const navigate = useNavigate();
@@ -14,65 +16,31 @@ export const NavbarAdmin = () => {
         <nav className="navBarAdmin">
           <img
             src="/images/logo.svg"
-            alt="l  ogo"
+            alt="logo"
             className="logo"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           />
           <div className="links">
             <ul>
               <li>
-                <NavLink
-                  to="/productos"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Productos
+                <NavLink to="/productos">{t("admin_products")}</NavLink>
+              </li>
+              <li>
+                <NavLink to="/categorias">{t("admin_categories")}</NavLink>
+              </li>
+              <li>
+                <NavLink to="/usuarios">{t("admin_users")}</NavLink>
+              </li>
+              <li>
+                <NavLink to="/suscripciones">
+                  {t("admin_subscriptions")}
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/categorias"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Categorias
-                </NavLink>
+                <NavLink to="/colmenas">{t("admin_beehives")}</NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/usuarios"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Usuarios
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/suscripciones"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Suscripciones
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/colmenas"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Colmenas
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/ventas"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Ventas
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/*"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                ></NavLink>
+                <NavLink to="/ventas">{t("admin_sales")}</NavLink>
               </li>
             </ul>
           </div>
@@ -84,7 +52,7 @@ export const NavbarAdmin = () => {
                   size={24}
                   onClick={() => {
                     logout();
-                    navigate('/');
+                    navigate("/");
                   }}
                 />
               </a>
@@ -99,62 +67,34 @@ export const NavbarAdmin = () => {
             </li>
           </ul>
 
-          <div className={`mobile-menu ${showMobileMenu ? 'open' : ''}`}>
+          <div className={`mobile-menu ${showMobileMenu ? "open" : ""}`}>
             <a href="#">
               <X
                 size={28}
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                onClick={() => setShowMobileMenu(false)}
                 className="close-icon"
               />
             </a>
             <ul>
               <li>
-                <NavLink
-                  to="/productos"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Productos
+                <NavLink to="/productos">{t("admin_products")}</NavLink>
+              </li>
+              <li>
+                <NavLink to="/categorias">{t("admin_categories")}</NavLink>
+              </li>
+              <li>
+                <NavLink to="/usuarios">{t("admin_users")}</NavLink>
+              </li>
+              <li>
+                <NavLink to="/suscripciones">
+                  {t("admin_subscriptions")}
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/categorias"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Categorias
-                </NavLink>
+                <NavLink to="/colmenas">{t("admin_beehives")}</NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/usuarios"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Usuarios
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/suscripciones"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Suscripciones
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/colmenas"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Colmenas
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/ventas"
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  Ventas
-                </NavLink>
+                <NavLink to="/ventas">{t("admin_sales")}</NavLink>
               </li>
             </ul>
             <img src="/icons/panal.svg" alt="panal" className="panal-icon" />

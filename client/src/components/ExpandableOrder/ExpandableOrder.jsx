@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react';
-import './styles.css';
-import { UserContext } from '../../context/UserContext';
+import { useContext, useState } from "react";
+import "./styles.css";
+import { UserContext } from "../../context/UserContext";
+import { useTranslation } from "react-i18next";
 
 export const ExpandableOrder = ({
   orderId,
@@ -13,6 +14,7 @@ export const ExpandableOrder = ({
   deleteSale,
   modifyStatusOrder,
 }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [orderItems, setOrderItems] = useState(items);
   const { user } = useContext(UserContext);
@@ -22,33 +24,33 @@ export const ExpandableOrder = ({
   };
 
   const handleStatusChange = (productId, newStatus) => {
-    // Actualiza el estado local de los items de la orden inmediatamente
     setOrderItems((prevItems) =>
       prevItems.map((item) =>
         item.product_id === productId
-          ? { ...item, sale_status: newStatus } // Actualiza el estado del producto
+          ? { ...item, sale_status: newStatus }
           : item
       )
     );
 
-    // Llama a la función modifyStatusOrder para hacer la actualización en el backend
     modifyStatusOrder(orderId, userId, productId, newStatus);
   };
 
   return (
     <div
       className={`orderGroup ${
-        items.some((item) => item.sale_status === 1) ? 'pending-order' : ''
+        items.some((item) => item.sale_status === 1) ? "pending-order" : ""
       }`}
     >
       <div className="orderGroupTitle" onClick={toggleDetails}>
         <h6>{orderTitle}</h6>
         <p className="orderDate">
-          {new Date(orderDate).toLocaleDateString('es-ES')}
+          {new Date(orderDate).toLocaleDateString("es-ES")}
         </p>
-        <p>{orderItems.length} productos</p>
+        <p>
+          {orderItems.length} {t("products")}
+        </p>
         <p>{userDetails}</p>
-        <span className={`arrow ${expanded ? 'open' : ''}`}>►</span>
+        <span className={`arrow ${expanded ? "open" : ""}`}>►</span>
       </div>
 
       {expanded && (
@@ -68,37 +70,39 @@ export const ExpandableOrder = ({
               />
               <div className="orderDetails">
                 <p className="orderTitle">{item.title}</p>
-                <p className="orderQuantity">Cantidad: {item.quantity}</p>
+                <p className="orderQuantity">
+                  {t("quantity")}: {item.quantity}
+                </p>
               </div>
               <div className="orderStatusWrapper">
                 <p
                   className={`orderStatus ${
                     item.sale_status === 1
-                      ? 'pending'
+                      ? "pending"
                       : item.sale_status === 2
-                      ? 'canceled'
-                      : 'completed'
+                      ? "canceled"
+                      : "completed"
                   }`}
                 >
                   {item.sale_status === 1
-                    ? 'Pendiente'
+                    ? t("pending")
                     : item.sale_status === 2
-                    ? 'Cancelado'
-                    : 'Completado'}
+                    ? t("canceled")
+                    : t("completed")}
                 </p>
                 {item.sale_status === 1 && user.user_type === 1 && (
                   <div className="orderActions">
                     <button
-                      onClick={() => handleStatusChange(item.product_id, 3)} // Confirmar
+                      onClick={() => handleStatusChange(item.product_id, 3)}
                       className="confirmar"
                     >
-                      Confirmar
+                      {t("confirm")}
                     </button>
                     <button
-                      onClick={() => handleStatusChange(item.product_id, 2)} // Cancelar
+                      onClick={() => handleStatusChange(item.product_id, 2)}
                       className="cancelar"
                     >
-                      Cancelar
+                      {t("cancel")}
                     </button>
                   </div>
                 )}
@@ -109,7 +113,7 @@ export const ExpandableOrder = ({
             <div className="actions">
               {actions &&
                 actions.map((action, index) => <div key={index}>{action}</div>)}
-              <button onClick={deleteSale}>Borrar</button>
+              <button onClick={deleteSale}>{t("delete")}</button>
             </div>
           )}
         </div>

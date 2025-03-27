@@ -1,67 +1,43 @@
-import { useNavigate } from 'react-router-dom';
-import './styles.css';
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import "./styles.css";
 
 export const TalleresSection = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <section className="talleres-section">
-      <h2>Talleres educativos</h2>
+      <h2>{t("workshop_title")}</h2>
       <div className="container">
         <div className="flex">
           <div className="left">
-            <p>
-              En nuestro compromiso por fomentar la conciencia ambiental y el
-              conocimiento sobre la importancia de las abejas en nuestro
-              ecosistema, ofrecemos charlas educativas diseñadas especialmente
-              para colegios y centros de estudios. Nuestras charlas están
-              impartidas por expertos en apicultura y están adaptadas a
-              diferentes niveles educativos, desde primaria hasta secundaria.
-            </p>
-            <p>Durante estas sesiones, los estudiantes aprenderán sobre:</p>
+            <p>{t("workshop_intro")}</p>
+            <p>{t("workshop_students_learn")}</p>
             <ul>
-              <li>
-                El papel crucial de las abejas en la polinización y la
-                biodiversidad.
-              </li>
-              <li>
-                Los desafíos que enfrentan las abejas y cómo podemos ayudar a
-                protegerlas.
-              </li>
-              <li>
-                El proceso de producción de la miel y otros productos de la
-                colmena.
-              </li>
-              <li>La importancia de la apicultura sostenible.</li>
+              <li>{t("workshop_point_pollination")}</li>
+              <li>{t("workshop_point_challenges")}</li>
+              <li>{t("workshop_point_honey_process")}</li>
+              <li>{t("workshop_point_sustainability")}</li>
             </ul>
-            <p>
-              Además, las charlas pueden incluir demostraciones prácticas y
-              material didáctico para una experiencia más interactiva y
-              enriquecedora.
-            </p>
+            <p>{t("workshop_extra_info")}</p>
           </div>
           <div className="right">
-            <h4>Información adicional</h4>
+            <h4>{t("additional_info")}</h4>
             <ul>
               <li>
-                <strong>Duración: </strong>Las charlas tienen una duración
-                aproximada de 1 a 2 horas, dependiendo del nivel educativo y las
-                necesidades del centro.
+                <strong>{t("duration")}:</strong> {t("duration_info")}
               </li>
               <li>
-                <strong>Materiales: </strong>
-                Proporcionamos todo el material necesario, incluyendo
-                presentaciones, folletos informativos y, en algunos casos,
-                muestras de productos apícolas.
+                <strong>{t("materials")}:</strong> {t("materials_info")}
               </li>
               <li>
-                <strong>Flexibilidad: </strong>Nos adaptamos a los horarios y
-                necesidades específicas de cada centro educativo.
+                <strong>{t("flexibility")}:</strong> {t("flexibility_info")}
               </li>
             </ul>
             <div>
-              <button onClick={() => navigate('/talleres')}>
-                Solicitar más información
+              <button onClick={() => navigate("/talleres")}>
+                {t("request_more_info")}
               </button>
             </div>
           </div>

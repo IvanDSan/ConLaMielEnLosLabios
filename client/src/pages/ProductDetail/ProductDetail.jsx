@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CartContext } from '../../context/CartContextProvider';
 import './styles.css';
+import { useTranslation } from "react-i18next";
 import { SpinnerLoading } from '../../components/SpinnerLoading/SpinnerLoading';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
@@ -14,6 +15,7 @@ export const ProductDetail = () => {
   const { addToCart } = useContext(CartContext);
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const { t } = useTranslation();
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -34,26 +36,24 @@ export const ProductDetail = () => {
         setSelectedImage(response.data.images[0].image_url);
       } catch (err) {
         console.log(err);
-        toast.error('Error al obtener el producto');
+        toast.error(t("error_fetching_product"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchProduct();
-  }, [id]);
+  }, [id, t]);
 
   if (loading) return <SpinnerLoading />;
 
   if (!product)
-    return <p className="notFoundMessage">Producto no encontrado</p>;
-
-  console.log(product);
+    return <p className="notFoundMessage">{t("product_not_found")}</p>;
 
   return (
     <div className="productDetailContainer">
       <Link to="/tienda" className="backButton">
-        ← Volver
+        ← {t("back")}
       </Link>
 
       <div className="productDetailWrapper">
@@ -98,16 +98,14 @@ export const ProductDetail = () => {
             className="addToCartButton"
             onClick={() => addToCart(product)}
           >
-            Añadir al carrito
+            {t("add_to_cart")}
           </button>
         </div>
       </div>
 
       {relatedProducts.length > 0 && (
         <>
-          <h2 className="relatedProductsTitle">
-            Otros productos que podrían interesarte
-          </h2>
+          <h2 className="relatedProductsTitle">{t("related_products")}</h2>
           <div className="relatedProductsGrid">
             {relatedProducts.slice(0, 3).map((relatedProduct) => (
               <ProductCard

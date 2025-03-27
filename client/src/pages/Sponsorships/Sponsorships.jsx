@@ -1,16 +1,18 @@
-import { useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { fetchData } from '../../helpers/axiosHelper';
-import { UserContext } from '../../context/UserContext';
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { fetchData } from "../../helpers/axiosHelper";
+import { UserContext } from "../../context/UserContext";
+import { useTranslation } from "react-i18next";
 
 export const Sponsorships = () => {
   const [sponsorships, setSponsorships] = useState([]);
   const { token } = useContext(UserContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchSponsorships = async () => {
       try {
-        const response = await fetchData('/sponsorships/get', 'GET', null, {
+        const response = await fetchData("/sponsorships/get", "GET", null, {
           Authorization: `Bearer ${token}`,
         });
 
@@ -18,29 +20,29 @@ export const Sponsorships = () => {
           setSponsorships(response.data);
         }
       } catch (error) {
-        console.error('Error al obtener las suscripciones:', error);
-        toast.error('Error al obtener las suscripciones');
+        console.error("Error al obtener las suscripciones:", error);
+        toast.error(t("error_fetching_subscriptions"));
       }
     };
 
     fetchSponsorships();
-  }, [token]);
+  }, [token, t]);
 
   return (
     <div className="admin-table">
       <div className="container">
-        <h3>Suscripciones</h3>
+        <h3>{t("subscriptions")}</h3>
         <div className="table-wrapper">
           <table>
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Nombre de la Colmena</th>
-                <th>Tipo de Suscripción</th>
-                <th>Fecha de Inicio</th>
-                <th>Nombre del Usuario</th>
-                <th>Estado</th>
-                <th>Acción</th>
+                <th>{t("beehive_name")}</th>
+                <th>{t("subscription_type")}</th>
+                <th>{t("start_date")}</th>
+                <th>{t("user_name")}</th>
+                <th>{t("status")}</th>
+                <th>{t("action")}</th>
               </tr>
             </thead>
             <tbody>
@@ -51,9 +53,8 @@ export const Sponsorships = () => {
                   <td>{sponsorship.sponsorship_type}</td>
                   <td>{sponsorship.start_date}</td>
                   <td>{sponsorship.user_name}</td>
-                  <td>{sponsorship.is_deleted ? 'Inactiva' : 'Activa'}</td>
                   <td>
-                    {/* Aquí agregar botones o acciones, por ejemplo, para editar o eliminar */}
+                    {sponsorship.is_deleted ? t("inactive") : t("active")}
                   </td>
                 </tr>
               ))}

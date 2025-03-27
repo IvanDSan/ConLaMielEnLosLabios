@@ -1,39 +1,37 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchData } from '../../helpers/axiosHelper';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import './styles.css';
-import { toast } from 'react-toastify';
+import { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { fetchData } from "../../helpers/axiosHelper";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./styles.css";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export const BeehiveIndividual = () => {
   const [beehive, setBeehive] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const fetchBeehiveDetails = useCallback(async () => {
     try {
       setLoading(true);
-      const resBeehive = await fetchData(`/beehives/get/${id}`, 'GET');
-      const resImages = await fetchData(`/beehives/images/${id}`, 'GET');
-      
+      const resBeehive = await fetchData(`/beehives/get/${id}`, "GET");
+      const resImages = await fetchData(`/beehives/images/${id}`, "GET");
+
       setBeehive({
         ...resBeehive.data,
         images: resImages.data || [],
       });
     } catch (error) {
-      console.error('Error al cargar la colmena:', error);
-      toast.error('Error al cargar la colmena');
+      console.error("Error al cargar la colmena:", error);
+      toast.error(t("beehive_error_loading"));
     } finally {
       setLoading(false);
     }
-  }, [id]);
-  
-  useEffect(() => {
-    fetchBeehiveDetails();
-  }, [fetchBeehiveDetails]);
+  }, [id, t]);
 
   useEffect(() => {
     fetchBeehiveDetails();
@@ -52,16 +50,16 @@ export const BeehiveIndividual = () => {
   };
 
   const handleGoBack = () => {
-    navigate('/colmenas');
+    navigate("/colmenas");
   };
 
-  if (loading) return <p>Cargando detalles de la colmena...</p>;
-  if (!beehive) return <p>No se encontró la colmena</p>;
+  if (loading) return <p>{t("beehive_loading")}</p>;
+  if (!beehive) return <p>{t("beehive_not_found")}</p>;
 
   return (
     <div className="beehive-detail-container">
       <button className="back-button" onClick={handleGoBack}>
-        Volver a todas las colmenas
+        {t("back_to_beehives")}
       </button>
 
       <div className="beehive-detail-header">
@@ -86,19 +84,19 @@ export const BeehiveIndividual = () => {
             </Slider>
           ) : (
             <div className="no-image">
-              <p>No hay imagen disponible</p>
+              <p>{t("no_image")}</p>
             </div>
           )}
         </div>
 
         <div className="beehive-detail-info">
           <div className="info-section">
-            <h3>Descripción</h3>
+            <h3>{t("bee_description")}</h3>
             <p>{beehive.short_description}</p>
           </div>
 
           <div className="info-section">
-            <h3>Información Adicional</h3>
+            <h3>{t("additional_info")}</h3>
             <p>{beehive.large_description}</p>
           </div>
         </div>

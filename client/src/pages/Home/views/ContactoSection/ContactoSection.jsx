@@ -1,18 +1,16 @@
-import { ContactForm } from '../../../../components/ContactForm/ContactForm';
-import './styles.css';
+import { ContactForm } from "../../../../components/ContactForm/ContactForm";
+import { useTranslation } from "react-i18next";
+import "./styles.css";
 
 export const ContactoSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="contacto-section">
       <div className="container">
-        <h2>Contáctanos</h2>
-        <h4>¡Estamos aquí para ayudarte!</h4>
-        <p>
-          ¿Tienes alguna pregunta, sugerencia o simplemente quieres saber más
-          sobre nuestros talleres y servicios? No dudes en ponerte en contacto
-          con nosotros. Estamos encantados de escucharte y ayudarte en todo lo
-          que necesites.
-        </p>
+        <h2>{t("contact_title")}</h2>
+        <h4>{t("contact_subtitle")}</h4>
+        <p>{t("contact_description")}</p>
         <ContactForm />
       </div>
     </section>

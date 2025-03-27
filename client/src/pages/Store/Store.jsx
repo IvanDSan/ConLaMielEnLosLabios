@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ProductCard } from '../../components/ProductCard/ProductCard';
-import './styles.css';
-import { toast } from 'react-toastify';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { ProductCard } from "../../components/ProductCard/ProductCard";
+import "./styles.css";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
@@ -11,8 +12,9 @@ export const Store = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [sortOption, setSortOption] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProductsAndCategories = async () => {
@@ -26,13 +28,13 @@ export const Store = () => {
         );
         setCategories(categoriesResponse.data);
       } catch (err) {
-        console.error('Error al obtener los productos o categorías:', err);
-        toast.error('Error al obtener los productos o categorías');
+        console.error("Error al obtener los productos o categorías:", err);
+        toast.error(t("error_fetching_products_categories"));
       }
     };
 
     fetchProductsAndCategories();
-  }, []);
+  }, [t]);
 
   const filterByCategory = (categoryId) => {
     let filtered = products;
@@ -43,7 +45,7 @@ export const Store = () => {
       );
     }
 
-    if (searchQuery.trim() !== '') {
+    if (searchQuery.trim() !== "") {
       filtered = filtered.filter(
         (product) =>
           product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -59,16 +61,16 @@ export const Store = () => {
     let sortedProducts = [...filteredProducts];
 
     switch (option) {
-      case 'priceAsc':
+      case "priceAsc":
         sortedProducts.sort((a, b) => a.price - b.price);
         break;
-      case 'priceDesc':
+      case "priceDesc":
         sortedProducts.sort((a, b) => b.price - a.price);
         break;
-      case 'nameAsc':
+      case "nameAsc":
         sortedProducts.sort((a, b) => a.title.localeCompare(b.title));
         break;
-      case 'nameDesc':
+      case "nameDesc":
         sortedProducts.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
@@ -91,7 +93,7 @@ export const Store = () => {
       );
     }
 
-    if (query.trim() !== '') {
+    if (query.trim() !== "") {
       filtered = filtered.filter(
         (product) =>
           product.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -104,20 +106,14 @@ export const Store = () => {
 
   return (
     <div className="storeContainer">
-      <h1 className="storeTitle">
-        Descubre el sabor y la magia de la apicultura
-      </h1>
-      <p className="storeDescription">
-        Explora nuestra tienda y lleva contigo un pedazo de la naturaleza.
-        Encuentra miel pura, accesorios ecológicos y más. Cada compra apoya la
-        apicultura sostenible.
-      </p>
+      <h1 className="storeTitle">{t("store_title")}</h1>
+      <p className="storeDescription">{t("store_description")}</p>
 
       <div className="searchContainer">
         <input
           type="text"
           className="searchInput"
-          placeholder="Buscar productos..."
+          placeholder={t("search_products")}
           value={searchQuery}
           onChange={handleSearch}
         />
@@ -126,17 +122,17 @@ export const Store = () => {
       <div className="categoryFilters">
         <button
           className={`filterButton ${
-            selectedCategory === null ? 'active' : ''
+            selectedCategory === null ? "active" : ""
           }`}
           onClick={() => filterByCategory(null)}
         >
-          Todos
+          {t("all")}
         </button>
         {categories.map((category) => (
           <button
             key={category.category_id}
             className={`filterButton ${
-              selectedCategory === category.category_id ? 'active' : ''
+              selectedCategory === category.category_id ? "active" : ""
             }`}
             onClick={() => filterByCategory(category.category_id)}
           >
@@ -147,7 +143,7 @@ export const Store = () => {
 
       <div className="sortContainer">
         <label className="sortLabel" htmlFor="sortSelect">
-          Ordenar por:
+          {t("sort_by")}:
         </label>
         <select
           className="sortSelect"
@@ -155,11 +151,11 @@ export const Store = () => {
           value={sortOption}
           onChange={(e) => sortProducts(e.target.value)}
         >
-          <option value="">Selecciona una opción</option>
-          <option value="priceAsc">Precio: Menor a Mayor</option>
-          <option value="priceDesc">Precio: Mayor a Menor</option>
-          <option value="nameAsc">Nombre: A - Z</option>
-          <option value="nameDesc">Nombre: Z - A</option>
+          <option value="">{t("select_option")}</option>
+          <option value="priceAsc">{t("price_low_high")}</option>
+          <option value="priceDesc">{t("price_high_low")}</option>
+          <option value="nameAsc">{t("name_az")}</option>
+          <option value="nameDesc">{t("name_za")}</option>
         </select>
       </div>
 
@@ -170,7 +166,7 @@ export const Store = () => {
               <ProductCard key={product.product_id} product={product} />
             ))
           ) : (
-            <p className="noProducts">No hay productos disponibles.</p>
+            <p className="noProducts">{t("no_products")}</p>
           )}
         </div>
       </div>
