@@ -125,10 +125,6 @@ class BeehivesController {
         }
       }
 
-      // Si es necesario eliminar las imágenes antiguas, descomenta esta parte
-      // sql = "DELETE FROM beehive_image WHERE beehive_id = ?";
-      // await connection.query(sql, [beehive_id]);
-
       await connection.commit();
       res.status(200).json({ message: 'Colmena actualizada con éxito' });
     } catch (error) {
