@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from 'react';
 import { fetchData } from '../../helpers/axiosHelper';
 import { UserContext } from '../../context/UserContext';
@@ -61,50 +60,22 @@ export const Products = () => {
             className="open-modal-btn"
             onClick={() => setOpenNewProductForm(true)}
           >
-            Crear nuevo producto
+            {t("create_new_product")}
           </button>
 
-        <div className="admin-table">
-          <div className="container">
-            <h3>{t("products")}</h3>
-            <div className="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>{t("image")}</th>
-                    <th>{t("title")}</th>
-                    <th>{t("description")}</th>
-                    <th>{t("price")}</th>
-                    <th>{t("actions")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product.product_id}>
-                      <td>{product.product_id}</td>
-                      <td>
-                        <img
-                          src={product.image_url}
-                          alt={product.title}
-                          width="50"
-                        />
-                      </td>
-                      <td>{product.title}</td>
-                      <td>{product.description}</td>
-                      <td>{product.price}€</td>
-                      <td className="actions">
-                        <button onClick={() => setProductToEdit(product)}>
-                          <PencilLine />
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleDeleteProduct(product.product_id)
-                          }
-                        >
-                          <Trash2 />
-                        </button>
-                      </td>
+          <div className="admin-table">
+            <div className="container">
+              <h3>{t("products")}</h3>
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>{t("image")}</th>
+                      <th>{t("title")}</th>
+                      <th>{t("description")}</th>
+                      <th>{t("price")}</th>
+                      <th>{t("actions")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -115,7 +86,7 @@ export const Products = () => {
                           {product.images && product.images.length > 0 ? (
                             <p>{product.images.length} imgs</p>
                           ) : (
-                            <span>Sin imagen</span>
+                            <span>{t("no_image")}</span>
                           )}
                         </td>
                         <td>{product.title}</td>
@@ -125,11 +96,7 @@ export const Products = () => {
                           <button onClick={() => setProductToEdit(product)}>
                             <PencilLine />
                           </button>
-                          <button
-                            onClick={() =>
-                              handleDeleteProduct(product.product_id)
-                            }
-                          >
+                          <button onClick={() => handleDeleteProduct(product.product_id)}>
                             <Trash2 />
                           </button>
                         </td>
@@ -145,9 +112,7 @@ export const Products = () => {
 
       <Modal
         isOpen={openNewProductForm}
-        onClose={() => {
-          setOpenNewProductForm(false);
-        }}
+        onClose={() => setOpenNewProductForm(false)}
       >
         <NewProductForm
           closeModal={() => {
