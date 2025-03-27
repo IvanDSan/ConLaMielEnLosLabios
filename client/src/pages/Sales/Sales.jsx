@@ -95,6 +95,8 @@ export const Sales = () => {
     }
   };
 
+  console.log(sales);
+
   return (
     <div className="admin-table">
       <div className="container">

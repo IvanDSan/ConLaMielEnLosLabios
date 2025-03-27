@@ -1,50 +1,118 @@
-import executeQuery from '../../config/db.js';
+import executeQuery, { dbPool } from '../../config/db.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class ProductsController {
-  // createProduct = async (req, res) => {
-  //   try {
-  //     const { title, description, price, category_id } = req.body;
+  createProduct = async (req, res) => {
+    const connection = await dbPool.getConnection();
 
-  //     if (!title || !description || !price || !category_id) {
-  //       return res
-  //         .status(400)
-  //         .json({ error: 'todos los campos son obligatorios' });
-  //     }
-  //     const query =
-  //       'INSERT INTO product (title, description, price, category_id) VALUES (?, ?, ?, ?)';
-  //     let result = await executeQuery(query, [
-  //       title,
-  //       description,
-  //       price,
-  //       category_id,
-  //     ]);
-  //     res.status(200).json({ product_id: result.insertId });
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.status(500).json({ error: 'error al crear el producto' });
-  //   }
-  // };
+    try {
+      if (!req.body.newProduct) {
+        return res
+          .status(400)
+          .json({ error: 'No se enviaron datos del producto' });
+      }
+
+      const newProduct = JSON.parse(req.body.newProduct);
+      const { title, description, price, categoryId: category_id } = newProduct;
+
+      if (!title || !description || !price || !category_id) {
+        return res
+          .status(400)
+          .json({ error: 'Todos los campos son obligatorios' });
+      }
+
+      await connection.beginTransaction();
+
+      const sql =
+        'INSERT INTO product (title, description, price, category_id) VALUES (?, ?, ?, ?)';
+      const result = await connection.query(sql, [
+        title,
+        description,
+        price,
+        category_id,
+      ]);
+      const product_id = result[0].insertId;
+
+      if (req.files && req.files.length > 0) {
+        for (const img of req.files) {
+          await connection.query(
+            'INSERT INTO product_image (product_id, image_url) VALUES (?, ?)',
+            [product_id, img.filename]
+          );
+        }
+      }
+
+      connection.commit();
+
+      res
+        .status(200)
+        .json({ message: 'Producto creado con éxito', product_id });
+    } catch (error) {
+      console.error('Error en createProduct:', error);
+
+      await connection.rollback();
+      res.status(500).json({ error: 'Error al crear el producto' });
+    } finally {
+      if (connection) connection.release();
+    }
+  };
 
   editProduct = async (req, res) => {
+    const connection = await dbPool.getConnection();
+
     try {
+      if (!req.body.newProduct) {
+        return res
+          .status(400)
+          .json({ error: 'No se enviaron datos del producto' });
+      }
+
+      const newProduct = JSON.parse(req.body.newProduct);
+      const { title, description, price, category_id } = newProduct;
       const { id } = req.params;
-      const { title, description, price, category_id } = req.body;
-      const query =
-        'UPDATE product SET title = ?, description = ?, price = ?, category_id = ? WHERE product_id = ?';
-      const result = await executeQuery(query, [
+
+      if (!title || !description || !price || !category_id) {
+        return res
+          .status(400)
+          .json({ error: 'Todos los campos son obligatorios' });
+      }
+
+      await connection.beginTransaction();
+
+      const sql =
+        'UPDATE product SET title = ?, description = ?, price = ?, category_id = ? WHERE product_id = ?;';
+      const result = await connection.query(sql, [
         title,
         description,
         price,
         category_id,
         id,
       ]);
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ error: 'Producto no encontrado' });
+
+      if (req.files && req.files.length > 0) {
+        for (const img of req.files) {
+          await connection.query(
+            'INSERT INTO product_image (product_id, image_url) VALUES (?, ?)',
+            [id, img.filename]
+          );
+        }
       }
-      res.status(200).json('/admin/productos');
+
+      connection.commit();
+
+      res.status(200).json({ message: 'Producto editado con éxito' });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Error al actualizar el producto' });
+      console.error('Error en createProduct:', error);
+
+      await connection.rollback();
+      res.status(500).json({ error: 'Error al crear el producto' });
+    } finally {
+      if (connection) connection.release();
     }
   };
 
@@ -70,6 +138,15 @@ class ProductsController {
       const products = await executeQuery(
         'SELECT * FROM product WHERE is_deleted = 0'
       );
+
+      for (const product of products) {
+        const images = await executeQuery(
+          'SELECT * FROM product_image WHERE product_id = ?',
+          [product.product_id]
+        );
+        product.images = images;
+      }
+
       res.status(200).json(products);
     } catch (error) {
       console.log('Error en getProducts:', error);
@@ -88,6 +165,12 @@ class ProductsController {
         return res.status(404).json({ error: 'Producto no encontrado' });
       }
 
+      const images = await executeQuery(
+        'SELECT * FROM product_image WHERE product_id = ?',
+        [id]
+      );
+      result[0].images = images;
+
       res.status(200).json(result[0]);
     } catch (error) {
       console.log('Error al obtener el producto:', error);
@@ -95,132 +178,44 @@ class ProductsController {
     }
   };
 
-
-  // getAllProductsImages = async (req, res) => {
-  //   try {
-  //     const images = await executeQuery('SELECT * FROM product_image LIMIT 10');
-  //     res.status(200).json(images);
-  //   } catch (error) {
-  //     console.error('Error en getAllProductsImages:', error);
-  //     res
-  //       .status(500)
-  //       .json({ error: 'Error al obtener las imagenes' });
-  //   }
-  // };
-
-  // uploadImageProduct = async (req, res) => { //subir imagen del producto
-  //   try {
-  //     const { product_id } = req.params;
-  //     const { image_url } = req.body;
-
-  //     if (!image_url) {
-  //      res.status(400).json({ error: 'La URL de la imagen es obligatoria' });
-  //     }
-
-  //     const checkProduct = await executeQuery(
-  //       'SELECT * FROM product WHERE product_id = ? AND is_deleted = 0',
-  //       [product_id] );
-     
-  //     if (checkProduct.length === 0) {
-  //      res.status(404).json({ error: 'Producto no encontrado' });
-  //     }
-
-  //     const query =
-  //       'INSERT INTO product_image (product_id, image_url) VALUES (?, ?)';
-  //     const result = await executeQuery(query, [product_id, image_url]);
-
-  //     res.status(200).json({ message: 'Imagen agregada correctamente', product_image_id: result.insertId });
-  //   } catch (error) {
-  //     console.log('Error al agregar imagen:', error);
-  //     res.status(500).json({ error: 'Error interno del servidor' });
-  //   }
-  // };
-
-  // updateProductImage = async (req, res) => { //actualizar foto de un Producto
-  //   try {
-  //     const { product_image_id } = req.params;
-  //     const { image_url } = req.body;
-
-  //     if (!image_url) return res.status(400).json({ error: 'La URL de la imagen es obligatoria' });
-
-  //     const query = 'UPDATE product_image SET image_url = ? WHERE product_image_id = ?';
-  //     const result = await executeQuery(query, [image_url, product_image_id]);
-
-  //     if (result.affectedRows === 0) return res.status(404).json({ error: 'Imagen no encontrada' });
-
-  //     res.status(200).json({ message: 'Imagen actualizada correctamente' });
-  //   } catch (error) {
-  //     console.error('Error al actualizar la imagen:', error);
-  //     res.status(500).json({ error: 'Error interno del servidor' });
-  //   }
-  // };
-
-    createProduct = async (req, res) => {
-      try {
-        console.log('Datos recibidos:', req.body); // Agrega esto para depurar
-  
-        if (!req.body.newProduct) {
-          return res
-            .status(400)
-            .json({ error: 'No se enviaron datos del producto' });
-        }
-  
-        const newProduct = JSON.parse(req.body.newProduct);
-        const { title, description, price, category_id } = newProduct;
-  
-        if (!title || !description || !price || !category_id) {
-          return res
-            .status(400)
-            .json({ error: 'Todos los campos son obligatorios' });
-        }
-  
-        const connection = await dbPool.getConnection();
-        await connection.beginTransaction();
-  
-        const sql =
-          'INSERT INTO product (title, description, price, category_id) VALUES (?, ?, ?, ?)';
-        const [result] = await connection.query(sql, [
-          title, description, price, category_id]);
-        const product_id = result.insertId;
-  
-        if (req.files && req.files.length > 0) {
-          for (const img of req.files) {
-            await connection.query(
-              'INSERT INTO product_image (product_id, image_url) VALUES (?, ?)',
-              [product_id, img.filename]
-            );
-          }
-        }
-  
-        await connection.commit();
-        res.status(200).json({ message: 'Producto creado con éxito' });
-      } catch (error) {
-        console.error('Error en createProduct:', error);
-        res.status(500).json({ error: 'Error al crear el producto' });
-      }
-    };
-
-
   deleteProductImage = async (req, res) => {
     try {
       const { product_image_id } = req.params;
+      const { image_url } = req.body;
+
+      if (!image_url) {
+        return res
+          .status(400)
+          .json({ error: 'El nombre de la imagen es obligatoria' });
+      }
+
       const result = await executeQuery(
-        'DELETE FROM product_image WHERE product_image_id = ?',[product_image_id]);
+        'DELETE FROM product_image WHERE product_image_id = ?',
+        [product_image_id]
+      );
 
       if (result.affectedRows === 0) {
-       res.status(404).json({ error: 'Imagen no encontrada' });
+        return res.status(404).json({ error: 'Imagen no encontrada' });
+      }
+
+      // Eliminar la imagen del servidor
+      const imagePath = path.join(
+        __dirname,
+        '../../public/images/products',
+        image_url
+      );
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      } else {
+        console.log(imagePath);
+        console.warn(`Imagen no encontrada en el servidor: ${image_url}`);
       }
 
       res.status(200).json({ message: 'Imagen eliminada correctamente' });
     } catch (error) {
       console.error('Error en deleteProductImage:', error);
-      res
-        .status(500)
-        .json({ error: 'Error al eliminar la imagen' });
+      res.status(500).json({ error: 'Error al eliminar la imagen' });
     }
   };
-
-
-
 }
 export default new ProductsController();

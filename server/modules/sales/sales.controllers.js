@@ -33,11 +33,20 @@ class SalesControllers {
 
     try {
       let sql = `
-      SELECT sale_id, product.title, quantity, sale_status, date 
-      FROM sale 
-      JOIN product ON sale.product_id = product.product_id 
-      WHERE sale.is_deleted = 0 AND sale.user_id = ? 
-      ORDER BY date DESC`;
+      SELECT 
+  s.sale_id, 
+  p.title, 
+  MIN(pi.image_url) AS image_url, 
+  s.quantity, 
+  s.sale_status, 
+  s.date 
+FROM sale s
+JOIN product p ON s.product_id = p.product_id
+LEFT JOIN product_image pi ON pi.product_id = p.product_id
+WHERE s.is_deleted = 0 
+AND s.user_id = ? 
+GROUP BY s.sale_id, p.title, s.quantity, s.sale_status, s.date
+ORDER BY s.date DESC`;
 
       let result = await executeQuery(sql, [user_id]);
       res.status(200).json(result);

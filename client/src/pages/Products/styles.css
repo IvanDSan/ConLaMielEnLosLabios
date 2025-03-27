@@ -1,4 +1,8 @@
 .products-container {
+  section {
+    padding: 0;
+  }
+
   .open-modal-btn {
     display: block;
     margin: 1rem auto;
