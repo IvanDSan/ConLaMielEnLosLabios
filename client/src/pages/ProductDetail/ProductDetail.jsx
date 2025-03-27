@@ -5,33 +5,22 @@ import { toast } from 'react-toastify';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CartContext } from '../../context/CartContextProvider';
 import './styles.css';
+import { SpinnerLoading } from '../../components/SpinnerLoading/SpinnerLoading';
 
 const apiURL = import.meta.env.VITE_SERVER_URL;
 
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * Muestra la informaci n detallada de un producto
- *
- * Obtendra el producto con el id pasado como par metro en la URL
- * y lo renderizar  con su imagen, t tulo, descripci n y precio.
- * Adem s, buscar  otros productos que tengan la misma categor a
- * y no sean el mismo producto, y los renderizar  en una secci n
- * aparte.
- *
- * @returns {React.ReactElement}
- */
-/******  fe1cfe5e-1da4-4f53-a913-d20797761cf9  *******/
 export const ProductDetail = () => {
   const { id } = useParams();
   const { addToCart } = useContext(CartContext);
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`${apiURL}/products/${id}`);
-        setProduct(response.data);
 
         const relatedResponse = await axios.get(`${apiURL}/products/all`);
         const filteredProducts = relatedResponse.data.filter(
@@ -40,18 +29,26 @@ export const ProductDetail = () => {
             prod.product_id !== response.data.product_id
         );
 
+        setProduct(response.data);
         setRelatedProducts(filteredProducts);
+        setSelectedImage(response.data.images[0].image_url);
       } catch (err) {
         console.log(err);
         toast.error('Error al obtener el producto');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProduct();
   }, [id]);
 
+  if (loading) return <SpinnerLoading />;
+
   if (!product)
     return <p className="notFoundMessage">Producto no encontrado</p>;
+
+  console.log(product);
 
   return (
     <div className="productDetailContainer">
@@ -59,29 +56,40 @@ export const ProductDetail = () => {
         ← Volver
       </Link>
 
-      <h1 className="productTitle">{product.title}</h1>
-
       <div className="productDetailWrapper">
         <div className="productImageContainer">
-          <img
-            src={product.image_url || '/default-image.jpg'}
-            alt={product.title}
-            className="productImage"
-          />
+          {
+            <img
+              src={
+                selectedImage
+                  ? `${apiURL}/images/products/${selectedImage}`
+                  : `${apiURL}/images/products/${product.images[0].image_url}`
+              }
+              alt={product.title}
+              className="productImage"
+            />
+          }
 
           <div className="productThumbnailContainer">
-            {Array.from(Array(4).keys()).map((index) => (
+            {product.images.map((img, index) => (
               <img
                 key={index}
-                src={product.image_url || '/default-image.jpg'}
+                src={`${apiURL}/images/products/${img.image_url}`}
                 alt="Miniatura"
                 className="productThumbnail"
+                style={
+                  selectedImage === img.image_url
+                    ? { border: '2px solid var(--yellow)' }
+                    : {}
+                }
+                onClick={() => setSelectedImage(img.image_url)}
               />
             ))}
           </div>
         </div>
 
         <div className="productInfoContainer">
+          <h2 className="productTitle">{product.title}</h2>
           <p className="productDescription">{product.description}</p>
 
           <p className="productPrice">{product.price}€</p>

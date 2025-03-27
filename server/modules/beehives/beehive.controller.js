@@ -48,8 +48,6 @@ class BeehivesController {
 
   createBeehive = async (req, res) => {
     try {
-      console.log('Datos recibidos:', req.body); // Agrega esto para depurar
-
       if (!req.body.newBeehive) {
         return res
           .status(400)
@@ -91,7 +89,10 @@ class BeehivesController {
       res.status(200).json({ message: 'Colmena creada con éxito' });
     } catch (error) {
       console.error('Error en createBeehive:', error);
+      await connection.rollback();
       res.status(500).json({ error: 'Error al crear la colmena' });
+    } finally {
+      if (connection) connection.release();
     }
   };
 

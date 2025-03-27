@@ -17,5 +17,15 @@ router.get(
   verifyToken('admin'),
   SponsorshipsController.getAllSponsorships
 );
+router.get(
+  '/getByUserId',
+  verifyToken('user'),
+  SponsorshipsController.getSponsorshipByUserId
+);
+router.put(
+  '/cancel/:sponsorship_id',
+  verifyToken('user'),
+  SponsorshipsController.cancelSponsorship
+);
 
 export default router;

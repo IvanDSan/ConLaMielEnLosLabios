@@ -1,7 +1,7 @@
-import { useEffect, useContext, createContext, useState } from "react";
-import { UserContext } from "./UserContext";
-import { fetchData } from "../helpers/axiosHelper";
-import { toast } from "react-toastify";
+import { useEffect, useContext, createContext, useState } from 'react';
+import { UserContext } from './UserContext';
+import { fetchData } from '../helpers/axiosHelper';
+import { toast } from 'react-toastify';
 
 export const CartContext = createContext();
 
@@ -12,15 +12,20 @@ export const CartContextProvider = ({ children }) => {
   useEffect(() => {
     const getCart = async () => {
       try {
-        const res = await fetchData("/users/showAllFromCartToUser", "GET", null, {
-          Authorization: `Bearer ${token}`,
-        });
+        const res = await fetchData(
+          '/users/showAllFromCartToUser',
+          'GET',
+          null,
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
         if (res.status === 200) {
           setCart(res.data.cart || []);
         }
       } catch (error) {
-        console.error("Error al obtener el carrito:", error);
-        toast.error("Error al obtener el carrito");
+        console.error('Error al obtener el carrito:', error);
+        toast.error('Error al obtener el carrito');
       }
     };
 
@@ -30,18 +35,28 @@ export const CartContextProvider = ({ children }) => {
   }, [token, user]);
 
   const calculateTotal = () => {
-    const subtotal = cart.reduce((acc, item) => acc + (parseFloat(item.price) || 0) * item.quantity, 0);
+    const subtotal = cart.reduce(
+      (acc, item) => acc + (parseFloat(item.price) || 0) * item.quantity,
+      0
+    );
     const envio = subtotal > 0 ? 8 : 0;
     return { subtotal, envio, total: subtotal + envio };
   };
 
   const removeFromCart = async (product_id) => {
     try {
-      await fetchData("/users/deleteProductToCart", "POST", { product_id }, { Authorization: `Bearer ${token}` });
-      setCart((prevCart) => prevCart.filter((item) => item.product_id !== product_id));
+      await fetchData(
+        '/users/deleteProductToCart',
+        'POST',
+        { product_id },
+        { Authorization: `Bearer ${token}` }
+      );
+      setCart((prevCart) =>
+        prevCart.filter((item) => item.product_id !== product_id)
+      );
     } catch (error) {
-      console.error("Error al quitar producto:", error);
-      toast.error("Error al quitar producto");
+      console.error('Error al quitar producto:', error);
+      toast.error('Error al quitar producto');
     }
   };
 
@@ -49,8 +64,8 @@ export const CartContextProvider = ({ children }) => {
     if (quantity + factor > 0) {
       try {
         await fetchData(
-          "/users/modifyCartQuantityToCart",
-          "POST",
+          '/users/modifyCartQuantityToCart',
+          'POST',
           {
             product_id,
             quantity: quantity + factor,
@@ -58,11 +73,15 @@ export const CartContextProvider = ({ children }) => {
           { Authorization: `Bearer ${token}` }
         );
         setCart((prevCart) =>
-          prevCart.map((item) => (item.product_id === product_id ? { ...item, quantity: quantity + factor } : item))
+          prevCart.map((item) =>
+            item.product_id === product_id
+              ? { ...item, quantity: quantity + factor }
+              : item
+          )
         );
       } catch (error) {
-        console.error("Error al actualizar cantidad:", error);
-        toast.error("Error al actualizar cantidad");
+        console.error('Error al actualizar cantidad:', error);
+        toast.error('Error al actualizar cantidad');
       }
     }
   };
@@ -77,9 +96,9 @@ export const CartContextProvider = ({ children }) => {
         if (res.status !== 200) {
           throw new Error("Error al vaciar carrito en backend");
         }
-      }
-
+        
       setCart([]);
+      }
       return true;
     } catch (error) {
       console.error("Error al vaciar carrito:", error);
@@ -91,8 +110,8 @@ export const CartContextProvider = ({ children }) => {
   const addToCart = async (product) => {
     try {
       await fetchData(
-        "/users/addProductToCart",
-        "POST",
+        '/users/addProductToCart',
+        'POST',
         {
           product_id: product.product_id,
         },
@@ -100,10 +119,14 @@ export const CartContextProvider = ({ children }) => {
       );
 
       setCart((prevCart) => {
-        const existingProduct = prevCart.find((item) => item.product_id === product.product_id);
+        const existingProduct = prevCart.find(
+          (item) => item.product_id === product.product_id
+        );
         if (existingProduct) {
           return prevCart.map((item) =>
-            item.product_id === product.product_id ? { ...item, quantity: item.quantity + 1 } : item
+            item.product_id === product.product_id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
           );
         }
         return [...prevCart, { ...product, quantity: 1 }];
@@ -115,7 +138,7 @@ export const CartContextProvider = ({ children }) => {
       if (error.response?.status === 401) {
         toast.error("Debes iniciar sesión para agregar productos al carrito");
       } else {
-        toast.error("Error al agregar producto");
+        toast.error('Error al agregar producto');
       }
     }
   };
@@ -146,7 +169,6 @@ export const CartContextProvider = ({ children }) => {
       if (purchaseResponse.status !== 200) {
         throw new Error(purchaseResponse.message || "Error en la compra");
       }
-
       setCart([]);
       toast.success("Compra realizada con éxito");
       return true;
@@ -172,6 +194,7 @@ export const CartContextProvider = ({ children }) => {
         cart,
         purchaseCart,
         getNumberOfTotalProducts,
+
       }}>
       {children}
     </CartContext.Provider>

@@ -111,15 +111,13 @@ export const BeehiveList = () => {
       });
 
       if (res.status === 200) {
-        console.log("creado");
+        fetchBeehives();
+        setBeehiveName('');
+        setBeehiveDescription('');
+        setBeehiveLargeDescription('');
+        setBeehiveImages([]);
+        setShowModal(false);
       }
-
-      fetchBeehives();
-      setBeehiveName("");
-      setBeehiveDescription("");
-      setBeehiveLargeDescription("");
-      setBeehiveImages([]);
-      setShowModal(false);
     } catch (error) {
       console.log(error);
       toast.error("Error al crear la colmena");

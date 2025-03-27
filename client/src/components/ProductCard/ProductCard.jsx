@@ -7,10 +7,18 @@ export const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
 
+  console.log(product);
+
   return (
     <div key={product.product_id} className="productCard">
       <img
-        src={product.image_url || '/images/product-placeholder.jpg'}
+        src={
+          (product.images.length > 0 &&
+            `${import.meta.env.VITE_SERVER_URL}/images/products/${
+              product.images[0].image_url
+            }`) ||
+          '/images/product-placeholder.jpg'
+        }
         alt={product.title}
         className="productImage"
       />
