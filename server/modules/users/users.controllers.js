@@ -252,12 +252,12 @@ class UsersController {
     ) {
       return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
-    
+
     // Password incorrecta
     if (password !== confirmPassword) {
       return res.status(401).json({ error: 'Password incorrecta' });
     }
-    
+
     // Zod
     const result = validateUser(req.body);
     if ('error' in result) {
@@ -268,7 +268,6 @@ class UsersController {
     try {
       // HASEAR PASSWORD
       const hashedPassword = await bcrypt.hash(password, 10);
-
 
       // ACTUALIZAR EN BD
       let sql =
@@ -592,7 +591,7 @@ class UsersController {
       await connection.rollback();
       res.status(500).json(error);
     } finally {
-      connection.release();
+      if (connection) connection.release();
     }
   };
 

@@ -15,6 +15,8 @@ export const UserOrders = () => {
 
   const { token } = useContext(UserContext);
 
+  console.log(orders);
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {

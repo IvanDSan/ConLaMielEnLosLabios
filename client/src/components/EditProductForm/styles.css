@@ -1,0 +1,23 @@
+.product-images {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  .product-image {
+    position: relative;
+
+    .delete-image {
+      position: absolute;
+      top: 0;
+      right: -.7rem;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 6rem;
+      cursor: pointer;
+    }
+  }
+}

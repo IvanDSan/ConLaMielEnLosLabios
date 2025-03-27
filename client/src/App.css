@@ -124,7 +124,8 @@ form {
     width: 100%;
   }
 
-  input {
+  input,
+  select {
     padding: 0.2rem 1rem;
     border: 1px solid var(--gray);
     border-radius: 4px;
@@ -134,6 +135,11 @@ form {
       outline: none;
       border-color: var(--yellow);
     }
+  }
+
+  textarea {
+    font-family: 'Poppins', sans-serif;
+    padding: 0.2rem 1rem;
   }
 
   div {
