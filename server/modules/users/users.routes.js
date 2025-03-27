@@ -41,6 +41,12 @@ router.post('/login', UsersController.login);
 router.get('/verify/:token', UsersController.verify);
 router.post('/recoveryPassword', UsersController.recoveryPassword);
 router.get('/getUserById', verifyToken(), UsersController.getUserById);
+router.put(
+  '/edit',
+  verifyToken('user'),
+  uploadImage('users'),
+  UsersController.editUser
+);
 
 router.post('/contact', UsersController.sendContactEmail);
 

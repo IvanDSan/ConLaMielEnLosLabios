@@ -58,7 +58,13 @@ export const ExpandableOrder = ({
           {orderItems.map((item, index) => (
             <div key={index} className="orderCard">
               <img
-                src={item.image_url || "/default-image.jpg"}
+                src={
+                  item.image_url
+                    ? `${import.meta.env.VITE_SERVER_URL}/images/products/${
+                        item.image_url
+                      }`
+                    : '/images/product-placeholder.jpg'
+                }
                 alt={item.title}
                 className="orderImage"
               />

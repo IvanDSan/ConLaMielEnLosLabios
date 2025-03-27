@@ -30,6 +30,7 @@ export const BeehiveList = () => {
             `/beehives/images/${beehive.beehive_id}`,
             "GET"
           );
+
           return {
             beehive_id: beehive.beehive_id,
             name: beehive.name,
@@ -77,9 +78,7 @@ export const BeehiveList = () => {
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const filesArray = Array.from(e.target.files);
-      const renamedFiles = filesArray.map((file, index) =>
-        renameImageFile(file, index)
-      );
+      const renamedFiles = filesArray.map((file, index) => renameImageFile(file, index));
       setBeehiveImages((prevImages) => [...prevImages, ...renamedFiles]);
     }
   };
@@ -109,19 +108,21 @@ export const BeehiveList = () => {
         }
       }
 
-      await fetchData("/beehives/create", "POST", newFormData, {
+      const res = await fetchData("/beehives/create", "POST", newFormData, {
         Authorization: `Bearer ${token}`,
       });
 
-      fetchBeehives();
-      setBeehiveName("");
-      setBeehiveDescription("");
-      setBeehiveLargeDescription("");
-      setBeehiveImages([]);
-      setShowModal(false);
+      if (res.status === 200) {
+        fetchBeehives();
+        setBeehiveName('');
+        setBeehiveDescription('');
+        setBeehiveLargeDescription('');
+        setBeehiveImages([]);
+        setShowModal(false);
+      }
     } catch (error) {
-      console.log(error);
       toast.error(t("error_create_beehive"));
+      console.log(error);
     }
   };
 
@@ -150,14 +151,9 @@ export const BeehiveList = () => {
         }
       }
 
-      await fetchData(
-        `/beehives/update/${editingBeehiveId}`,
-        "PUT",
-        newFormData,
-        {
-          Authorization: `Bearer ${token}`,
-        }
-      );
+      await fetchData(`/beehives/update/${editingBeehiveId}`, "PUT", newFormData, {
+        Authorization: `Bearer ${token}`,
+      });
 
       fetchBeehives();
       setBeehiveName("");
@@ -172,20 +168,13 @@ export const BeehiveList = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await fetchData(`/beehives/delete/${id}`, "DELETE", null, {
-        Authorization: `Bearer ${token}`,
-      });
-      fetchBeehives();
-    } catch (error) {
-      console.log(error);
-      toast.error(t("error_delete_beehive"));
-    }
-  };
-
   const handleDeleteImage = async (imageId, beehiveId) => {
     try {
+      if (!imageId) {
+        console.error("Error: imageId es undefined");
+        return;
+      }
+
       await fetchData(`/beehives/images/${imageId}`, "DELETE", null, {
         Authorization: `Bearer ${token}`,
       });
@@ -195,19 +184,28 @@ export const BeehiveList = () => {
           beehive.beehive_id === beehiveId
             ? {
                 ...beehive,
-                images: beehive.images.filter(
-                  (img) => img.beehive_image_id !== imageId
-                ),
+                images: beehive.images.filter((img) => img.beehive_image_id !== imageId),
               }
             : beehive
         )
       );
 
-      setBeehiveImages((prev) =>
-        prev.filter((img) => img.beehive_image_id !== imageId)
-      );
+      setBeehiveImages((prevImages) => prevImages.filter((img) => img.beehive_image_id !== imageId));
     } catch (error) {
-      toast.error(t("error_delete_image"));
+      console.error(error);
+      toast.error("Error al eliminar la imagen");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await fetchData(`/beehives/delete/${id}`, "DELETE", null, {
+        Authorization: `Bearer ${token}`,
+      });
+      fetchBeehives();
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al eliminar la colmena");
     }
   };
 
@@ -292,6 +290,7 @@ export const BeehiveList = () => {
               onClick={modalType === "create" ? handleSave : handleUpdate}
             >
               {modalType === "create" ? t("save") : t("update")}
+
             </button>
             <button className="cancel-btn" onClick={() => setShowModal(false)}>
               {t("cancel")}
@@ -302,6 +301,7 @@ export const BeehiveList = () => {
 
       <button className="add-category-btn" onClick={() => openModal("create")}>
         {t("add_beehive")}
+
       </button>
 
       {loading && <p className="loading">{t("loading_beehives")}</p>}
@@ -332,9 +332,7 @@ export const BeehiveList = () => {
                         <div key={index} className="image-wrapper">
                           <img
                             width="60"
-                            src={`${
-                              import.meta.env.VITE_SERVER_URL
-                            }/images/beehives/${image.image_url}`}
+                            src={`${import.meta.env.VITE_SERVER_URL}/images/beehives/${image.image_url}`}
                             alt="Beehive"
                           />
                         </div>

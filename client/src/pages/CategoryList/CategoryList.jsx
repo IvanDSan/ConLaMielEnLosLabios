@@ -50,10 +50,11 @@ export const CategoryList = () => {
     if (!categoryName.trim()) return;
 
     try {
-      if (modalType === "create") {
+
+      if (modalType === 'create') {
         await fetchData(
-          "/categories/create",
-          "POST",
+          '/categories/create',
+          'POST',
           { name: categoryName },
           {
             Authorization: `Bearer ${token}`,
